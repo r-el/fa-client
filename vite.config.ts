@@ -29,7 +29,23 @@ export default defineConfig(({ mode }) => {
     server: {
       proxy: {
         '/api': {
-          target: 'http://localhost:3000',
+          target: 'http://localhost:3001',
+          changeOrigin: true
+        },
+        '/auth': {
+          target: 'http://localhost:3001',
+          changeOrigin: true
+        },
+        '/events': {
+          target: 'http://localhost:3001',
+          changeOrigin: true
+        },
+        '/cameras': {
+          target: 'http://localhost:3001',
+          changeOrigin: true
+        },
+        '/users': {
+          target: 'http://localhost:3001',
           changeOrigin: true
         }
       }
