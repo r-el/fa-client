@@ -4,7 +4,7 @@ const getApiUrl = () => {
   if (import.meta.env.VITE_API_URL) {
     return import.meta.env.VITE_API_URL;
   }
-  return "http://localhost:3001";
+  return ""; // Empty string forces relative requests (handled by Vite proxy)
 };
 
 const api = axios.create({

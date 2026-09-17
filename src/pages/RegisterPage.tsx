@@ -1,11 +1,12 @@
 import { useState, useRef } from "react";
 import type { FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowRight, Shield, Check, Eye, EyeOff, LockKeyhole, Mail, UserRound } from "lucide-react";
+import { ArrowRight, Shield, Check, Eye, EyeOff, LockKeyhole, Mail, UserRound, Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/AuthContext";
+import { verifyCode, resendCode } from "@/services/authService";
 
 type Step = "form" | "verify";
 
@@ -16,6 +17,8 @@ export default function RegisterPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [step, setStep] = useState<Step>("form");
+  const [registeredEmail, setRegisteredEmail] = useState("");
+  const [resendStatus, setResendStatus] = useState("");
   const [verificationCode, setVerificationCode] = useState(["", "", "", "", "", ""]);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -42,10 +45,14 @@ export default function RegisterPage() {
     }
 
     setIsSubmitting(true);
+    setRegisteredEmail(email);
     try {
-      await register({ name: username, username, email, password });
-      // After successful registration, show verification step
-      setStep("verify");
+      const res = await register({ name: username, username, email, password });
+      if (res.success) {
+        setStep("verify");
+      } else {
+        setError(res.error || "Unable to create your account.");
+      }
     } catch (registrationError: any) {
       setError(registrationError.message || "Unable to create your account.");
     } finally {
@@ -77,9 +84,33 @@ export default function RegisterPage() {
       setError("Please enter the full 6-digit code.");
       return;
     }
-    // TODO: Call verification endpoint when backend supports it
-    // For now, navigate to login
-    navigate("/login");
+    setIsSubmitting(true);
+    setError("");
+    try {
+      const res = await verifyCode(registeredEmail, code);
+      if (res.success && res.data) {
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+        navigate("/");
+      } else {
+        setError(res.error || "Invalid verification code.");
+      }
+    } catch (err: any) {
+      setError(err.response?.data?.error || "Verification failed. Please check the code.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleResend = async () => {
+    setError("");
+    setResendStatus("");
+    try {
+      await resendCode(registeredEmail);
+      setResendStatus("New 6-digit verification code sent to your email!");
+    } catch (err: any) {
+      setError(err.response?.data?.error || "Failed to resend verification code.");
+    }
   };
 
   return (
@@ -149,7 +180,9 @@ export default function RegisterPage() {
                   Verification sent
                 </div>
                 <h2 className="mt-2 text-3xl font-semibold tracking-tight text-white">Verify your email</h2>
-                <p className="mt-3 text-sm leading-6 text-slate-400">We sent a 6-digit code to your email. Enter it below to activate your account.</p>
+                <p className="mt-3 text-sm leading-6 text-slate-400">
+                  We sent a 6-digit code to <strong className="text-white">{registeredEmail || "your email"}</strong>. Enter it below to activate your account.
+                </p>
 
                 <div className="mt-8 flex justify-center gap-3">
                   {verificationCode.map((digit, index) => (
@@ -168,18 +201,35 @@ export default function RegisterPage() {
                 </div>
 
                 {error && <p className="mt-4 text-center text-sm text-rose-300" role="alert">{error}</p>}
+                {resendStatus && <p className="mt-4 text-center text-sm text-emerald-400">{resendStatus}</p>}
 
                 <Button
                   onClick={handleVerify}
+                  disabled={isSubmitting}
                   className="mt-8 h-12 w-full rounded-xl bg-gradient-to-r from-indigo-300 to-cyan-300 font-semibold text-slate-950 hover:from-indigo-200 hover:to-cyan-200"
                 >
-                  Verify & Continue
-                  <ArrowRight className="h-4 w-4" />
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Verifying...
+                    </>
+                  ) : (
+                    <>
+                      Verify & Continue
+                      <ArrowRight className="h-4 w-4" />
+                    </>
+                  )}
                 </Button>
 
                 <p className="mt-6 text-center text-sm text-slate-400">
                   Didn't receive the code?{" "}
-                  <button className="font-medium text-cyan-200 transition-colors hover:text-white">Resend code</button>
+                  <button
+                    type="button"
+                    onClick={handleResend}
+                    className="font-medium text-cyan-200 transition-colors hover:text-white"
+                  >
+                    Resend code
+                  </button>
                 </p>
               </>
             )}

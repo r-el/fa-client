@@ -10,19 +10,7 @@ export default defineConfig(({ mode }) => {
         "@": path.resolve(__dirname, "./src"),
       },
     },
-    plugins: [
-      react(),
-      // Add a simple plugin to modify CSP in development
-      mode === 'development' && {
-        name: 'dev-csp',
-        transformIndexHtml(html: string) {
-          return html.replace(
-            /connect-src 'self' https: wss: https:\/\/api\.facealert\.security https:\/\/api\.facealert\.live https:\/\/fonts\.googleapis\.com/,
-            "connect-src 'self' http://localhost:* ws://localhost:* https: wss: https://api.facealert.security https://api.facealert.live https://fonts.googleapis.com"
-          );
-        }
-      }
-    ].filter(Boolean),
+    plugins: [react()],
     assetsInclude: ['**/*.svg'],
     
     // Use different HTML files for dev and production
@@ -33,6 +21,8 @@ export default defineConfig(({ mode }) => {
     }),
     
     server: {
+      port: 5173,
+      host: true,
       proxy: {
         '/api': {
           target: 'http://localhost:3001',
