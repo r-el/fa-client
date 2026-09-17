@@ -134,3 +134,26 @@ export const useGetPeople = () => {
     gcTime: 60 * 60 * 1000,
   });
 };
+
+// ===== STATS OVER TIME (Dummy for now) =====
+
+export const useGetStatsOverTime = (days: number = 7) => {
+  return useQuery({
+    queryKey: ["stats", "over-time", days],
+    queryFn: async () => {
+      // Return dummy data since the backend doesn't have this endpoint yet
+      const data = [];
+      const now = new Date();
+      for (let i = days; i >= 0; i--) {
+        const d = new Date(now);
+        d.setDate(d.getDate() - i);
+        data.push({
+          timeBucket: d.toISOString(),
+          count: Math.floor(Math.random() * 50) + 10,
+        });
+      }
+      return data;
+    },
+    staleTime: 5 * 60 * 1000,
+  });
+};

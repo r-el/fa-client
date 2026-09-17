@@ -1,4 +1,5 @@
-import { FormEvent, useState } from "react";
+import { useState } from "react";
+import type { FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { ArrowRight, Shield, CheckCircle2, Eye, EyeOff, LockKeyhole, Mail, ShieldCheck } from "lucide-react";
 
@@ -27,7 +28,7 @@ export default function LoginPage() {
 
     setIsSubmitting(true);
     try {
-      await login(username, password);
+      await login({ username, password });
       navigate("/");
     } catch (err: any) {
       setError(err.message || "Authentication failed. Check your credentials.");

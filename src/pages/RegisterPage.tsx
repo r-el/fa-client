@@ -1,4 +1,5 @@
-import { FormEvent, useState, useRef } from "react";
+import { useState, useRef } from "react";
+import type { FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, Shield, Check, Eye, EyeOff, LockKeyhole, Mail, UserRound } from "lucide-react";
 
@@ -42,7 +43,7 @@ export default function RegisterPage() {
 
     setIsSubmitting(true);
     try {
-      await register(username, email, password);
+      await register({ name: username, username, email, password });
       // After successful registration, show verification step
       setStep("verify");
     } catch (registrationError: any) {
