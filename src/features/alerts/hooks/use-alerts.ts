@@ -3,8 +3,8 @@ import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tansta
 import {
   acknowledgeAlert, getAlert, getAlerts, getAlertSnapshot, getAlertSummary,
   resolveAlert, retryAlertRead,
-} from "@/services/alerts";
-import type { AlertFilters, AlertResolution, AlertSummaryFilters, SpecterAlert } from "@/services/alerts";
+} from "@/features/alerts/api/alerts";
+import type { AlertFilters, AlertResolution, AlertSummaryFilters, SpecterAlert } from "@/features/alerts/api/alerts";
 
 export const alertKeys = {
   all: ["alerts"] as const,

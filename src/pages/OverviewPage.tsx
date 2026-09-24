@@ -1,7 +1,7 @@
 import { Activity, ShieldAlert, Video, Users } from "lucide-react";
 import { KpiCard } from "@/components/kpi-card";
 import { AlertsChart } from "@/components/alerts-chart";
-import { AlertsTable } from "@/components/alerts-table";
+import { AlertsTable } from "@/features/alerts/components/AlertsTable";
 import { useGetStats } from "@/hooks/use-api";
 import { Skeleton } from "@/components/ui/skeleton";
 

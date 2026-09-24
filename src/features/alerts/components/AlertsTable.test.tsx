@@ -1,14 +1,14 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { AlertsTable } from "./alerts-table";
-import { useAlerts } from "@/hooks/use-alerts";
-import type { SpecterAlert } from "@/services/alerts";
+import { AlertsTable } from "./AlertsTable";
+import { useAlerts } from "@/features/alerts/hooks/use-alerts";
+import type { SpecterAlert } from "@/features/alerts/api/alerts";
 
 const visibility = vi.hoisted(() => ({ inView: false }));
 vi.mock("react-intersection-observer", () => ({ useInView: () => ({ ref: vi.fn(), inView: visibility.inView }) }));
-vi.mock("@/hooks/use-alerts", () => ({ useAlerts: vi.fn() }));
-vi.mock("@/components/alert-details", () => ({ AlertDetails: ({ initialAlert }: { initialAlert: SpecterAlert }) => <div role="dialog">Selected {initialAlert.id}</div> }));
+vi.mock("@/features/alerts/hooks/use-alerts", () => ({ useAlerts: vi.fn() }));
+vi.mock("@/features/alerts/components/AlertDetails", () => ({ AlertDetails: ({ initialAlert }: { initialAlert: SpecterAlert }) => <div role="dialog">Selected {initialAlert.id}</div> }));
 
 function alert(id: string, kind: SpecterAlert["kind"] = "identity_match"): SpecterAlert {
   return { id, kind, owner_id: "owner", camera_id: "cam/a", camera_name: "Entrance", track_id: 1,

@@ -2,16 +2,16 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 import { AlertCircle, Loader2 } from "lucide-react";
-import { AlertDetails } from "@/components/alert-details";
-import { AlertFiltersForm } from "@/components/alert-filters";
+import { AlertDetails } from "@/features/alerts/components/AlertDetails";
+import { AlertFiltersForm } from "@/features/alerts/components/AlertFilters";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { useAlerts } from "@/hooks/use-alerts";
+import { useAlerts } from "@/features/alerts/hooks/use-alerts";
 import { formatDateTime } from "@/lib/date-utils";
-import { alertErrorMessage } from "@/services/alerts";
-import type { AlertFilters, SpecterAlert } from "@/services/alerts";
+import { alertErrorMessage } from "@/features/alerts/api/alerts";
+import type { AlertFilters, SpecterAlert } from "@/features/alerts/api/alerts";
 
 interface AlertsTableProps {
   limit?: number;

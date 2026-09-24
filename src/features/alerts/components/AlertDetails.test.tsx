@@ -1,12 +1,12 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { AlertDetails } from "./alert-details";
-import * as service from "@/services/alerts";
+import { AlertDetails } from "./AlertDetails";
+import * as service from "@/features/alerts/api/alerts";
 
 const auth = vi.hoisted(() => ({ role: "viewer" }));
 vi.mock("@/context/AuthContext", () => ({ useAuth: () => ({ user: { id: "user", role: auth.role } }) }));
-vi.mock("@/services/alerts", async (original) => ({
+vi.mock("@/features/alerts/api/alerts", async (original) => ({
   ...await original<typeof service>(), getAlert: vi.fn(), getAlertSnapshot: vi.fn(), acknowledgeAlert: vi.fn(), resolveAlert: vi.fn(),
 }));
 const alert: service.SpecterAlert = {

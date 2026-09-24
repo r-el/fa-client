@@ -1,4 +1,4 @@
-import { AlertsTable } from "@/components/alerts-table";
+import { AlertsTable } from "@/features/alerts/components/AlertsTable";
 
 export default function AlertsPage() {
   return (
