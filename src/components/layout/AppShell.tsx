@@ -2,6 +2,7 @@ import { useLocation } from "react-router-dom";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Topbar } from "@/components/layout/Topbar";
 import { MobileNav } from "@/components/layout/MobileNav";
+import { RealtimeSync } from "@/components/RealtimeSync";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const { pathname } = useLocation();
@@ -27,7 +28,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <div className="relative z-10 flex flex-1 flex-col">
         <Topbar />
         <main className="flex-1 px-4 pb-24 pt-6 md:px-8 md:pb-12 md:pt-10 lg:px-12">
-          <div className="mx-auto flex w-full max-w-6xl flex-col gap-10">{children}</div>
+          <div className="mx-auto flex w-full max-w-6xl flex-col gap-6"><RealtimeSync />{children}</div>
         </main>
       </div>
 

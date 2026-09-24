@@ -8,6 +8,8 @@ import { AppShell } from "./components/layout/AppShell";
 import OverviewPage from "./pages/OverviewPage";
 import AlertsPage from "./pages/AlertsPage";
 import CamerasPage from "./pages/CamerasPage";
+import LiveVideoPage from "./pages/LiveVideoPage";
+import WatchlistsPage from "./pages/WatchlistsPage";
 import PeoplePage from "./pages/PeoplePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
@@ -43,6 +45,8 @@ function App() {
                 <Route path="/alerts" element={<ProtectedRoute><AlertsPage /></ProtectedRoute>} />
                 <Route path="/events" element={<Navigate to="/alerts" replace />} /> {/* Redirect old events route */}
                 <Route path="/cameras" element={<ProtectedRoute><CamerasPage /></ProtectedRoute>} />
+                <Route path="/cameras/:id/live" element={<ProtectedRoute><LiveVideoPage /></ProtectedRoute>} />
+                <Route path="/watchlists" element={<ProtectedRoute><WatchlistsPage /></ProtectedRoute>} />
                 <Route path="/people" element={<ProtectedRoute><PeoplePage /></ProtectedRoute>} />
                 
                 {/* Keep existing protected routes */}
