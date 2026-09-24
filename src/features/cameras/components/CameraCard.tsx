@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Play, Settings, Square, Trash2, Video } from "lucide-react";
-import type { CameraSummary } from "@/hooks/use-api";
 import { useCameraMutations } from "@/features/cameras/hooks/use-cameras";
 import { cameraError, type CameraAction, type CameraDetails } from "@/features/cameras/api/cameras";
 import { Badge } from "@/components/ui/badge";
@@ -9,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
-type ListedCamera = CameraSummary & Partial<Omit<CameraDetails, "location">>;
+type ListedCamera = CameraDetails;
 const REQUEST_CONFIRMATION_MS = 30_000;
 const statusStyles: Record<string, string> = {
   running: "border-emerald-500/30 bg-emerald-500/10 text-emerald-400",

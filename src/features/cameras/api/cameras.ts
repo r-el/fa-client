@@ -52,6 +52,9 @@ export function cameraError(error: unknown): string {
 }
 
 export const camerasService = {
+  async list(signal?: AbortSignal): Promise<CameraDetails[]> {
+    return unwrap((await api.get<CameraResponse<CameraDetails[]>>("/cameras", { signal })).data);
+  },
   async get(id: string, signal?: AbortSignal): Promise<CameraDetails> {
     return unwrap((await api.get<CameraResponse<CameraDetails>>(cameraPath(id), { signal })).data);
   },

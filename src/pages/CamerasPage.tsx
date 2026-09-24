@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Plus, RefreshCw, Video } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-import { useGetCameras } from "@/hooks/use-api";
+import { useCameras } from "@/features/cameras/hooks/use-cameras";
 import { CameraCard } from "@/features/cameras/components/CameraCard";
 import { CameraEditor } from "@/features/cameras/components/CameraEditor";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -10,7 +10,7 @@ import { cameraError } from "@/features/cameras/api/cameras";
 
 export default function CamerasPage() {
   const { user } = useAuth();
-  const cameras = useGetCameras();
+  const cameras = useCameras();
   const [editor, setEditor] = useState<{ id?: string } | null>(null);
   const canCreate = user?.role === "admin" || user?.role === "operator";
 

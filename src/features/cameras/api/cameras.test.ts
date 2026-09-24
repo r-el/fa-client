@@ -9,6 +9,13 @@ vi.mock("@/services/api", () => ({ default: { get: vi.fn(), post: vi.fn(), put: 
 beforeEach(() => vi.resetAllMocks());
 
 describe("camera HTTP contract", () => {
+  it("lists cameras with cancellation", async () => {
+    vi.mocked(api.get).mockResolvedValue({ data: { success: true, data: [camera] } });
+    const signal = new AbortController().signal;
+    expect(await camerasService.list(signal)).toEqual([camera]);
+    expect(api.get).toHaveBeenCalledWith("/cameras", { signal });
+  });
+
   it("reads an encoded camera ID with cancellation", async () => {
     vi.mocked(api.get).mockResolvedValue({ data: { success: true, data: camera } });
     const signal = new AbortController().signal;

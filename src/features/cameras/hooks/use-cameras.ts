@@ -1,7 +1,21 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { cameraError, camerasService } from "@/features/cameras/api/cameras";
-import type { CameraAction, CameraInput, CameraUpdate } from "@/features/cameras/api/cameras";
+import type { CameraAction, CameraDetails, CameraInput, CameraUpdate } from "@/features/cameras/api/cameras";
+
+const fetchCameras = async (signal: AbortSignal): Promise<CameraDetails[]> => {
+  return camerasService.list(signal);
+};
+
+export function useCameras() {
+  return useQuery({
+    queryKey: ["cameras"],
+    queryFn: ({ signal }) => fetchCameras(signal),
+    staleTime: 10_000,
+    refetchInterval: 15_000,
+    refetchIntervalInBackground: false,
+  });
+}
 
 export function useCameraDetails(id?: string) {
   return useQuery({
