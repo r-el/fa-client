@@ -52,7 +52,7 @@ export default function CamerasPage() {
                 <div className="mt-2 space-y-3">
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-muted-foreground">Camera ID</span>
-                    <span className="font-mono">{camera.camera_id}</span>
+                    <span className="font-mono">{camera.specter_camera_id || camera.id}</span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-muted-foreground">Protocol</span>

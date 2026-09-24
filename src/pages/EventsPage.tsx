@@ -15,7 +15,7 @@ interface EventFilters {
 interface UserCamera {
   id: string;
   name: string;
-  camera_id: string;
+  specter_camera_id?: string | null;
 }
 
 const EventsPage: React.FC = () => {
@@ -141,11 +141,14 @@ const EventsPage: React.FC = () => {
             onChange={(e) => handleFilterChange('cameraId', e.target.value)}
           >
             <option value="">All Cameras</option>
-            {userCameras.map((camera) => (
-              <option key={camera.camera_id} value={camera.camera_id}>
-                {camera.name} ({camera.camera_id})
-              </option>
-            ))}
+            {userCameras.map((camera) => {
+              const camId = camera.specter_camera_id || camera.id;
+              return (
+                <option key={camId} value={camId}>
+                  {camera.name} ({camId})
+                </option>
+              );
+            })}
           </select>
         </div>
 

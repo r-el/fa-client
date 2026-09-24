@@ -32,7 +32,6 @@ export const getCameraStatus = async (
 
 export const createCamera = async (cameraData: {
   name: string;
-  camera_id: string;
   connection_string: string;
 }): Promise<{ success: boolean; data?: ICamera; error?: string }> => {
   const response = await api.post("/cameras", cameraData);

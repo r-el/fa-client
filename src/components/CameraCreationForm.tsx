@@ -5,7 +5,6 @@ import "./CameraCreationForm.css";
 
 interface CameraFormData {
   name: string;
-  camera_id: string;
   connection_string: string;
 }
 
@@ -13,7 +12,6 @@ const CameraCreationForm: React.FC = () => {
   const { user: currentUser } = useAuth();
   const [formData, setFormData] = useState<CameraFormData>({
     name: "",
-    camera_id: "",
     connection_string: ""
   });
   const [loading, setLoading] = useState(false);
@@ -25,13 +23,6 @@ const CameraCreationForm: React.FC = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const generateCameraId = () => {
-    const timestamp = Date.now().toString(36);
-    const random = Math.random().toString(36).substr(2, 5);
-    const cameraId = `CAM_${timestamp}_${random}`.toUpperCase();
-    setFormData(prev => ({ ...prev, camera_id: cameraId }));
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -39,7 +30,7 @@ const CameraCreationForm: React.FC = () => {
     setSuccess("");
 
     // Validation
-    if (!formData.name || !formData.camera_id || !formData.connection_string) {
+    if (!formData.name || !formData.connection_string) {
       setError("All fields are required");
       setLoading(false);
       return;
@@ -47,12 +38,6 @@ const CameraCreationForm: React.FC = () => {
 
     if (formData.name.length < 3) {
       setError("Camera name must be at least 3 characters long");
-      setLoading(false);
-      return;
-    }
-
-    if (formData.camera_id.length < 5) {
-      setError("Camera ID must be at least 5 characters long");
       setLoading(false);
       return;
     }
@@ -71,7 +56,6 @@ const CameraCreationForm: React.FC = () => {
         setSuccess(`Camera "${formData.name}" created successfully`);
         setFormData({
           name: "",
-          camera_id: "",
           connection_string: ""
         });
       } else {
@@ -119,32 +103,6 @@ const CameraCreationForm: React.FC = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="camera_id">Camera ID *</label>
-          <div className="camera-id-control">
-            <input
-              type="text"
-              id="camera_id"
-              name="camera_id"
-              value={formData.camera_id}
-              onChange={handleInputChange}
-              required
-              className="form-input"
-              placeholder="Enter unique camera ID (e.g., CAM001)"
-            />
-            <button
-              type="button"
-              onClick={generateCameraId}
-              className="generate-btn"
-            >
-              Generate
-            </button>
-          </div>
-          <small className="help-text">
-            Must be unique across all cameras. Use the Generate button for automatic ID.
-          </small>
-        </div>
-
-        <div className="form-group">
           <label htmlFor="connection_string">Connection String *</label>
           <textarea
             id="connection_string"
@@ -176,7 +134,6 @@ const CameraCreationForm: React.FC = () => {
         <h3>Camera Setup Guide</h3>
         <ul>
           <li><strong>Name:</strong> Choose a descriptive name for easy identification</li>
-          <li><strong>Camera ID:</strong> Unique identifier used by the system</li>
           <li><strong>Connection String:</strong> URL to access the camera stream</li>
         </ul>
         

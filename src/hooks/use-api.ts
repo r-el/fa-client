@@ -85,10 +85,11 @@ export const useGetAlerts = (filters: AlertFilters = {}) => {
 
 export type CameraSummary = {
   id: string;
-  camera_id: string;
   name: string;
   location: string;
   status: string;
+  specter_camera_id?: string | null;
+  organization_id?: string | null;
   assigned_users?: string[];
 };
 
