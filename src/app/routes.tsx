@@ -5,7 +5,7 @@ import CamerasPage from "@/pages/CamerasPage";
 import LoginPage from "@/pages/LoginPage";
 import MongoPage from "@/pages/MongoPage";
 import OverviewPage from "@/pages/OverviewPage";
-import PeoplePage from "@/pages/PeoplePage";
+import PeoplePage from "@/features/people/PeoplePage";
 import RegisterPage from "@/pages/RegisterPage";
 import SettingsPage from "@/pages/SettingsPage";
 import UserManagementPage from "@/pages/UserManagementPage";

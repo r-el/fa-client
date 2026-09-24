@@ -21,31 +21,3 @@ export const useGetCameras = () => {
     refetchIntervalInBackground: false,
   });
 };
-// ===== PEOPLE (stub for future API) =====
-
-export type PersonSummary = {
-  personId: string;
-  alertCount: number;
-  firstSeen: string;
-  lastSeen: string;
-  sampleImagePath?: string;
-};
-
-const fetchPeople = async (): Promise<PersonSummary[]> => {
-  try {
-    const { data } = await api.get("/events/people");
-    return data || [];
-  } catch {
-    // People endpoint may not exist yet
-    return [];
-  }
-};
-
-export const useGetPeople = () => {
-  return useQuery({
-    queryKey: ["people"],
-    queryFn: fetchPeople,
-    staleTime: 15 * 60 * 1000,
-    gcTime: 60 * 60 * 1000,
-  });
-};

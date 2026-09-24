@@ -1,5 +1,5 @@
 import { Users, UserSquare2, Eye, Clock } from "lucide-react";
-import { useGetPeople, type PersonSummary } from "@/hooks/use-api";
+import { useGetPeople, type PersonSummary } from "@/features/people/hooks/use-people";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
