@@ -41,7 +41,7 @@ const EventsPage: React.FC = () => {
 
   const fetchUserCameras = async () => {
     try {
-      const response = await api.get('/api/dashboard/stats');
+      const response = await api.get('/dashboard/stats');
       if (response.data.success) {
         setUserCameras(response.data.stats.userCameras || []);
       }

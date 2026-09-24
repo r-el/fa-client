@@ -32,7 +32,7 @@ const HomePage: React.FC = () => {
   const fetchDashboardStats = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/api/dashboard/stats');
+      const response = await api.get('/dashboard/stats');
       if (response.data.success) {
         setStats(response.data.stats);
       } else {

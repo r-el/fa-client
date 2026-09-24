@@ -31,7 +31,7 @@ const MongoGallery: React.FC = () => {
       setLoading(true);
       setError('');
       
-      const response = await api.get('/api/mongo/persons');
+      const response = await api.get('/mongo/persons');
       const data = response.data;
       setPersons(data.persons || []);
       setStats(data.stats || {});

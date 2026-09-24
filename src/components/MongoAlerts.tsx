@@ -32,7 +32,7 @@ const MongoAlerts: React.FC = () => {
       setLoading(true);
       setError(null);
 
-      const response = await api.get('/api/mongo/alerts');
+      const response = await api.get('/mongo/alerts');
       const data: AlertsResponse = response.data;
       
       if (data.success) {

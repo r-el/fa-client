@@ -1,6 +1,6 @@
 import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
 import type { InfiniteData } from "@tanstack/react-query";
-import api from "@/lib/api-client";
+import api from "@/services/api";
 
 // ===== DASHBOARD STATS =====
 
@@ -12,7 +12,7 @@ export type DashboardStats = {
 };
 
 const fetchDashboardStats = async (): Promise<DashboardStats> => {
-  const { data } = await api.get("/api/dashboard/stats");
+  const { data } = await api.get("/dashboard/stats");
   return data.stats;
 };
 
@@ -57,7 +57,7 @@ const fetchAlerts = async ({
     limit: String(filters.page_size || 20),
   });
 
-  const { data } = await api.get("/api/events?" + params.toString());
+  const { data } = await api.get("/events?" + params.toString());
   return data.events || data || [];
 };
 
@@ -94,7 +94,7 @@ export type CameraSummary = {
 };
 
 const fetchCameras = async (): Promise<CameraSummary[]> => {
-  const { data } = await api.get("/api/cameras");
+  const { data } = await api.get("/cameras");
   return data.cameras || data || [];
 };
 
@@ -119,7 +119,7 @@ export type PersonSummary = {
 
 const fetchPeople = async (): Promise<PersonSummary[]> => {
   try {
-    const { data } = await api.get("/api/events/people");
+    const { data } = await api.get("/events/people");
     return data || [];
   } catch {
     // People endpoint may not exist yet
