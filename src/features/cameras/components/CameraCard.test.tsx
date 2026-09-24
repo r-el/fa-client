@@ -3,7 +3,7 @@ import { QueryClientProvider, skipToken, useQuery } from "@tanstack/react-query"
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import api from "@/services/api";
-import type { CameraDetails } from "@/services/cameras";
+import type { CameraDetails } from "@/features/cameras/api/cameras";
 import { camera, cameraQueryClient } from "@/test/camera-fixtures";
 import { CameraCard } from "./CameraCard";
 

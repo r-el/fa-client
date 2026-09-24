@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { cameraError, camerasService } from "@/services/cameras";
-import type { CameraAction, CameraInput, CameraUpdate } from "@/services/cameras";
+import { cameraError, camerasService } from "@/features/cameras/api/cameras";
+import type { CameraAction, CameraInput, CameraUpdate } from "@/features/cameras/api/cameras";
 
 export function useCameraDetails(id?: string) {
   return useQuery({

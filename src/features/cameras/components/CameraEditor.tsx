@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
-import { useCameraDetails, useCameraMutations } from "@/hooks/use-cameras";
+import { useCameraDetails, useCameraMutations } from "@/features/cameras/hooks/use-cameras";
 import { useWatchlists } from "@/hooks/use-watchlists";
-import { cameraError, type CameraDetails, type CameraInput, type CameraUpdate } from "@/services/cameras";
+import { cameraError, type CameraDetails, type CameraInput, type CameraUpdate } from "@/features/cameras/api/cameras";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";

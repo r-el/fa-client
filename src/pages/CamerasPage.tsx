@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Plus, RefreshCw, Video } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useGetCameras } from "@/hooks/use-api";
-import { CameraCard } from "@/components/cameras/CameraCard";
-import { CameraEditor } from "@/components/cameras/CameraEditor";
+import { CameraCard } from "@/features/cameras/components/CameraCard";
+import { CameraEditor } from "@/features/cameras/components/CameraEditor";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import { cameraError } from "@/services/cameras";
+import { cameraError } from "@/features/cameras/api/cameras";
 
 export default function CamerasPage() {
   const { user } = useAuth();

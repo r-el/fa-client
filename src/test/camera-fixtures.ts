@@ -1,5 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
-import type { CameraDetails, CameraInput } from "@/services/cameras";
+import type { CameraDetails, CameraInput } from "@/features/cameras/api/cameras";
 
 export const camera: CameraDetails = {
   id: "cam-1", name: "Entrance", source_url: "rtsp://camera.example/stream",

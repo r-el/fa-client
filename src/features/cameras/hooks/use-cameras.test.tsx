@@ -3,12 +3,12 @@ import { act, renderHook, waitFor } from "@testing-library/react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { toast } from "sonner";
-import { camerasService } from "@/services/cameras";
+import { camerasService } from "@/features/cameras/api/cameras";
 import { camera, cameraInput, cameraQueryClient } from "@/test/camera-fixtures";
 import { useCameraDetails, useCameraMutations } from "./use-cameras";
 
-vi.mock("@/services/cameras", async (original) => ({
-  ...await original<typeof import("@/services/cameras")>(),
+vi.mock("@/features/cameras/api/cameras", async (original) => ({
+  ...await original<typeof import("@/features/cameras/api/cameras")>(),
   camerasService: { get: vi.fn(), create: vi.fn(), update: vi.fn(), remove: vi.fn(), control: vi.fn() },
 }));
 vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));

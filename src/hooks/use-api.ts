@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import api from "@/services/api";
-import type { CameraDetails } from "@/services/cameras";
+import type { CameraDetails } from "@/features/cameras/api/cameras";
 import { getAlertSummary } from "@/features/alerts/api/alerts";
 
 // ===== DASHBOARD STATS =====
