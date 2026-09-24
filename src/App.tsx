@@ -9,7 +9,7 @@ import OverviewPage from "./pages/OverviewPage";
 import AlertsPage from "./pages/AlertsPage";
 import CamerasPage from "./pages/CamerasPage";
 import LiveVideoPage from "./pages/LiveVideoPage";
-import WatchlistsPage from "./pages/WatchlistsPage";
+import WatchlistsPage from "./features/watchlists/WatchlistsPage";
 import PeoplePage from "./pages/PeoplePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";

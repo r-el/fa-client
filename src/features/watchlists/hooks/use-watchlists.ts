@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { watchlistsService } from "@/services/watchlists";
-import { hasPendingEnrollment } from "@/components/watchlists/utils";
-import type { TargetSpecification, TargetUpdate, WatchlistInput, WatchlistUpdate } from "@/components/watchlists/types";
+import { watchlistsService } from "@/features/watchlists/api/watchlists";
+import { hasPendingEnrollment } from "@/features/watchlists/utils";
+import type { TargetSpecification, TargetUpdate, WatchlistInput, WatchlistUpdate } from "@/features/watchlists/types";
 
 const POLL_INTERVAL_MS = 2500;
 

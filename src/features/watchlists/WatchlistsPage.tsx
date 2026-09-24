@@ -5,12 +5,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useWatchlists, useWatchlistMutations, useWatchlistTargets } from "@/hooks/use-watchlists";
-import { ConfirmWatchlistDelete, EnrollmentBadge, WatchlistError } from "@/components/watchlists/WatchlistFeedback";
-import { TargetForm, WatchlistForm } from "@/components/watchlists/WatchlistForms";
-import { EnrollmentBatchProgress, TargetDetails } from "@/components/watchlists/TargetDetails";
-import { hasPendingEnrollment } from "@/components/watchlists/utils";
-import type { Target, Watchlist } from "@/components/watchlists/types";
+import { useWatchlists, useWatchlistMutations, useWatchlistTargets } from "@/features/watchlists/hooks/use-watchlists";
+import { ConfirmWatchlistDelete, EnrollmentBadge, WatchlistError } from "@/features/watchlists/components/WatchlistFeedback";
+import { TargetForm, WatchlistForm } from "@/features/watchlists/components/WatchlistForms";
+import { EnrollmentBatchProgress, TargetDetails } from "@/features/watchlists/components/TargetDetails";
+import { hasPendingEnrollment } from "@/features/watchlists/utils";
+import type { Target, Watchlist } from "@/features/watchlists/types";
 
 function TargetsPanel({ watchlist }: { watchlist: Watchlist }) {
   const targets = useWatchlistTargets(watchlist.id);

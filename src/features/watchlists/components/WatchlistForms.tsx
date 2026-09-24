@@ -5,8 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { PhotoPicker } from "./PhotoPicker";
 import { WatchlistError } from "./WatchlistFeedback";
-import { parseMetadata, validatePhotos } from "./utils";
-import type { Target, TargetSpecification, TargetType, TargetUpdate, Watchlist, WatchlistInput, WatchlistKind } from "./types";
+import { parseMetadata, validatePhotos } from "@/features/watchlists/utils";
+import type { Target, TargetSpecification, TargetType, TargetUpdate, Watchlist, WatchlistInput, WatchlistKind } from "@/features/watchlists/types";
 
 const selectClass = "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm";
 const textareaClass = "min-h-24 w-full rounded-md border border-input bg-background p-3 font-mono text-sm";

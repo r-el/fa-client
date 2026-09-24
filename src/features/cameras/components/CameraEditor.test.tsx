@@ -9,7 +9,7 @@ vi.mock("@/features/cameras/api/cameras", async (original) => ({
   ...await original<typeof import("@/features/cameras/api/cameras")>(),
   camerasService: { get: vi.fn(), create: vi.fn(), update: vi.fn(), remove: vi.fn(), control: vi.fn() },
 }));
-vi.mock("@/hooks/use-watchlists", () => ({ useWatchlists: () => ({
+vi.mock("@/features/watchlists/hooks/use-watchlists", () => ({ useWatchlists: () => ({
   data: [{ id: "list-1", name: "Staff", target_type: "person" }, { id: "list-2", name: "Visitors", target_type: "person" }],
   isPending: false, isError: false,
 }) }));

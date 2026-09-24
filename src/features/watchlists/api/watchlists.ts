@@ -1,9 +1,9 @@
 import api from "@/services/api";
-import { validatePhotos } from "@/components/watchlists/utils";
+import { validatePhotos } from "@/features/watchlists/utils";
 import type {
   CreatedTargets, Target, TargetSpecification, TargetUpdate,
   Watchlist, WatchlistInput, WatchlistUpdate,
-} from "@/components/watchlists/types";
+} from "@/features/watchlists/types";
 
 interface ApiResponse<T> { success: boolean; data: T; message?: string; error?: string }
 

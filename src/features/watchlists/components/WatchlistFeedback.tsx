@@ -1,8 +1,8 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { hasPendingEnrollment, watchlistError } from "./utils";
-import type { Target } from "./types";
+import { hasPendingEnrollment, watchlistError } from "@/features/watchlists/utils";
+import type { Target } from "@/features/watchlists/types";
 
 export function WatchlistError({ error, retry }: { error: unknown; retry?: () => void }) {
   return (

@@ -1,7 +1,7 @@
 import { useEffect, useId, useState } from "react";
 import { Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { PHOTO_TYPES, validatePhotos } from "./utils";
+import { PHOTO_TYPES, validatePhotos } from "@/features/watchlists/utils";
 import { WatchlistError } from "./WatchlistFeedback";
 
 function LocalPreview({ file }: { file: File }) {

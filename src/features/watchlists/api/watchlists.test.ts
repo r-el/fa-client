@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import api from "@/services/api";
 import { buildPhotoForm, normalizeCreatedTargets, watchlistsService } from "./watchlists";
-import { MAX_PHOTO_BYTES, parseMetadata, validatePhotos } from "@/components/watchlists/utils";
-import type { Target, TargetSpecification, WatchlistInput } from "@/components/watchlists/types";
+import { MAX_PHOTO_BYTES, parseMetadata, validatePhotos } from "@/features/watchlists/utils";
+import type { Target, TargetSpecification, WatchlistInput } from "@/features/watchlists/types";
 
 vi.mock("@/services/api", () => ({ default: { get: vi.fn(), post: vi.fn(), patch: vi.fn(), delete: vi.fn() } }));
 

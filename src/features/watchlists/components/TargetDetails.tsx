@@ -5,12 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useEnrollmentBatch, useWatchlistMutations } from "@/hooks/use-watchlists";
-import { watchlistsService } from "@/services/watchlists";
+import { useEnrollmentBatch, useWatchlistMutations } from "@/features/watchlists/hooks/use-watchlists";
+import { watchlistsService } from "@/features/watchlists/api/watchlists";
 import { PhotoPicker } from "./PhotoPicker";
 import { ConfirmWatchlistDelete, EnrollmentBadge, WatchlistError } from "./WatchlistFeedback";
-import { hasPendingEnrollment } from "./utils";
-import type { ReferenceImage, Target } from "./types";
+import { hasPendingEnrollment } from "@/features/watchlists/utils";
+import type { ReferenceImage, Target } from "@/features/watchlists/types";
 
 function ReferencePhoto({ target, image, busy, onDelete }: {
   target: Target; image: ReferenceImage; busy: boolean; onDelete: () => void;
