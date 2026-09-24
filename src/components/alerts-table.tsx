@@ -213,7 +213,7 @@ export function AlertsTable({ limit }: AlertsTableProps) {
                 {selectedAlert?.image_path ? (
                   <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-white/10 bg-black/50">
                     <img 
-                      src={`http://localhost:3001${selectedAlert.image_path}`} 
+                      src={`http://localhost:12113${selectedAlert.image_path}`} 
                       alt={`Detection of ${selectedAlert.person_name}`}
                       className="h-full w-full object-contain"
                     />

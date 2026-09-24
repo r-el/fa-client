@@ -38,7 +38,7 @@ export default function PeoplePage() {
               <div className="relative aspect-square w-full overflow-hidden bg-black/50">
                 {person.sampleImagePath ? (
                   <img
-                    src={`http://localhost:3001${person.sampleImagePath}`}
+                    src={`http://localhost:12113${person.sampleImagePath}`}
                     alt={`Person ${person.personId}`}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />

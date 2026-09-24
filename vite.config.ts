@@ -25,23 +25,23 @@ export default defineConfig(({ mode }) => {
       host: true,
       proxy: {
         '/api': {
-          target: 'http://localhost:3000',
+          target: 'http://localhost:12113',
           changeOrigin: true
         },
         '/auth': {
-          target: 'http://localhost:3000',
+          target: 'http://localhost:12113',
           changeOrigin: true
         },
         '/events': {
-          target: 'http://localhost:3000',
+          target: 'http://localhost:12113',
           changeOrigin: true
         },
         '/cameras': {
-          target: 'http://localhost:3000',
+          target: 'http://localhost:12113',
           changeOrigin: true
         },
         '/users': {
-          target: 'http://localhost:3000',
+          target: 'http://localhost:12113',
           changeOrigin: true
         }
       }
@@ -76,7 +76,7 @@ export default defineConfig(({ mode }) => {
     },
     
     define: {
-      __API_URL__: JSON.stringify(mode === 'production' ? 'https://api.facealert.live' : 'http://localhost:3000'),
+      __API_URL__: JSON.stringify(mode === 'production' ? 'https://api.facealert.live' : 'http://localhost:12113'),
       __APP_VERSION__: JSON.stringify('1.0.0'),
       __BUILD_DATE__: JSON.stringify(new Date().toISOString())
     },
