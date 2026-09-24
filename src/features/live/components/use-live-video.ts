@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { startMseSession } from "./mse-session";
-import type { PlaybackState } from "./mse-session";
+import { startMseSession } from "../lib/mse-session";
+import type { PlaybackState } from "../lib/mse-session";
 
 const MAX_RETRIES = 3;
 

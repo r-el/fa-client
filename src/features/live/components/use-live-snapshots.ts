@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { getLiveFrame, liveFailure } from "../../services/live";
+import { getLiveFrame, liveFailure } from "../api/live";
 
 interface SnapshotState {
   url?: string;

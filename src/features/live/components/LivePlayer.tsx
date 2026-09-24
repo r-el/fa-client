@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ImageIcon, RefreshCw, Video } from "lucide-react";
-import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
+import { Badge } from "../../../components/ui/badge";
+import { Button } from "../../../components/ui/button";
 import { useLiveVideo } from "./use-live-video";
 import { useLiveSnapshots } from "./use-live-snapshots";
 

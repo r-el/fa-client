@@ -1,10 +1,10 @@
 import { ArrowLeft, ShieldCheck, Video } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
-import { Button } from "../components/ui/button";
-import { Skeleton } from "../components/ui/skeleton";
-import { LivePlayer } from "../components/live-player/LivePlayer";
-import { useLiveCamera } from "../components/live-player/use-live-camera";
+import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
+import { Button } from "../../components/ui/button";
+import { Skeleton } from "../../components/ui/skeleton";
+import { LivePlayer } from "./components/LivePlayer";
+import { useLiveCamera } from "./components/use-live-camera";
 
 function CameraLiveView({ cameraId }: { cameraId: string }) {
   const { camera, error, retry } = useLiveCamera(cameraId);

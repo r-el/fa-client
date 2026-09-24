@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import type { ICamera } from "../../@types/Camera";
-import { getLiveCamera, liveFailure } from "../../services/live";
+import type { ICamera } from "../../../@types/Camera";
+import { getLiveCamera, liveFailure } from "../api/live";
 
 export function useLiveCamera(cameraId: string) {
   const [camera, setCamera] = useState<ICamera>();

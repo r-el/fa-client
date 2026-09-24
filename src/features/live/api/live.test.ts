@@ -1,6 +1,6 @@
 import { AxiosError, AxiosHeaders, type AxiosAdapter, type InternalAxiosRequestConfig } from "axios";
 import { afterEach, beforeEach, expect, it } from "vitest";
-import api from "./api";
+import api from "../../../services/api";
 import { getLiveCamera, getLiveFrame, liveFailure, requestLiveSocketUrl } from "./live";
 
 // Exercise the real axios instance and its auth interceptor without network traffic.

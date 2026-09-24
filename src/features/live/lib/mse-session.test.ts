@@ -1,10 +1,10 @@
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
-import { requestLiveSocketUrl } from "@/services/live";
+import { requestLiveSocketUrl } from "@/features/live/api/live";
 import { MAX_PENDING_SEGMENTS } from "./live-protocol";
 import { startMseSession } from "./mse-session";
 
-vi.mock("@/services/live", async (original) => ({
-  ...await original<typeof import("@/services/live")>(), requestLiveSocketUrl: vi.fn(),
+vi.mock("@/features/live/api/live", async (original) => ({
+  ...await original<typeof import("@/features/live/api/live")>(), requestLiveSocketUrl: vi.fn(),
 }));
 
 class FakeSourceBuffer extends EventTarget {

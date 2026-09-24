@@ -8,7 +8,7 @@ import { AppShell } from "./components/layout/AppShell";
 import OverviewPage from "./pages/OverviewPage";
 import AlertsPage from "./pages/AlertsPage";
 import CamerasPage from "./pages/CamerasPage";
-import LiveVideoPage from "./pages/LiveVideoPage";
+import LiveVideoPage from "./features/live/LiveVideoPage";
 import WatchlistsPage from "./features/watchlists/WatchlistsPage";
 import PeoplePage from "./pages/PeoplePage";
 import LoginPage from "./pages/LoginPage";

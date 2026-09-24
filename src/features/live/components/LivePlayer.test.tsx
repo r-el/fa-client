@@ -1,13 +1,13 @@
 import { StrictMode } from "react";
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
-import { getLiveFrame } from "@/services/live";
-import { startMseSession } from "./mse-session";
+import { getLiveFrame } from "@/features/live/api/live";
+import { startMseSession } from "../lib/mse-session";
 import { LivePlayer } from "./LivePlayer";
 
-vi.mock("./mse-session", () => ({ startMseSession: vi.fn() }));
-vi.mock("@/services/live", async (original) => ({
-  ...await original<typeof import("@/services/live")>(), getLiveFrame: vi.fn(),
+vi.mock("../lib/mse-session", () => ({ startMseSession: vi.fn() }));
+vi.mock("@/features/live/api/live", async (original) => ({
+  ...await original<typeof import("@/features/live/api/live")>(), getLiveFrame: vi.fn(),
 }));
 
 const stops: ReturnType<typeof vi.fn>[] = [];

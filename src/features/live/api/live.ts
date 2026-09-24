@@ -1,7 +1,7 @@
 import axios from "axios";
-import api from "./api";
-import type { ICamera } from "../@types/Camera";
-import { buildLiveSocketUrl } from "../components/live-player/live-protocol";
+import api from "../../../services/api";
+import type { ICamera } from "../../../@types/Camera";
+import { buildLiveSocketUrl } from "../lib/live-protocol";
 
 interface Envelope<T> {
   success: boolean;
