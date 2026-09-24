@@ -1,6 +1,7 @@
-import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
-import type { InfiniteData } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import api from "@/services/api";
+import type { CameraDetails } from "@/services/cameras";
+import { getAlertSummary } from "@/services/alerts";
 
 // ===== DASHBOARD STATS =====
 
@@ -25,85 +26,24 @@ export const useGetStats = () => {
   });
 };
 
-// ===== EVENTS (Alerts) =====
-
-export type Alert = {
-  _id: string;
-  camera_id: string;
-  person_name: string;
-  timestamp: string;
-  image_path?: string;
-  detection_metadata?: {
-    confidence: number;
-    bbox?: number[];
-  };
-};
-
-export type AlertFilters = {
-  page_size?: number;
-  level?: string;
-  message_search?: string;
-};
-
-const fetchAlerts = async ({
-  pageParam = 1,
-  filters = {},
-}: {
-  pageParam?: number;
-  filters?: AlertFilters;
-}): Promise<Alert[]> => {
-  const params = new URLSearchParams({
-    page: pageParam.toString(),
-    limit: String(filters.page_size || 20),
-  });
-
-  const { data } = await api.get("/events?" + params.toString());
-  return data.events || data || [];
-};
-
-export const useGetAlerts = (filters: AlertFilters = {}) => {
-  return useInfiniteQuery<
-    Alert[],
-    unknown,
-    InfiniteData<Alert[], number>,
-    [string, AlertFilters],
-    number
-  >({
-    queryKey: ["alerts", filters] as const,
-    queryFn: ({ pageParam = 1 }) => fetchAlerts({ pageParam, filters }),
-    getNextPageParam: (lastPage, allPages) => {
-      if (lastPage.length < (filters.page_size || 20)) return undefined;
-      return allPages.length + 1;
-    },
-    initialPageParam: 1,
-    staleTime: 2 * 60 * 1000,
-    gcTime: 10 * 60 * 1000,
-  });
-};
-
 // ===== CAMERAS =====
 
-export type CameraSummary = {
-  id: string;
-  name: string;
-  location: string;
-  status: string;
-  specter_camera_id?: string | null;
-  organization_id?: string | null;
-  assigned_users?: string[];
-};
+export type CameraSummary = CameraDetails;
 
-const fetchCameras = async (): Promise<CameraSummary[]> => {
-  const { data } = await api.get("/cameras");
-  return data.cameras || data || [];
+const fetchCameras = async (signal: AbortSignal): Promise<CameraSummary[]> => {
+  const { data } = await api.get("/cameras", { signal });
+  if (!data.success || !Array.isArray(data.data)) throw new Error("Invalid camera response.");
+  return data.data;
 };
 
 export const useGetCameras = () => {
   return useQuery({
     queryKey: ["cameras"],
-    queryFn: fetchCameras,
-    staleTime: 15 * 60 * 1000,
-    gcTime: 60 * 60 * 1000,
+    queryFn: ({ signal }) => fetchCameras(signal),
+    staleTime: 10_000,
+    // Also reconcile changes if Socket.IO is unavailable; never poll hidden tabs.
+    refetchInterval: 15_000,
+    refetchIntervalInBackground: false,
   });
 };
 
@@ -136,24 +76,23 @@ export const useGetPeople = () => {
   });
 };
 
-// ===== STATS OVER TIME (Dummy for now) =====
+// ===== STATS OVER TIME =====
 
 export const useGetStatsOverTime = (days: number = 7) => {
   return useQuery({
-    queryKey: ["stats", "over-time", days],
-    queryFn: async () => {
-      // Return dummy data since the backend doesn't have this endpoint yet
-      const data = [];
-      const now = new Date();
-      for (let i = days; i >= 0; i--) {
-        const d = new Date(now);
-        d.setDate(d.getDate() - i);
-        data.push({
-          timeBucket: d.toISOString(),
-          count: Math.floor(Math.random() * 50) + 10,
-        });
-      }
-      return data;
+    queryKey: ["alerts", "chart", days],
+    queryFn: async ({ signal }) => {
+      const since = new Date();
+      since.setUTCHours(0, 0, 0, 0);
+      since.setUTCDate(since.getUTCDate() - days);
+      const summary = await getAlertSummary({ created_since: since.toISOString() }, signal);
+      const counts = new Map<string, number>();
+      summary.daily_counts.forEach(({ day, count }) => counts.set(day, (counts.get(day) ?? 0) + count));
+      return Array.from({ length: days + 1 }, (_, offset) => {
+        const day = new Date(since);
+        day.setUTCDate(day.getUTCDate() + offset);
+        return { timeBucket: day.toISOString(), count: counts.get(day.toISOString().slice(0, 10)) ?? 0 };
+      });
     },
     staleTime: 5 * 60 * 1000,
   });
