@@ -26,23 +26,13 @@ export default defineConfig(({ mode }) => {
       proxy: {
         '/api': {
           target: 'http://localhost:12113',
-          changeOrigin: true
+          changeOrigin: true,
+          // Live video relays over WebSockets under /api too.
+          ws: true
         },
-        '/auth': {
+        '/socket.io': {
           target: 'http://localhost:12113',
-          changeOrigin: true
-        },
-        '/events': {
-          target: 'http://localhost:12113',
-          changeOrigin: true
-        },
-        '/cameras': {
-          target: 'http://localhost:12113',
-          changeOrigin: true
-        },
-        '/users': {
-          target: 'http://localhost:12113',
-          changeOrigin: true
+          ws: true
         }
       }
     },
