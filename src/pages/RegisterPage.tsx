@@ -6,6 +6,7 @@ import { ArrowRight, Shield, Check, Eye, EyeOff, LockKeyhole, Mail, UserRound, L
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/AuthContext";
+import { REQUIRE_EMAIL_VERIFICATION } from "@/config/auth";
 import { verifyCode, resendCode } from "@/services/authService";
 
 type Step = "form" | "verify";
@@ -49,7 +50,11 @@ export default function RegisterPage() {
     try {
       const res = await register({ name: username, username, email, password });
       if (res.success) {
-        setStep("verify");
+        if (REQUIRE_EMAIL_VERIFICATION) {
+          setStep("verify");
+        } else {
+          navigate("/");
+        }
       } else {
         setError(res.error || "Unable to create your account.");
       }
