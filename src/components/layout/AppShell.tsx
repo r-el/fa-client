@@ -2,7 +2,7 @@ import { useLocation } from "react-router-dom";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Topbar } from "@/components/layout/Topbar";
 import { MobileNav } from "@/components/layout/MobileNav";
-import { RealtimeSync } from "@/components/RealtimeSync";
+import { RealtimeSync } from "@/features/realtime/RealtimeSync";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const { pathname } = useLocation();
