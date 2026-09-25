@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Home, Bell, Users, Video, X, Settings, Shield, Menu } from "lucide-react";
+import { Home, Bell, Video, X, Settings, Shield, Menu } from "lucide-react";
 import { useState } from "react";
 
 import { cn } from "@/lib/utils";
@@ -11,7 +11,6 @@ import { useAuth } from "@/context/AuthContext";
 const navItems = [
   { href: "/", label: "Overview", icon: Home },
   { href: "/alerts", label: "Alerts", icon: Bell },
-  { href: "/people", label: "People", icon: Users },
   { href: "/cameras", label: "Cameras", icon: Video },
   { href: "/watchlists", label: "Watchlists", icon: Shield },
 ];

@@ -4,7 +4,6 @@ import AlertsPage from "@/pages/AlertsPage";
 import CamerasPage from "@/pages/CamerasPage";
 import LoginPage from "@/pages/LoginPage";
 import OverviewPage from "@/pages/OverviewPage";
-import PeoplePage from "@/features/people/PeoplePage";
 import RegisterPage from "@/pages/RegisterPage";
 import SettingsPage from "@/pages/SettingsPage";
 import UserManagementPage from "@/pages/UserManagementPage";
@@ -26,7 +25,6 @@ export function AppRoutes() {
         <Route path="/cameras" element={<Protected><CamerasPage /></Protected>} />
         <Route path="/cameras/:id/live" element={<Protected><LiveVideoPage /></Protected>} />
         <Route path="/watchlists" element={<Protected><WatchlistsPage /></Protected>} />
-        <Route path="/people" element={<Protected><PeoplePage /></Protected>} />
         <Route path="/settings" element={<Protected><SettingsPage /></Protected>} />
         <Route path="/users" element={<Protected><UserManagementPage /></Protected>} />
         <Route path="/login" element={<LoginPage />} />

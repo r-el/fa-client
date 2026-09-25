@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Home, Bell, Users, Video, Settings, Shield } from "lucide-react";
+import { Home, Bell, Video, Settings, Shield } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
 import { Icon } from "@/components/ui/icon";
@@ -7,7 +7,6 @@ import { Icon } from "@/components/ui/icon";
 const navItems = [
   { href: "/", label: "Overview", icon: Home },
   { href: "/alerts", label: "Alerts", icon: Bell },
-  { href: "/people", label: "People", icon: Users },
   { href: "/cameras", label: "Cameras", icon: Video },
   { href: "/watchlists", label: "Watchlists", icon: Shield },
   { href: "/settings", label: "Settings", icon: Settings },
