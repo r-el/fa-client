@@ -1,49 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useAuth } from "../context/AuthContext";
-import api from "../services/api";
+import { useGetStats } from "../hooks/use-api";
 import "./HomePage.css";
-
-interface DashboardStats {
-  activeCameras: number;
-  todaysEvents: number;
-  highRiskAlerts: number;
-  systemStatus: string;
-  userCameras: any[];
-}
 
 const HomePage: React.FC = () => {
   const { isAuthenticated, user } = useAuth();
-  const [stats, setStats] = useState<DashboardStats>({
+  const { data: stats, isLoading: loading, error, refetch } = useGetStats({ enabled: isAuthenticated });
+  const dashboardStats = stats ?? {
     activeCameras: 0,
     todaysEvents: 0,
     highRiskAlerts: 0,
-    systemStatus: 'loading',
-    userCameras: []
-  });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      fetchDashboardStats();
-    }
-  }, [isAuthenticated]);
-
-  const fetchDashboardStats = async () => {
-    try {
-      setLoading(true);
-      const response = await api.get('/dashboard/stats');
-      if (response.data.success) {
-        setStats(response.data.stats);
-      } else {
-        setError('Failed to load dashboard stats');
-      }
-    } catch (error) {
-      console.error('Error fetching dashboard stats:', error);
-      setError('Error loading dashboard data');
-    } finally {
-      setLoading(false);
-    }
+    systemStatus: 'offline',
   };
 
   if (!isAuthenticated) {
@@ -65,8 +32,8 @@ const HomePage: React.FC = () => {
         
         {error && (
           <div className="error-message">
-            {error}
-            <button onClick={fetchDashboardStats}>Try Again</button>
+            {error instanceof Error ? error.message : 'Error loading dashboard data'}
+            <button onClick={() => refetch()}>Try Again</button>
           </div>
         )}
         
@@ -74,28 +41,28 @@ const HomePage: React.FC = () => {
           <div className="stat-card">
             <h3>Active Cameras</h3>
             <div className="stat-number">
-              {loading ? '...' : stats.activeCameras}
+              {loading ? '...' : dashboardStats.activeCameras}
             </div>
           </div>
           
           <div className="stat-card">
             <h3>Today's Events</h3>
             <div className="stat-number">
-              {loading ? '...' : stats.todaysEvents}
+              {loading ? '...' : dashboardStats.todaysEvents}
             </div>
           </div>
           
-          <div className={`stat-card ${stats.highRiskAlerts > 0 ? 'danger' : ''}`}>
+          <div className={`stat-card ${dashboardStats.highRiskAlerts > 0 ? 'danger' : ''}`}>
             <h3>High Risk Alerts</h3>
             <div className="stat-number">
-              {loading ? '...' : stats.highRiskAlerts}
+              {loading ? '...' : dashboardStats.highRiskAlerts}
             </div>
           </div>
           
           <div className="stat-card">
             <h3>System Status</h3>
-            <div className={`stat-status ${stats.systemStatus === 'online' ? 'online' : 'offline'}`}>
-              {loading ? 'Loading...' : (stats.systemStatus === 'online' ? 'Online' : 'Offline')}
+            <div className={`stat-status ${dashboardStats.systemStatus === 'online' ? 'online' : 'offline'}`}>
+              {loading ? 'Loading...' : (dashboardStats.systemStatus === 'online' ? 'Online' : 'Offline')}
             </div>
           </div>
         </div>

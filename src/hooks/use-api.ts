@@ -16,10 +16,11 @@ const fetchDashboardStats = async (): Promise<DashboardStats> => {
   return data.stats;
 };
 
-export const useGetStats = () => {
+export const useGetStats = (options?: { enabled?: boolean }) => {
   return useQuery({
     queryKey: ["dashboard", "stats"],
     queryFn: fetchDashboardStats,
+    enabled: options?.enabled ?? true,
     staleTime: 2 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
   });
@@ -56,6 +57,9 @@ const fetchAlerts = async ({
     page: pageParam.toString(),
     limit: String(filters.page_size || 20),
   });
+
+  if (filters.level) params.set("level", filters.level);
+  if (filters.message_search) params.set("message_search", filters.message_search);
 
   const { data } = await api.get("/events?" + params.toString());
   return data.events || data || [];

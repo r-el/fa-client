@@ -13,7 +13,6 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import SettingsPage from "./pages/SettingsPage"; // Keep existing
 import UserManagementPage from "./pages/UserManagementPage"; // Keep existing
-import MongoPage from "./pages/MongoPage"; // Keep existing
 
 // Basic ProtectedRoute implementation
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -48,7 +47,6 @@ function App() {
                 {/* Keep existing protected routes */}
                 <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
                 <Route path="/users" element={<ProtectedRoute><UserManagementPage /></ProtectedRoute>} />
-                <Route path="/mongo" element={<ProtectedRoute><MongoPage /></ProtectedRoute>} />
 
                 {/* Public Routes */}
                 <Route path="/login" element={<LoginPage />} />
