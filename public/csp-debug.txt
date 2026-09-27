@@ -1,4 +1,4 @@
-# Content Security Policy Configuration for Face Alert
+# Content Security Policy Configuration for Specter
 # This file explains the CSP settings and helps debug CSP issues
 
 ## Current CSP Policy Breakdown:

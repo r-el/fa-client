@@ -4,8 +4,8 @@
     {
       "@type": "Organization",
       "@id": "https://facealert.security/#organization",
-      "name": "Face Alert Security",
-      "alternateName": "FaceAlert",
+      "name": "Specter Security",
+      "alternateName": "Specter",
       "url": "https://facealert.security",
       "logo": [
         {
@@ -13,7 +13,7 @@
           "url": "https://facealert.security/logo.svg",
           "width": 512,
           "height": 512,
-          "caption": "Face Alert Security Main Logo",
+          "caption": "Specter Security Main Logo",
           "encodingFormat": "image/svg+xml"
         },
         {
@@ -21,7 +21,7 @@
           "url": "https://facealert.security/face-icon.svg",
           "width": 512,
           "height": 512,
-          "caption": "Face Alert Security Icon",
+          "caption": "Specter Security Icon",
           "encodingFormat": "image/svg+xml"
         },
         {
@@ -29,7 +29,7 @@
           "url": "https://facealert.security/favicon.svg",
           "width": 512,
           "height": 512, 
-          "caption": "Face Alert Security Favicon",
+          "caption": "Specter Security Favicon",
           "encodingFormat": "image/svg+xml"
         }
       ],
@@ -57,7 +57,7 @@
       "@type": "WebSite",
       "@id": "https://facealert.security/#website",
       "url": "https://facealert.security",
-      "name": "Face Alert - Advanced Security Surveillance System",
+      "name": "Specter - Advanced Security Surveillance System",
       "description": "Professional face recognition and surveillance system with real-time monitoring, multi-camera management, and advanced security alerts for businesses worldwide.",
       "publisher": {
         "@id": "https://facealert.security/#organization"
@@ -72,7 +72,7 @@
     {
       "@type": "SoftwareApplication",
       "@id": "https://facealert.security/#software",
-      "name": "Face Alert Security System",
+      "name": "Specter Security System",
       "applicationCategory": "SecurityApplication",
       "operatingSystem": "Web Browser, iOS, Android",
       "description": "Advanced face recognition surveillance system with real-time monitoring, multi-camera support, role-based access control, and instant security alerts.",
@@ -161,10 +161,10 @@
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "What is Face Alert?",
+          "name": "What is Specter?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Face Alert is an advanced security surveillance system that uses cutting-edge face recognition technology to provide real-time monitoring and instant security alerts for businesses worldwide."
+            "text": "Specter is an advanced security surveillance system that uses cutting-edge face recognition technology to provide real-time monitoring and instant security alerts for businesses worldwide."
           }
         },
         {
@@ -188,7 +188,7 @@
           "name": "What camera types are supported?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Face Alert supports most IP cameras, CCTV systems, and webcams. We provide detailed compatibility lists and setup guides for popular camera brands."
+            "text": "Specter supports most IP cameras, CCTV systems, and webcams. We provide detailed compatibility lists and setup guides for popular camera brands."
           }
         }
       ]

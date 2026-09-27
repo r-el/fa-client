@@ -1,6 +1,6 @@
 # OpenAI Language Models
 
-These models are used for various AI functionalities within the Face Alert system.
+These models are used for various AI functionalities within the Specter system.
 
 ## Model Information
 - GPT-4: Used for advanced text analysis and natural language processing
@@ -12,5 +12,5 @@ All AI model interactions are secured and comply with data protection regulation
 No sensitive surveillance data is sent to external AI services without proper encryption and user consent.
 
 ## Integration
-The Face Alert system integrates these AI capabilities seamlessly into the security workflow,
+The Specter system integrates these AI capabilities seamlessly into the security workflow,
 providing enhanced threat detection and automated reporting capabilities.

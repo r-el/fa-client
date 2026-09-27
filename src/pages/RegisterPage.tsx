@@ -126,7 +126,7 @@ export default function RegisterPage() {
           <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full border border-cyan-300/20 bg-cyan-300/10 blur-2xl" />
           <div className="relative flex items-center gap-3">
             <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-300 to-cyan-300 text-slate-950 shadow-[0_0_35px_rgba(103,232,249,0.25)]"><Shield className="h-5 w-5" /></span>
-            <span className="text-sm font-semibold uppercase tracking-[0.28em] text-white/80">FaceAlert</span>
+            <span className="text-sm font-semibold uppercase tracking-[0.28em] text-white/80">Specter</span>
           </div>
           <div className="relative max-w-md">
             <p className="mb-5 text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/75">Join the command center</p>
@@ -143,7 +143,7 @@ export default function RegisterPage() {
           <div className="w-full max-w-md">
             <div className="mb-9 md:hidden">
               <div className="mb-6 flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-300 to-cyan-300 text-slate-950"><Shield className="h-5 w-5" /></div>
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/75">FaceAlert Command Center</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/75">Specter Command Center</p>
             </div>
 
             {step === "form" ? (
@@ -159,7 +159,7 @@ export default function RegisterPage() {
                   </label>
                   <label className="block space-y-2 text-sm font-medium text-slate-200">
                     Email
-                    <div className="relative"><Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" /><Input name="email" type="email" autoComplete="email" placeholder="operator@facealert.io" className="h-11 border-white/10 bg-white/[0.06] pl-10 text-white placeholder:text-slate-500" /></div>
+                    <div className="relative"><Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" /><Input name="email" type="email" autoComplete="email" placeholder="operator@example.com" className="h-11 border-white/10 bg-white/[0.06] pl-10 text-white placeholder:text-slate-500" /></div>
                   </label>
                   <label className="block space-y-2 text-sm font-medium text-slate-200">
                     Password

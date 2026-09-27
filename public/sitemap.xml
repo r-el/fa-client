@@ -11,7 +11,7 @@
     <priority>1.0</priority>
     <image:image>
       <image:loc>https://facealert.security/images/dashboard-preview.jpg</image:loc>
-      <image:title>Face Alert Security Dashboard</image:title>
+      <image:title>Specter Security Dashboard</image:title>
       <image:caption>Advanced face recognition surveillance system with real-time monitoring</image:caption>
     </image:image>
   </url>
@@ -39,7 +39,7 @@
     <priority>0.9</priority>
     <image:image>
       <image:loc>https://facealert.security/images/features-overview.jpg</image:loc>
-      <image:title>Face Alert Security Features</image:title>
+      <image:title>Specter Security Features</image:title>
       <image:caption>Comprehensive security surveillance features including real-time face recognition</image:caption>
     </image:image>
   </url>

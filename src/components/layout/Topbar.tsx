@@ -37,7 +37,7 @@ export function Topbar() {
         </div>
 
         <p className="hidden text-xs uppercase tracking-[0.35em] text-muted-foreground/80 md:block">
-          FaceAlert Command Center
+          Specter Command Center
         </p>
         <div className="flex items-center gap-3">
           <h1 className="neon-text text-2xl font-semibold leading-tight md:text-3xl lg:text-4xl">

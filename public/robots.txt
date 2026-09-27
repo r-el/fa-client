@@ -1,4 +1,4 @@
-# Face Alert Security System - Robots.txt
+# Specter Security System - Robots.txt
 # Professional SEO optimization for security surveillance platform
 
 User-agent: *

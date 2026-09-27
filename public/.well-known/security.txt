@@ -1,4 +1,4 @@
-# Security.txt for Face Alert - Security Contact Information
+# Security.txt for Specter - Security Contact Information
 # For more information, see https://securitytxt.org/
 
 Contact: security@facealert.security

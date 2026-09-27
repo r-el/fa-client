@@ -1,4 +1,4 @@
-# Humans.txt - The people behind Face Alert Security
+# Humans.txt - The people behind Specter Security
 
 /* TEAM */
 

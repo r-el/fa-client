@@ -47,7 +47,7 @@ export default function LoginPage() {
             <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-300 to-cyan-300 text-slate-950 shadow-[0_0_35px_rgba(103,232,249,0.25)]">
               <Shield className="h-5 w-5" />
             </span>
-            <span className="text-sm font-semibold uppercase tracking-[0.28em] text-white/80">FaceAlert</span>
+            <span className="text-sm font-semibold uppercase tracking-[0.28em] text-white/80">Specter</span>
           </div>
           <div className="relative max-w-md">
             <p className="mb-5 text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/75">Security intelligence</p>
@@ -70,14 +70,14 @@ export default function LoginPage() {
           <div className="w-full max-w-md">
             <div className="mb-10 md:hidden">
               <div className="mb-6 flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-300 to-cyan-300 text-slate-950"><Shield className="h-5 w-5" /></div>
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/75">FaceAlert Command Center</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/75">Specter Command Center</p>
             </div>
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-300/15 bg-emerald-300/[0.06] px-3 py-1.5 text-xs font-medium text-emerald-200">
               <CheckCircle2 className="h-3.5 w-3.5" />
               Secure workspace online
             </div>
             <p className="text-sm font-medium text-cyan-200">Welcome back</p>
-            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-white">Sign in to FaceAlert</h2>
+            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-white">Sign in to Specter</h2>
             <p className="mt-3 text-sm leading-6 text-slate-400">Use your operator credentials to continue to the live dashboard.</p>
 
             <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
@@ -105,12 +105,12 @@ export default function LoginPage() {
               </Button>
             </form>
             <p className="mt-7 text-center text-sm text-slate-400">
-              New to FaceAlert?{" "}
+              New to Specter?{" "}
               <Link to="/register" className="font-medium text-cyan-200 transition-colors hover:text-white">
                 Create an account
               </Link>
             </p>
-            <p className="mt-8 text-center text-xs leading-5 text-slate-500">Access is restricted to authorized FaceAlert operators.</p>
+            <p className="mt-8 text-center text-xs leading-5 text-slate-500">Access is restricted to authorized Specter operators.</p>
           </div>
         </section>
       </div>
