@@ -6,12 +6,14 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Icon } from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/context/AuthContext";
 
 const navItems = [
   { href: "/", label: "Overview", icon: Home },
   { href: "/alerts", label: "Alerts", icon: Bell },
   { href: "/people", label: "People", icon: Users },
   { href: "/cameras", label: "Cameras", icon: Video },
+  { href: "/watchlists", label: "Watchlists", icon: Shield },
 ];
 
 const variants = {
@@ -20,6 +22,7 @@ const variants = {
 };
 
 export function Sidebar() {
+  const { user } = useAuth();
   const { pathname } = useLocation();
   const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -61,7 +64,7 @@ export function Sidebar() {
       </div>
 
       <nav className="flex flex-1 flex-col gap-2">
-        {navItems.map((item, i) => (
+        {navItems.filter((item) => item.href !== "/watchlists" || user?.role === "admin" || user?.role === "operator").map((item, i) => (
           <motion.div
             key={item.href}
             initial="hidden"

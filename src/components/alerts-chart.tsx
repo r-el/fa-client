@@ -1,6 +1,6 @@
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { useTheme } from "@/components/ThemeProvider";
-import { useGetStatsOverTime } from "@/hooks/use-api";
+import { useGetStatsOverTime } from "@/features/dashboard/hooks/use-dashboard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useMemo } from "react";
 
