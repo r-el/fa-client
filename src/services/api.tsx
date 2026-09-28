@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// Use relative paths to leverage Vite proxy
-const API_URL = import.meta.env.VITE_API_BASE_URL || "";
+// Relative by default: the server (or the Vite proxy in development) serves the API under /api.
+const API_URL = `${import.meta.env.VITE_API_BASE_URL || ""}/api`;
 
 const api = axios.create({
   baseURL: API_URL,

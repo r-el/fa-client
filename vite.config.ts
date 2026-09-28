@@ -1,22 +1,16 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import path from "path"
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {  
   return {
-    plugins: [
-      react(),
-      // Add a simple plugin to modify CSP in development
-      mode === 'development' && {
-        name: 'dev-csp',
-        transformIndexHtml(html: string) {
-          return html.replace(
-            /connect-src 'self' https: wss: https:\/\/api\.facealert\.security https:\/\/api\.facealert\.live https:\/\/fonts\.googleapis\.com/,
-            "connect-src 'self' http://localhost:* ws://localhost:* https: wss: https://api.facealert.security https://api.facealert.live https://fonts.googleapis.com"
-          );
-        }
-      }
-    ].filter(Boolean),
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "./src"),
+      },
+    },
+    plugins: [react()],
     assetsInclude: ['**/*.svg'],
     
     // Use different HTML files for dev and production
@@ -27,10 +21,18 @@ export default defineConfig(({ mode }) => {
     }),
     
     server: {
+      port: 5173,
+      host: true,
       proxy: {
         '/api': {
-          target: 'http://localhost:3000',
-          changeOrigin: true
+          target: 'http://localhost:12113',
+          changeOrigin: true,
+          // Live video relays over WebSockets under /api too.
+          ws: true
+        },
+        '/socket.io': {
+          target: 'http://localhost:12113',
+          ws: true
         }
       }
     },
@@ -64,7 +66,7 @@ export default defineConfig(({ mode }) => {
     },
     
     define: {
-      __API_URL__: JSON.stringify(mode === 'production' ? 'https://api.facealert.live' : 'http://localhost:3000'),
+      __API_URL__: JSON.stringify(mode === 'production' ? 'https://api.specter.live' : 'http://localhost:12113'),
       __APP_VERSION__: JSON.stringify('1.0.0'),
       __BUILD_DATE__: JSON.stringify(new Date().toISOString())
     },

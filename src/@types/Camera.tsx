@@ -1,9 +1,10 @@
 export interface ICamera {
   id: string;
   name: string;
-  camera_id: string;
   connection_string: string;
   created_by: string;
+  specter_camera_id?: string | null;
+  organization_id?: string | null;
   created_at: string;
   updated_at: string;
 }

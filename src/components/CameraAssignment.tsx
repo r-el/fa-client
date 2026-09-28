@@ -138,7 +138,7 @@ const CameraAssignment: React.FC = () => {
               <option value="">Choose a camera...</option>
               {cameras.map((camera) => (
                 <option key={camera.id} value={camera.id}>
-                  {camera.name} ({camera.camera_id})
+                  {camera.name} ({camera.specter_camera_id || camera.id})
                 </option>
               ))}
             </select>

@@ -20,3 +20,14 @@ export const logoutUser = async (): Promise<{ success: boolean; message?: string
   const response = await api.post("/auth/logout");
   return response.data;
 };
+
+export const verifyCode = async (email: string, code: string): Promise<AuthResponse> => {
+  const response = await api.post("/auth/verify-code", { email, code });
+  return response.data;
+};
+
+export const resendCode = async (email: string): Promise<{ success: boolean; message: string }> => {
+  const response = await api.post("/auth/resend-code", { email });
+  return response.data;
+};
+

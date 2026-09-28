@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { isAxiosError } from "axios";
 import { loginUser, registerUser } from "../services/authService";
 import type { IUser, LoginCredentials, RegisterCredentials } from "../@types/User";
 
@@ -18,6 +20,7 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const queryClient = useQueryClient();
   const [user, setUser] = useState<IUser | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -49,6 +52,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       if (response.success && response.data) {
         const { user: userData, token } = response.data;
+        queryClient.clear();
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(userData));
         setUser(userData);
@@ -57,10 +61,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       } else {
         return { success: false, error: response.error || "Login failed" };
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       return { 
         success: false, 
-        error: error.response?.data?.error || "Network error occurred" 
+        error: isAxiosError(error) ? error.response?.data?.error || "Network error occurred" : "Login failed"
       };
     } finally {
       setLoading(false);
@@ -74,6 +78,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       if (response.success && response.data) {
         const { user: userData, token } = response.data;
+        queryClient.clear();
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(userData));
         setUser(userData);
@@ -82,10 +87,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       } else {
         return { success: false, error: response.error || "Registration failed" };
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       return { 
         success: false, 
-        error: error.response?.data?.error || "Network error occurred" 
+        error: isAxiosError(error) ? error.response?.data?.error || "Network error occurred" : "Registration failed"
       };
     } finally {
       setLoading(false);
@@ -93,6 +98,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const logout = () => {
+    queryClient.clear();
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setUser(null);

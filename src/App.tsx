@@ -1,57 +1,14 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "./context/AuthContext";
-import ApplicationLayout from "./components/application-layout/ApplicationLayout";
-import NotFoundPage from "./components/application-layout/NotFoundPage";
-import ProtectedRoute from "./components/ProtectedRoute";
-import Login from "./components/auth/Login";
-import Register from "./components/auth/Register";
-import HomePage from "./pages/HomePage";
-import EventsPage from "./pages/EventsPage";
-import CamerasPage from "./pages/CamerasPage";
-import SettingsPage from "./pages/SettingsPage";
-import UserManagementPage from "./pages/UserManagementPage";
-import MongoPage from "./pages/MongoPage";
-import "./App.css";
+import { BrowserRouter as Router } from "react-router-dom";
+import { AppProviders } from "@/app/providers";
+import { AppRoutes } from "@/app/routes";
 
 function App() {
   return (
-    <AuthProvider>
+    <AppProviders>
       <Router>
-        <ApplicationLayout>
-          <Routes>
-            <Route index element={<HomePage />} />
-            <Route path="/events" element={
-              <ProtectedRoute>
-                <EventsPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/cameras" element={
-              <ProtectedRoute>
-                <CamerasPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/settings" element={
-              <ProtectedRoute>
-                <SettingsPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/users" element={
-              <ProtectedRoute>
-                <UserManagementPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/mongo" element={
-              <ProtectedRoute>
-                <MongoPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </ApplicationLayout>
+        <AppRoutes />
       </Router>
-    </AuthProvider>
+    </AppProviders>
   );
 }
 
