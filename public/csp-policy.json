@@ -31,8 +31,8 @@
         "'self'",
         "https:",
         "wss:",
-        "https://api.facealert.security",
-        "https://api.facealert.live",
+        "https://api.specter.security",
+        "https://api.specter.live",
         "https://fonts.googleapis.com"
       ],
       "frame-src": [

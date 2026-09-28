@@ -5,12 +5,12 @@
   
   <!-- Homepage - Highest Priority -->
   <url>
-    <loc>https://facealert.security/</loc>
+    <loc>https://specter.security/</loc>
     <lastmod>2025-09-16T16:50:00+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>https://facealert.security/images/dashboard-preview.jpg</image:loc>
+      <image:loc>https://specter.security/images/dashboard-preview.jpg</image:loc>
       <image:title>Specter Security Dashboard</image:title>
       <image:caption>Advanced face recognition surveillance system with real-time monitoring</image:caption>
     </image:image>
@@ -18,14 +18,14 @@
 
   <!-- Authentication Pages -->
   <url>
-    <loc>https://facealert.security/login</loc>
+    <loc>https://specter.security/login</loc>
     <lastmod>2025-09-16T16:50:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://facealert.security/register</loc>
+    <loc>https://specter.security/register</loc>
     <lastmod>2025-09-16T16:50:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -33,33 +33,33 @@
 
   <!-- Product Information Pages -->
   <url>
-    <loc>https://facealert.security/features</loc>
+    <loc>https://specter.security/features</loc>
     <lastmod>2025-09-16T16:50:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
-      <image:loc>https://facealert.security/images/features-overview.jpg</image:loc>
+      <image:loc>https://specter.security/images/features-overview.jpg</image:loc>
       <image:title>Specter Security Features</image:title>
       <image:caption>Comprehensive security surveillance features including real-time face recognition</image:caption>
     </image:image>
   </url>
 
   <url>
-    <loc>https://facealert.security/about</loc>
+    <loc>https://specter.security/about</loc>
     <lastmod>2025-09-16T16:50:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://facealert.security/pricing</loc>
+    <loc>https://specter.security/pricing</loc>
     <lastmod>2025-09-16T16:50:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://facealert.security/contact</loc>
+    <loc>https://specter.security/contact</loc>
     <lastmod>2025-09-16T16:50:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -67,14 +67,14 @@
 
   <!-- Legal Pages -->
   <url>
-    <loc>https://facealert.security/privacy-policy</loc>
+    <loc>https://specter.security/privacy-policy</loc>
     <lastmod>2025-09-16T16:50:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
 
   <url>
-    <loc>https://facealert.security/terms-of-service</loc>
+    <loc>https://specter.security/terms-of-service</loc>
     <lastmod>2025-09-16T16:50:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
@@ -82,14 +82,14 @@
 
   <!-- Blog/Documentation Pages -->
   <url>
-    <loc>https://facealert.security/documentation</loc>
+    <loc>https://specter.security/documentation</loc>
     <lastmod>2025-09-16T16:50:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
 
   <url>
-    <loc>https://facealert.security/blog</loc>
+    <loc>https://specter.security/blog</loc>
     <lastmod>2025-09-16T16:50:00+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -97,21 +97,21 @@
 
   <!-- Industry/Use Case Pages -->
   <url>
-    <loc>https://facealert.security/industries/retail</loc>
+    <loc>https://specter.security/industries/retail</loc>
     <lastmod>2025-09-16T16:50:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://facealert.security/industries/corporate</loc>
+    <loc>https://specter.security/industries/corporate</loc>
     <lastmod>2025-09-16T16:50:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://facealert.security/industries/education</loc>
+    <loc>https://specter.security/industries/education</loc>
     <lastmod>2025-09-16T16:50:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

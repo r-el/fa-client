@@ -11,7 +11,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "preview": "vite preview --host 0.0.0.0 --port ${PORT:-4173}",
-    "seo:audit": "lighthouse https://facealert.security --output json --output html --output-path ./seo-audit",
+    "seo:audit": "lighthouse https://specter.security --output json --output html --output-path ./seo-audit",
     "seo:validate": "html-validator --file=./dist/index.html",
     "seo:sitemap": "node scripts/generate-sitemap.js",
     "analyze": "vite build --analyze",

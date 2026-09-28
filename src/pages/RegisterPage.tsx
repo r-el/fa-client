@@ -159,7 +159,7 @@ export default function RegisterPage() {
                   </label>
                   <label className="block space-y-2 text-sm font-medium text-slate-200">
                     Email
-                    <div className="relative"><Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" /><Input name="email" type="email" autoComplete="email" placeholder="operator@example.com" className="h-11 border-white/10 bg-white/[0.06] pl-10 text-white placeholder:text-slate-500" /></div>
+                    <div className="relative"><Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" /><Input name="email" type="email" autoComplete="email" placeholder="operator@specter.io" className="h-11 border-white/10 bg-white/[0.06] pl-10 text-white placeholder:text-slate-500" /></div>
                   </label>
                   <label className="block space-y-2 text-sm font-medium text-slate-200">
                     Password

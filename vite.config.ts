@@ -66,7 +66,7 @@ export default defineConfig(({ mode }) => {
     },
     
     define: {
-      __API_URL__: JSON.stringify(mode === 'production' ? 'https://api.facealert.live' : 'http://localhost:12113'),
+      __API_URL__: JSON.stringify(mode === 'production' ? 'https://api.specter.live' : 'http://localhost:12113'),
       __APP_VERSION__: JSON.stringify('1.0.0'),
       __BUILD_DATE__: JSON.stringify(new Date().toISOString())
     },

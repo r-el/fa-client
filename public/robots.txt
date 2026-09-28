@@ -63,9 +63,9 @@ User-agent: DotBot
 Disallow: /
 
 # Sitemap location
-Sitemap: https://facealert.security/sitemap.xml
-Sitemap: https://facealert.security/sitemap-images.xml
-Sitemap: https://facealert.security/sitemap-news.xml
+Sitemap: https://specter.security/sitemap.xml
+Sitemap: https://specter.security/sitemap-images.xml
+Sitemap: https://specter.security/sitemap-news.xml
 
 # Host specification for canonical domain
-Host: facealert.security
+Host: specter.security

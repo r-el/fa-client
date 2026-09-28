@@ -11,7 +11,7 @@ const ThemeContext = createContext<ThemeContextType>({ theme: "dark", setTheme: 
 
 export function ThemeProvider({ children, defaultTheme = "dark" }: { children: ReactNode; defaultTheme?: Theme }) {
   const [theme, setTheme] = useState<Theme>(() => {
-    const stored = localStorage.getItem("facealert-theme") as Theme | null;
+    const stored = localStorage.getItem("specter-theme") as Theme | null;
     return stored || defaultTheme;
   });
 
@@ -26,7 +26,7 @@ export function ThemeProvider({ children, defaultTheme = "dark" }: { children: R
       root.classList.add(theme);
     }
 
-    localStorage.setItem("facealert-theme", theme);
+    localStorage.setItem("specter-theme", theme);
   }, [theme]);
 
   return (

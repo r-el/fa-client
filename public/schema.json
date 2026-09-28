@@ -3,14 +3,14 @@
   "@graph": [
     {
       "@type": "Organization",
-      "@id": "https://facealert.security/#organization",
+      "@id": "https://specter.security/#organization",
       "name": "Specter Security",
       "alternateName": "Specter",
-      "url": "https://facealert.security",
+      "url": "https://specter.security",
       "logo": [
         {
           "@type": "ImageObject",
-          "url": "https://facealert.security/logo.svg",
+          "url": "https://specter.security/logo.svg",
           "width": 512,
           "height": 512,
           "caption": "Specter Security Main Logo",
@@ -18,7 +18,7 @@
         },
         {
           "@type": "ImageObject", 
-          "url": "https://facealert.security/face-icon.svg",
+          "url": "https://specter.security/face-icon.svg",
           "width": 512,
           "height": 512,
           "caption": "Specter Security Icon",
@@ -26,7 +26,7 @@
         },
         {
           "@type": "ImageObject",
-          "url": "https://facealert.security/favicon.svg",
+          "url": "https://specter.security/favicon.svg",
           "width": 512,
           "height": 512, 
           "caption": "Specter Security Favicon",
@@ -34,10 +34,10 @@
         }
       ],
       "sameAs": [
-        "https://twitter.com/facealertsec",
-        "https://linkedin.com/company/facealert-security",
-        "https://github.com/facealert",
-        "https://facebook.com/facealertsecurity"
+        "https://twitter.com/spectersec",
+        "https://linkedin.com/company/specter-security",
+        "https://github.com/specter",
+        "https://facebook.com/spectersecurity"
       ],
       "contactPoint": {
         "@type": "ContactPoint",
@@ -55,23 +55,23 @@
     },
     {
       "@type": "WebSite",
-      "@id": "https://facealert.security/#website",
-      "url": "https://facealert.security",
+      "@id": "https://specter.security/#website",
+      "url": "https://specter.security",
       "name": "Specter - Advanced Security Surveillance System",
       "description": "Professional face recognition and surveillance system with real-time monitoring, multi-camera management, and advanced security alerts for businesses worldwide.",
       "publisher": {
-        "@id": "https://facealert.security/#organization"
+        "@id": "https://specter.security/#organization"
       },
       "inLanguage": "en-US",
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://facealert.security/search?q={search_term_string}",
+        "target": "https://specter.security/search?q={search_term_string}",
         "query-input": "required name=search_term_string"
       }
     },
     {
       "@type": "SoftwareApplication",
-      "@id": "https://facealert.security/#software",
+      "@id": "https://specter.security/#software",
       "name": "Specter Security System",
       "applicationCategory": "SecurityApplication",
       "operatingSystem": "Web Browser, iOS, Android",
@@ -83,7 +83,7 @@
         "priceValidUntil": "2025-12-31",
         "availability": "https://schema.org/InStock",
         "seller": {
-          "@id": "https://facealert.security/#organization"
+          "@id": "https://specter.security/#organization"
         }
       },
       "featureList": [
@@ -96,7 +96,7 @@
         "Advanced analytics",
         "24/7 monitoring"
       ],
-      "screenshot": "https://facealert.security/images/dashboard-screenshot.jpg",
+      "screenshot": "https://specter.security/images/dashboard-screenshot.jpg",
       "aggregateRating": {
         "@type": "AggregateRating",
         "ratingValue": "4.8",
@@ -107,12 +107,12 @@
     },
     {
       "@type": "Service",
-      "@id": "https://facealert.security/#service",
+      "@id": "https://specter.security/#service",
       "name": "Face Recognition Security Service",
       "serviceType": "Security Surveillance",
       "description": "Professional face recognition and security surveillance service for businesses, educational institutions, and retail establishments.",
       "provider": {
-        "@id": "https://facealert.security/#organization"
+        "@id": "https://specter.security/#organization"
       },
       "areaServed": {
         "@type": "Place",
@@ -157,7 +157,7 @@
     },
     {
       "@type": "FAQPage",
-      "@id": "https://facealert.security/#faq",
+      "@id": "https://specter.security/#faq",
       "mainEntity": [
         {
           "@type": "Question",
@@ -195,25 +195,25 @@
     },
     {
       "@type": "BreadcrumbList",
-      "@id": "https://facealert.security/#breadcrumb",
+      "@id": "https://specter.security/#breadcrumb",
       "itemListElement": [
         {
           "@type": "ListItem",
           "position": 1,
           "name": "Home",
-          "item": "https://facealert.security"
+          "item": "https://specter.security"
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": "Security Solutions",
-          "item": "https://facealert.security/solutions"
+          "item": "https://specter.security/solutions"
         },
         {
           "@type": "ListItem",
           "position": 3,
           "name": "Face Recognition",
-          "item": "https://facealert.security/solutions/face-recognition"
+          "item": "https://specter.security/solutions/face-recognition"
         }
       ]
     }

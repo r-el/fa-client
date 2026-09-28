@@ -35,8 +35,8 @@
 - 'self': API calls to same origin
 - https:: All HTTPS connections
 - wss:: WebSocket Secure connections
-- https://api.facealert.security: Production API
-- https://api.facealert.live: Live API
+- https://api.specter.security: Production API
+- https://api.specter.live: Live API
 
 ### frame-src 'self' https:
 - 'self': Frames from same origin
