@@ -4,9 +4,7 @@ import { io } from "socket.io-client";
 import { useAuth } from "@/context/AuthContext";
 import type { CameraDetails, CameraStatus } from "@/features/cameras/api/cameras";
 
-type Notification =
-  | { kind: "camera_status"; cameraId: string; status: CameraStatus; timestamp: string }
-  | { kind: "alert" | "enrollment" | "configuration_changed" | "system" };
+import { showAlertToast, type Notification } from "./notificationToast";
 
 /** One authenticated connection for the shell; the server assigns authorized camera rooms. */
 export function RealtimeSync() {
@@ -53,6 +51,7 @@ export function RealtimeSync() {
           break;
         }
         case "alert":
+          if (event.kind === "alert") showAlertToast(event);
           refresh("alerts", "dashboard");
           // The recorder can persist just after notification delivery. Re-read once, coalesced.
           if (!alertTimer) alertTimer = setTimeout(() => {

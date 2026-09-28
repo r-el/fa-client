@@ -3,6 +3,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { RealtimeSync } from "./RealtimeSync";
 
+import { showAlertToast } from "./notificationToast";
+
+vi.mock("./notificationToast", () => ({ showAlertToast: vi.fn() }));
+
 const mocks = vi.hoisted(() => ({
   auth: { isAuthenticated: true, user: { id: "user_a" } },
   handlers: new Map<string, (...args: unknown[]) => void>(),
@@ -105,5 +109,12 @@ describe("RealtimeSync", () => {
     expect(invalidate).not.toHaveBeenCalled();
     expect(mocks.disconnect).toHaveBeenCalledOnce();
     expect(mocks.removeAllListeners).toHaveBeenCalledOnce();
+  });
+
+  it("shows a toast when an alert notification arrives", () => {
+    setup();
+    const alertEvent = { kind: "alert", alertKind: "identity_match", cameraName: "Front Door", level: "warning" };
+    emit("notification", alertEvent);
+    expect(showAlertToast).toHaveBeenCalledWith(alertEvent);
   });
 });
