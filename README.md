@@ -1,69 +1,72 @@
-# React + TypeScript + Vite
+# FaceAlert Client (fa-client)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend dashboard and management console for FaceAlert, connecting to `fa-server` and the Specter edge vision engine.
 
-Currently, two official plugins are available:
+## Overview & Architecture
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Stack**: React 19, TypeScript, Vite, TanStack Query v5, React Router v7, Tailwind CSS, Radix UI primitives.
+- **Key Capabilities**:
+  - **Live Video & Players**: Low-latency video playback using Media Source Extensions (MSE) over authenticated single-use WebSocket tickets, with graceful degradation to authenticated JPEG snapshots.
+  - **Realtime**: Live updates for camera status and vision alerts via Socket.IO client.
+  - **Vision Management**: Full UI for Specter entities including camera management (with watchlist assignments), watchlists/targets (photo uploads, enrollment tracking), and alerts (filtering, cursored pagination, acknowledge/resolve workflow).
+  - **User & Access Management**: Role-based access (admin, manager, viewer) with camera assignment controls.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Getting Started
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Prerequisites
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+- Node.js 18+ (tested with Node 18/20/22)
+- npm 10+
+- Running `fa-server` instance
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Installation & Run
+
+```bash
+cd client
+npm install
+
+# Start development server with HMR (runs on http://localhost:5173 by default)
+npm run dev
+
+# Run unit and component tests
+npm run test
+
+# Type-check and build for production
+npm run build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Configuration
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Client environment variables can be configured in `.env` or `.env.production`:
+
+```env
+# URL for the backend fa-server API
+VITE_API_BASE_URL=http://localhost:12113
+```
+
+*(If served from the same domain or behind a reverse proxy, the client defaults to relative `/api` calls).*
+
+---
+
+## Project Structure
+
+```text
+client/
+├── src/
+│   ├── app/           # Application layout, routes, navigation
+│   ├── components/    # Reusable UI primitives (dialog, button, table, input)
+│   ├── features/      # Feature-specific modules
+│   │   ├── alerts/       # Alerts table, filter dialogs, resolution workflow
+│   │   ├── cameras/      # Camera listing, create/edit modals, status cards
+│   │   ├── dashboard/    # Metrics and activity summary widgets
+│   │   ├── live/         # MSE session player, ticket negotiation, JPEG fallback
+│   │   ├── realtime/     # Socket.IO connection and query cache invalidators
+│   │   └── watchlists/   # Watchlists, target cards, multi-photo uploader
+│   ├── pages/         # Top-level page components
+│   ├── services/      # Typed API client services
+│   └── lib/           # Utility helpers
 ```
