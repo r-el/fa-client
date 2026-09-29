@@ -1,6 +1,6 @@
-# FaceAlert Client (fa-client)
+# Specter Client (specter-client)
 
-Frontend dashboard and management console for FaceAlert, connecting to `fa-server` and the Specter edge vision engine.
+Frontend dashboard and management console for Specter, connecting to `fa-server` and the Specter edge vision engine.
 
 ## Overview & Architecture
 
