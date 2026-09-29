@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { createUser } from "../services/userService";
 import { useAuth } from "../context/AuthContext";
-import "./UserCreationForm.css";
+import { Button } from "@/components/ui/button";
 
 interface UserFormData {
   username: string;
@@ -49,7 +49,6 @@ const UserCreationForm: React.FC = () => {
     setError("");
     setSuccess("");
 
-    // Validation
     if (!formData.username || !formData.password || !formData.name || !formData.email) {
       setError("All fields are required");
       setLoading(false);
@@ -62,7 +61,6 @@ const UserCreationForm: React.FC = () => {
       return;
     }
 
-    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
       setError("Please enter a valid email address");
@@ -84,8 +82,8 @@ const UserCreationForm: React.FC = () => {
       } else {
         setError(response.error || "Failed to create user");
       }
-    } catch (err: any) {
-      console.error("Error creating user:", err);
+    } catch (error) {
+      const err = error as any;
       if (err.response?.status === 401) {
         setError("Authentication required. Please login again.");
       } else if (err.response?.status === 403) {
@@ -102,26 +100,24 @@ const UserCreationForm: React.FC = () => {
 
   if (roleOptions.length === 0) {
     return (
-      <div className="user-creation-form">
-        <div className="access-denied">
-          <h3>Access Denied</h3>
-          <p>You do not have permission to create users.</p>
-        </div>
+      <div className="flex flex-col items-center justify-center p-12 text-center text-muted-foreground">
+        <h3 className="text-xl font-semibold mb-2">Access Denied</h3>
+        <p>You do not have permission to create users.</p>
       </div>
     );
   }
 
   return (
-    <div className="user-creation-form">
-      <h2>Create New User</h2>
+    <div className="max-w-2xl mx-auto">
+      <h2 className="text-2xl font-semibold mb-6">Create New User</h2>
       
-      {error && <div className="error-message">{error}</div>}
-      {success && <div className="success-message">{success}</div>}
+      {error && <div className="mb-6 p-4 rounded-xl border border-rose-500/20 bg-rose-500/10 text-rose-400">{error}</div>}
+      {success && <div className="mb-6 p-4 rounded-xl border border-emerald-500/20 bg-emerald-500/10 text-emerald-400">{success}</div>}
 
-      <form onSubmit={handleSubmit} className="creation-form">
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="username">Username *</label>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <label htmlFor="username" className="text-sm font-medium text-muted-foreground">Username *</label>
             <input
               type="text"
               id="username"
@@ -129,13 +125,13 @@ const UserCreationForm: React.FC = () => {
               value={formData.username}
               onChange={handleInputChange}
               required
-              className="form-input"
+              className="flex h-10 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
               placeholder="Enter username"
             />
           </div>
 
-          <div className="form-group">
-            <label htmlFor="name">Full Name *</label>
+          <div className="space-y-2">
+            <label htmlFor="name" className="text-sm font-medium text-muted-foreground">Full Name *</label>
             <input
               type="text"
               id="name"
@@ -143,15 +139,15 @@ const UserCreationForm: React.FC = () => {
               value={formData.name}
               onChange={handleInputChange}
               required
-              className="form-input"
+              className="flex h-10 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
               placeholder="Enter full name"
             />
           </div>
         </div>
 
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="email">Email *</label>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <label htmlFor="email" className="text-sm font-medium text-muted-foreground">Email *</label>
             <input
               type="email"
               id="email"
@@ -159,23 +155,23 @@ const UserCreationForm: React.FC = () => {
               value={formData.email}
               onChange={handleInputChange}
               required
-              className="form-input"
+              className="flex h-10 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
               placeholder="Enter email address"
             />
           </div>
 
-          <div className="form-group">
-            <label htmlFor="role">Role *</label>
+          <div className="space-y-2">
+            <label htmlFor="role" className="text-sm font-medium text-muted-foreground">Role *</label>
             <select
               id="role"
               name="role"
               value={formData.role}
               onChange={handleInputChange}
               required
-              className="form-select"
+              className="flex h-10 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
             >
               {roleOptions.map((option) => (
-                <option key={option.value} value={option.value}>
+                <option key={option.value} value={option.value} className="bg-background">
                   {option.label}
                 </option>
               ))}
@@ -183,8 +179,8 @@ const UserCreationForm: React.FC = () => {
           </div>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="password">Password *</label>
+        <div className="space-y-2">
+          <label htmlFor="password" className="text-sm font-medium text-muted-foreground">Password *</label>
           <input
             type="password"
             id="password"
@@ -192,20 +188,19 @@ const UserCreationForm: React.FC = () => {
             value={formData.password}
             onChange={handleInputChange}
             required
-            className="form-input"
+            className="flex h-10 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
             placeholder="Enter password (min 6 characters)"
             minLength={6}
           />
         </div>
 
-        <div className="form-actions">
-          <button
+        <div className="pt-4 flex justify-end">
+          <Button
             type="submit"
             disabled={loading}
-            className="submit-btn"
           >
             {loading ? "Creating..." : "Create User"}
-          </button>
+          </Button>
         </div>
       </form>
     </div>

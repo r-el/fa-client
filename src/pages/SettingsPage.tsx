@@ -1,102 +1,20 @@
-import React, { useState, useEffect } from "react";
-import "./SettingsPage.css";
+import { Settings } from "lucide-react";
 
-interface NotificationSettings {
-  enablePopups: boolean;
-  refreshInterval: number; // seconds
-  enableNewEventNotifications: boolean;
-}
-
-const SettingsPage: React.FC = () => {
-  const [settings, setSettings] = useState<NotificationSettings>({
-    enablePopups: true,
-    refreshInterval: 30,
-    enableNewEventNotifications: true,
-  });
-
-  const [saved, setSaved] = useState(false);
-
-  // Load settings from localStorage on mount
-  useEffect(() => {
-    const savedSettings = localStorage.getItem("notificationSettings");
-    if (savedSettings) {
-      try {
-        setSettings(JSON.parse(savedSettings));
-      } catch (error) {
-        console.error("Failed to parse saved settings:", error);
-      }
-    }
-  }, []);
-
-  const handleSave = () => {
-    localStorage.setItem("notificationSettings", JSON.stringify(settings));
-    setSaved(true);
-    setTimeout(() => setSaved(false), 3000);
-  };
-
-  const handleSettingChange = (key: keyof NotificationSettings, value: boolean | number) => {
-    setSettings(prev => ({
-      ...prev,
-      [key]: value
-    }));
-  };
-
+export default function SettingsPage() {
   return (
-    <div className="settings-page">
-      <h1>Settings</h1>
-      
-      <div className="settings-section">
-        <h2>Notification Settings</h2>
-        
-        <div className="setting-item">
-          <label className="setting-label">
-            <input
-              type="checkbox"
-              checked={settings.enablePopups}
-              onChange={(e) => handleSettingChange('enablePopups', e.target.checked)}
-            />
-            <span className="setting-text">Enable popup notifications for new events</span>
-          </label>
-        </div>
-
-        <div className="setting-item">
-          <label className="setting-label">
-            <input
-              type="checkbox"
-              checked={settings.enableNewEventNotifications}
-              onChange={(e) => handleSettingChange('enableNewEventNotifications', e.target.checked)}
-            />
-            <span className="setting-text">Show notification icon for new events</span>
-          </label>
-        </div>
-
-        <div className="setting-item">
-          <label className="setting-label-block">
-            <span className="setting-text">Refresh interval (seconds):</span>
-            <select
-              value={settings.refreshInterval}
-              onChange={(e) => handleSettingChange('refreshInterval', parseInt(e.target.value))}
-              className="setting-select"
-            >
-              <option value={10}>10 seconds</option>
-              <option value={15}>15 seconds</option>
-              <option value={30}>30 seconds</option>
-              <option value={60}>1 minute</option>
-              <option value={120}>2 minutes</option>
-              <option value={300}>5 minutes</option>
-            </select>
-          </label>
-        </div>
+    <div className="space-y-6 animate-in fade-in duration-500">
+      <div className="flex flex-col gap-2">
+        <h1 className="text-3xl font-semibold tracking-tight">Settings</h1>
+        <p className="text-muted-foreground">
+          Application settings and preferences will be available here in the future.
+        </p>
       </div>
 
-      <div className="settings-actions">
-        <button onClick={handleSave} className="save-button">
-          Save Settings
-        </button>
-        {saved && <span className="save-success">Settings saved successfully!</span>}
+      <div className="flex min-h-64 flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-white/10 bg-white/5 p-6 text-center text-muted-foreground">
+        <Settings className="h-8 w-8 opacity-50" aria-hidden="true" />
+        <p>No settings are currently available.</p>
+        <p className="text-sm">Future configurations will be added here.</p>
       </div>
     </div>
   );
-};
-
-export default SettingsPage;
+}
