@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { m } from "framer-motion";
-import { Home, Bell, Video, X, Shield, Menu, Users, Settings } from "lucide-react";
+import { X, Shield, Menu, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Icon } from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
@@ -10,28 +10,11 @@ import { useGetStats } from "@/features/dashboard/hooks/use-dashboard";
 import { useUiStore } from "@/stores/ui-store";
 
 
-const navItems = [
-  { href: "/", label: "Overview", icon: Home },
-  { href: "/alerts", label: "Alerts", icon: Bell },
-  { href: "/cameras", label: "Cameras", icon: Video },
-  { href: "/watchlists", label: "Watchlists", icon: Shield },
-  { href: "/users", label: "Users", icon: Users },
-];
+import { APP_ROUTES, prefetchRoute } from "@/app/navigation";
 
 const variants = {
   hidden: { opacity: 0, x: -16 },
   visible: { opacity: 1, x: 0 },
-};
-
-const prefetchRoute = (href: string) => {
-  switch (href) {
-    case "/": void import("@/pages/OverviewPage"); break;
-    case "/alerts": void import("@/pages/AlertsPage"); break;
-    case "/cameras": void import("@/pages/CamerasPage"); break;
-    case "/watchlists": void import("@/features/watchlists/WatchlistsPage"); break;
-    case "/users": void import("@/pages/UserManagementPage"); break;
-    case "/settings": void import("@/pages/SettingsPage"); break;
-  }
 };
 
 export function Sidebar() {
@@ -106,9 +89,10 @@ export function Sidebar() {
       </div>
 
       <nav className="flex flex-1 flex-col gap-2">
-        {navItems.filter((item) => {
-          if (item.href === "/watchlists" || item.href === "/users") {
-            return user?.role === "admin" || user?.role === "operator";
+        {APP_ROUTES.filter((item) => {
+          if (!item.sidebar) return false;
+          if (item.roles && user?.role) {
+            return item.roles.includes(user.role);
           }
           return true;
         }).map((item, i) => (

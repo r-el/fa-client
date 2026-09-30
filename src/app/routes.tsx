@@ -8,9 +8,9 @@ const OverviewPage = lazy(() => import("@/pages/OverviewPage"));
 const AlertsPage = lazy(() => import("@/pages/AlertsPage"));
 const CamerasPage = lazy(() => import("@/pages/CamerasPage"));
 const LiveVideoPage = lazy(() => import("@/features/live/LiveVideoPage"));
-const WatchlistsPage = lazy(() => import("@/features/watchlists/WatchlistsPage"));
+const WatchlistsPage = lazy(() => import("@/pages/WatchlistsPage"));
 const SettingsPage = lazy(() => import("@/pages/SettingsPage"));
-const UserManagementPage = lazy(() => import("@/pages/UserManagementPage"));
+const UsersPage = lazy(() => import("@/pages/UsersPage"));
 const LoginPage = lazy(() => import("@/pages/LoginPage"));
 const RegisterPage = lazy(() => import("@/pages/RegisterPage"));
 
@@ -42,7 +42,7 @@ export function AppRoutes() {
           <Route path="/cameras/:id/live" element={<Protected><LiveVideoPage /></Protected>} />
           <Route path="/watchlists" element={<Protected><WatchlistsPage /></Protected>} />
           <Route path="/settings" element={<Protected><SettingsPage /></Protected>} />
-          <Route path="/users" element={<Protected><UserManagementPage /></Protected>} />
+          <Route path="/users" element={<Protected><UsersPage /></Protected>} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />

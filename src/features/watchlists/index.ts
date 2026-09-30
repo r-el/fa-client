@@ -1,4 +1,3 @@
-export { default as WatchlistsPage } from "./WatchlistsPage";
 export { MetadataField, type MetadataFieldProps } from "./components/MetadataField";
 export { WatchlistSensitivityPresets } from "./components/WatchlistSensitivityPresets";
 export { WatchlistForm, type WatchlistFormProps } from "./components/WatchlistForm";

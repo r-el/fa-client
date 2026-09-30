@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import WatchlistsPage from "../WatchlistsPage";
+import WatchlistsPage from "@/pages/WatchlistsPage";
 import { watchlistsService } from "@/features/watchlists/api/watchlists";
 import type { Watchlist } from "@/features/watchlists/types";
 
