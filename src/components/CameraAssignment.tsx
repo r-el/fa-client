@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import axios from "axios";
+import { getApiErrorMessage } from "@/lib/api-error";
 import { getAllCameras, assignCameraToUser } from "../services/cameraService";
 import { getAllUsers } from "../services/userService";
 import type { ICamera } from "../@types/Camera";
@@ -15,15 +15,6 @@ const CameraAssignment: React.FC = () => {
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<string>("");
 
-  const getErrorMessage = useCallback((err: unknown, fallback: string, forbiddenMsg: string): string => {
-    if (axios.isAxiosError(err)) {
-      if (err.response?.status === 401) return "Authentication required.";
-      if (err.response?.status === 403) return forbiddenMsg;
-      return err.message || fallback;
-    }
-    return (err as Error)?.message || fallback;
-  }, []);
-
   const loadCameras = useCallback(async () => {
     try {
       const response = await getAllCameras();
@@ -33,9 +24,9 @@ const CameraAssignment: React.FC = () => {
         setError(response.error || "Failed to load cameras");
       }
     } catch (err) {
-      setError(getErrorMessage(err, "Failed to load cameras", "No permission to view cameras."));
+      setError(getApiErrorMessage(err, "Failed to load cameras", { forbidden: "No permission to view cameras." }));
     }
-  }, [getErrorMessage]);
+  }, []);
 
   const loadUsers = useCallback(async () => {
     try {
@@ -46,9 +37,9 @@ const CameraAssignment: React.FC = () => {
         setError(response.error || "Failed to load users");
       }
     } catch (err) {
-      setError(getErrorMessage(err, "Failed to load users", "No permission to view users."));
+      setError(getApiErrorMessage(err, "Failed to load users", { forbidden: "No permission to view users." }));
     }
-  }, [getErrorMessage]);
+  }, []);
 
   useEffect(() => {
     void loadCameras();
@@ -75,7 +66,7 @@ const CameraAssignment: React.FC = () => {
         setError(response.error || "Failed to assign camera");
       }
     } catch (err) {
-      setError(getErrorMessage(err, "Failed to assign camera", "No permission to assign cameras."));
+      setError(getApiErrorMessage(err, "Failed to assign camera", { forbidden: "No permission to assign cameras." }));
     } finally {
       setLoading(false);
     }

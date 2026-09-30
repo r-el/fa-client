@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { getApiErrorMessage } from "@/lib/api-error";
 import { Users, UserPlus, Camera, Loader2, AlertCircle } from "lucide-react";
 import { getAllUsers } from "../services/userService";
 import { useAuth } from "../context/AuthContext";
@@ -40,13 +40,9 @@ const UserManagementPage: React.FC = () => {
         setError(usersResponse.error || "Failed to load users");
       }
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        if (error.response?.status === 401) setError("Authentication required. Please login again.");
-        else if (error.response?.status === 403) setError("You don't have permission to access user management.");
-        else setError(error.message || "Failed to load data");
-      } else {
-        setError((error as Error)?.message || "Failed to load data");
-      }
+      setError(getApiErrorMessage(error, "Failed to load data", {
+        forbidden: "You don't have permission to access user management.",
+      }));
     } finally {
       setLoading(false);
     }

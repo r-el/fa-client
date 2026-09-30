@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { getApiErrorMessage } from "@/lib/api-error";
 import { createUser } from "../services/userService";
 import { useAuth } from "../context/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -84,17 +84,9 @@ const UserCreationForm: React.FC = () => {
         setError(response.error || "Failed to create user");
       }
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        if (error.response?.status === 401) {
-          setError("Authentication required. Please login again.");
-        } else if (error.response?.status === 403) {
-          setError("You don't have permission to create this type of user.");
-        } else {
-          setError(error.message || "Failed to create user");
-        }
-      } else {
-        setError((error as Error)?.message || "Failed to create user");
-      }
+      setError(getApiErrorMessage(error, "Failed to create user", {
+        forbidden: "You don't have permission to create this type of user.",
+      }));
     } finally {
       setLoading(false);
     }
