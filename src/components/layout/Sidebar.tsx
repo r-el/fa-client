@@ -23,6 +23,17 @@ const variants = {
   visible: { opacity: 1, x: 0 },
 };
 
+const prefetchRoute = (href: string) => {
+  switch (href) {
+    case "/": void import("@/pages/OverviewPage"); break;
+    case "/alerts": void import("@/pages/AlertsPage"); break;
+    case "/cameras": void import("@/pages/CamerasPage"); break;
+    case "/watchlists": void import("@/features/watchlists/WatchlistsPage"); break;
+    case "/users": void import("@/pages/UserManagementPage"); break;
+    case "/settings": void import("@/pages/SettingsPage"); break;
+  }
+};
+
 export function Sidebar() {
   const { user } = useAuth();
   const { pathname } = useLocation();
@@ -110,6 +121,7 @@ export function Sidebar() {
           >
             <Link
                 to={item.href}
+                onMouseEnter={() => prefetchRoute(item.href)}
                 className={cn(
                   "group relative flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium text-muted-foreground transition-all hover:bg-white/10 hover:text-foreground",
                   pathname === item.href &&
@@ -170,6 +182,7 @@ export function Sidebar() {
 
           <Link
             to="/settings"
+            onMouseEnter={() => prefetchRoute("/settings")}
             className="mt-6 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-muted-foreground transition-all hover:bg-white/10 hover:text-foreground"
           >
             <Icon icon={Settings} className="h-5 w-5" />
@@ -181,6 +194,7 @@ export function Sidebar() {
       {isCollapsed && (
         <Link
           to="/settings"
+          onMouseEnter={() => prefetchRoute("/settings")}
           className="mt-6 flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-muted-foreground transition-all hover:bg-white/10 hover:text-foreground"
           title="Settings"
         >
