@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import axios from "axios";
 import { getAllCameras, assignCameraToUser } from "../services/cameraService";
 import { getAllUsers } from "../services/userService";
 import type { ICamera } from "../@types/Camera";
@@ -14,12 +15,16 @@ const CameraAssignment: React.FC = () => {
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<string>("");
 
-  useEffect(() => {
-    loadCameras();
-    loadUsers();
+  const getErrorMessage = useCallback((err: unknown, fallback: string, forbiddenMsg: string): string => {
+    if (axios.isAxiosError(err)) {
+      if (err.response?.status === 401) return "Authentication required.";
+      if (err.response?.status === 403) return forbiddenMsg;
+      return err.message || fallback;
+    }
+    return (err as Error)?.message || fallback;
   }, []);
 
-  const loadCameras = async () => {
+  const loadCameras = useCallback(async () => {
     try {
       const response = await getAllCameras();
       if (response.success && response.data) {
@@ -27,15 +32,12 @@ const CameraAssignment: React.FC = () => {
       } else {
         setError(response.error || "Failed to load cameras");
       }
-    } catch (error) {
-      const err = error as any;
-      if (err.response?.status === 401) setError("Authentication required.");
-      else if (err.response?.status === 403) setError("No permission to view cameras.");
-      else setError(err.message || "Failed to load cameras");
+    } catch (err) {
+      setError(getErrorMessage(err, "Failed to load cameras", "No permission to view cameras."));
     }
-  };
+  }, [getErrorMessage]);
 
-  const loadUsers = async () => {
+  const loadUsers = useCallback(async () => {
     try {
       const response = await getAllUsers();
       if (response.success && response.data) {
@@ -43,13 +45,15 @@ const CameraAssignment: React.FC = () => {
       } else {
         setError(response.error || "Failed to load users");
       }
-    } catch (error) {
-      const err = error as any;
-      if (err.response?.status === 401) setError("Authentication required.");
-      else if (err.response?.status === 403) setError("No permission to view users.");
-      else setError(err.message || "Failed to load users");
+    } catch (err) {
+      setError(getErrorMessage(err, "Failed to load users", "No permission to view users."));
     }
-  };
+  }, [getErrorMessage]);
+
+  useEffect(() => {
+    void loadCameras();
+    void loadUsers();
+  }, [loadCameras, loadUsers]);
 
   const handleAssignCamera = async () => {
     if (!selectedCamera || !selectedUser) {
@@ -70,11 +74,8 @@ const CameraAssignment: React.FC = () => {
       } else {
         setError(response.error || "Failed to assign camera");
       }
-    } catch (error) {
-      const err = error as any;
-      if (err.response?.status === 401) setError("Authentication required.");
-      else if (err.response?.status === 403) setError("No permission to assign cameras.");
-      else setError(err.message || "Failed to assign camera");
+    } catch (err) {
+      setError(getErrorMessage(err, "Failed to assign camera", "No permission to assign cameras."));
     } finally {
       setLoading(false);
     }

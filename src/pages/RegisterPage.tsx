@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import type { FormEvent } from "react";
+import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, Shield, Check, Eye, EyeOff, LockKeyhole, Mail, UserRound, Loader2 } from "lucide-react";
 
@@ -58,8 +59,8 @@ export default function RegisterPage() {
       } else {
         setError(res.error || "Unable to create your account.");
       }
-    } catch (registrationError: any) {
-      setError(registrationError.message || "Unable to create your account.");
+    } catch (registrationError: unknown) {
+      setError((registrationError as Error)?.message || "Unable to create your account.");
     } finally {
       setIsSubmitting(false);
     }
@@ -100,8 +101,9 @@ export default function RegisterPage() {
       } else {
         setError(res.error || "Invalid verification code.");
       }
-    } catch (err: any) {
-      setError(err.response?.data?.error || "Verification failed. Please check the code.");
+    } catch (err: unknown) {
+      const serverMsg = axios.isAxiosError(err) ? (err.response?.data as { error?: string })?.error : undefined;
+      setError(serverMsg || (err as Error)?.message || "Verification failed. Please check the code.");
     } finally {
       setIsSubmitting(false);
     }
@@ -113,8 +115,9 @@ export default function RegisterPage() {
     try {
       await resendCode(registeredEmail);
       setResendStatus("New 6-digit verification code sent to your email!");
-    } catch (err: any) {
-      setError(err.response?.data?.error || "Failed to resend verification code.");
+    } catch (err: unknown) {
+      const serverMsg = axios.isAxiosError(err) ? (err.response?.data as { error?: string })?.error : undefined;
+      setError(serverMsg || (err as Error)?.message || "Failed to resend verification code.");
     }
   };
 

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { createUser } from "../services/userService";
 import { useAuth } from "../context/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -83,13 +84,16 @@ const UserCreationForm: React.FC = () => {
         setError(response.error || "Failed to create user");
       }
     } catch (error) {
-      const err = error as any;
-      if (err.response?.status === 401) {
-        setError("Authentication required. Please login again.");
-      } else if (err.response?.status === 403) {
-        setError("You don't have permission to create this type of user.");
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          setError("Authentication required. Please login again.");
+        } else if (error.response?.status === 403) {
+          setError("You don't have permission to create this type of user.");
+        } else {
+          setError(error.message || "Failed to create user");
+        }
       } else {
-        setError(err.message || "Failed to create user");
+        setError((error as Error)?.message || "Failed to create user");
       }
     } finally {
       setLoading(false);

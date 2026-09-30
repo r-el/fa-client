@@ -30,8 +30,8 @@ export default function LoginPage() {
     try {
       await login({ username, password });
       navigate("/");
-    } catch (err: any) {
-      setError(err.message || "Authentication failed. Check your credentials.");
+    } catch (err: unknown) {
+      setError((err as Error)?.message || "Authentication failed. Check your credentials.");
     } finally {
       setIsSubmitting(false);
     }
