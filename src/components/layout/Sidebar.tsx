@@ -152,12 +152,17 @@ export function Sidebar() {
           >
               <p className="mb-2 flex items-center justify-between text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground/80">
                 System Health
-                <span
-                  className={cn(
-                    "flex h-2.5 w-2.5 items-center justify-center rounded-full",
-                    healthIndicatorColor
+                <span className="relative flex h-2.5 w-2.5 items-center justify-center">
+                  {isHealthy && (
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
                   )}
-                />
+                  <span
+                    className={cn(
+                      "relative inline-flex h-2.5 w-2.5 rounded-full",
+                      healthIndicatorColor
+                    )}
+                  />
+                </span>
               </p>
               <p className="text-sm text-muted-foreground">
                 {healthStatusText}
