@@ -37,10 +37,18 @@
     --shadow: 229 70% 4%;
   }
 
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
   body {
-    font-feature-settings: "ss02" on, "ss03" on;
+    font-feature-settings: "ss02" on, "ss03" on, "cv01" on, "cv02" on;
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 }
 
