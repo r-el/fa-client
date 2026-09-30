@@ -47,7 +47,13 @@ export function AlertsTable({ limit }: AlertsTableProps) {
     <div className={isPreview ? "w-full" : "mt-4 w-full"}>
       {!isPreview && <AlertFiltersForm onApply={setFilters} />}
       <div className="mb-3 flex items-center justify-between gap-3">
-        <p role="status" className="text-sm text-muted-foreground">{query.isLoading ? "Loading alerts…" : `${alerts.length} alerts loaded${isPreview ? " · newest first" : ""}`}</p>
+        <p role="status" className="text-sm text-muted-foreground">
+          {query.isLoading
+            ? "Loading alerts…"
+            : alerts.length === 0
+            ? isPreview ? "No recent alerts" : "No alerts found"
+            : `${alerts.length} alerts loaded${isPreview ? " · newest first" : ""}`}
+        </p>
         <Button variant="outline" size="sm" disabled={query.isFetching} onClick={() => { void query.refetch(); }}>Refresh</Button>
       </div>
       {query.isError && <div role="alert" className="mb-4 space-y-2 rounded-xl border border-destructive/30 bg-destructive/10 p-4 text-sm">
@@ -72,7 +78,7 @@ export function AlertsTable({ limit }: AlertsTableProps) {
             {query.isLoading ? Array.from({ length: isPreview ? pageSize : 5 }, (_, index) => (
               <TableRow key={index} className="border-white/5"><TableCell colSpan={7}><Skeleton className="h-10 w-full bg-white/10" /></TableCell></TableRow>
             )) : alerts.length === 0 ? (
-              <TableRow><TableCell colSpan={7} className="h-32 text-center text-muted-foreground">{query.isError ? "Alerts could not be loaded." : "No alerts match the applied filters."}</TableCell></TableRow>
+              <TableRow><TableCell colSpan={7} className="h-32 text-center text-muted-foreground">{query.isError ? "Alerts could not be loaded." : isPreview || !Object.values(filters).some(Boolean) ? "No alerts recorded yet." : "No alerts match the applied filters."}</TableCell></TableRow>
             ) : alerts.map((alert) => (
               <TableRow key={alert.id} onClick={() => setSelectedAlert(alert)} className="cursor-pointer border-white/5 hover:bg-white/10">
                 <TableCell><Badge variant="outline" className="gap-1 border-primary/30 bg-primary/10 text-primary"><AlertCircle aria-hidden="true" className="h-3 w-3" />{alert.kind === "identity_match" ? "Identity" : "Rule"}</Badge></TableCell>

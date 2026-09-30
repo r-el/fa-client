@@ -4,6 +4,7 @@ import { getAlertSummary } from "@/features/alerts/api/alerts";
 
 export type DashboardStats = {
   activeCameras: number;
+  totalCameras?: number;
   todaysEvents: number;
   highRiskAlerts: number;
   systemStatus: string;

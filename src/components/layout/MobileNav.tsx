@@ -3,6 +3,7 @@ import { Home, Bell, Video, Settings, Shield, Users } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
 import { Icon } from "@/components/ui/icon";
+import { useAlertSummary } from "@/features/alerts/hooks/use-alerts";
 
 const navItems = [
   { href: "/", label: "Overview", icon: Home },
@@ -20,6 +21,8 @@ const navItems = [
 export function MobileNav() {
   const { user } = useAuth();
   const { pathname } = useLocation();
+  const { data: alertSummary } = useAlertSummary();
+  const unreadAlertsCount = alertSummary?.unacknowledged_count ?? 0;
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around border-t border-white/10 bg-background/80 backdrop-blur-xl px-2 py-2 md:hidden">
@@ -39,13 +42,18 @@ export function MobileNav() {
         >
           <span
             className={cn(
-              "flex h-8 w-8 items-center justify-center rounded-xl transition-all",
+              "relative flex h-8 w-8 items-center justify-center rounded-xl transition-all",
               pathname === item.href
                 ? "bg-primary/20 text-primary shadow-[0_4px_12px_rgba(88,101,242,0.3)]"
                 : "text-muted-foreground"
             )}
           >
             <Icon icon={item.icon} className="h-5 w-5" />
+            {item.label === "Alerts" && unreadAlertsCount > 0 && (
+              <span className="absolute -top-1 -right-1 flex h-4 min-w-4 px-1 items-center justify-center rounded-full bg-destructive/80 text-[9px] font-semibold text-destructive-foreground">
+                {unreadAlertsCount > 99 ? "99+" : unreadAlertsCount}
+              </span>
+            )}
           </span>
           <span className={cn("text-[10px]", pathname === item.href && "text-primary font-semibold")}>
             {item.label}

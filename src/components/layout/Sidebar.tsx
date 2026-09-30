@@ -1,12 +1,14 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Home, Bell, Video, X, Shield, Menu, Users, Settings } from "lucide-react";
+import { Home, Bell, Video, X, Shield, Menu, Users, Settings, LogOut } from "lucide-react";
 import { useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { Icon } from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
+import { useAlertSummary } from "@/features/alerts/hooks/use-alerts";
+import { useGetStats } from "@/features/dashboard/hooks/use-dashboard";
 
 const navItems = [
   { href: "/", label: "Overview", icon: Home },
@@ -22,9 +24,21 @@ const variants = {
 };
 
 export function Sidebar() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const { pathname } = useLocation();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const { data: alertSummary } = useAlertSummary();
+  const { data: stats } = useGetStats();
+
+  const unreadAlertsCount = alertSummary?.unacknowledged_count ?? 0;
+  const isOffline = stats?.systemStatus === "offline";
+  const hasNoCameras = (stats?.totalCameras ?? 0) === 0;
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
     <aside
@@ -98,16 +112,16 @@ export function Sidebar() {
               {!isCollapsed && (
                 <>
                   <span className="text-base">{item.label}</span>
-                  {item.label === "Alerts" && (
-                    <span className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-destructive/80 text-[11px] font-semibold text-destructive-foreground">
-                      3
+                  {item.label === "Alerts" && unreadAlertsCount > 0 && (
+                    <span className="ml-auto flex h-6 min-w-6 px-1.5 shrink-0 items-center justify-center rounded-full bg-destructive/80 text-[11px] font-semibold text-destructive-foreground">
+                      {unreadAlertsCount > 99 ? "99+" : unreadAlertsCount}
                     </span>
                   )}
                 </>
               )}
-              {isCollapsed && item.label === "Alerts" && (
-                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive/80 text-[9px] font-semibold text-destructive-foreground">
-                  3
+              {isCollapsed && item.label === "Alerts" && unreadAlertsCount > 0 && (
+                <span className="absolute -top-1 -right-1 flex h-4 min-w-4 px-1 items-center justify-center rounded-full bg-destructive/80 text-[9px] font-semibold text-destructive-foreground">
+                  {unreadAlertsCount > 99 ? "99+" : unreadAlertsCount}
                 </span>
               )}
             </Link>
@@ -125,10 +139,21 @@ export function Sidebar() {
           >
             <p className="mb-2 flex items-center justify-between text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground/80">
               System Health
-              <span className="flex h-2.5 w-2.5 items-center justify-center rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(74,222,128,0.65)]" />
+              <span
+                className={cn(
+                  "flex h-2.5 w-2.5 items-center justify-center rounded-full",
+                  isOffline
+                    ? "bg-rose-400 shadow-[0_0_12px_rgba(248,113,113,0.65)]"
+                    : "bg-emerald-400 shadow-[0_0_12px_rgba(74,222,128,0.65)]"
+                )}
+              />
             </p>
             <p className="text-sm text-muted-foreground">
-              All sensors are operating within nominal parameters.
+              {isOffline
+                ? "System is offline."
+                : hasNoCameras
+                ? "No cameras configured."
+                : "All sensors are operating within nominal parameters."}
             </p>
           </motion.div>
 
@@ -139,17 +164,38 @@ export function Sidebar() {
             <Icon icon={Settings} className="h-5 w-5" />
             <span>Settings</span>
           </Link>
+
+          <Button
+            variant="ghost"
+            onClick={handleLogout}
+            className="mt-2 flex w-full items-center justify-start gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-muted-foreground transition-all hover:border-destructive/30 hover:bg-destructive/15 hover:text-destructive h-auto cursor-pointer"
+          >
+            <Icon icon={LogOut} className="h-5 w-5" />
+            <span>Log out</span>
+          </Button>
         </>
       )}
 
       {isCollapsed && (
-        <Link
-          to="/settings"
-          className="mt-6 flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-muted-foreground transition-all hover:bg-white/10 hover:text-foreground"
-          title="Settings"
-        >
-          <Icon icon={Settings} className="h-5 w-5" />
-        </Link>
+        <>
+          <Link
+            to="/settings"
+            className="mt-6 flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-muted-foreground transition-all hover:bg-white/10 hover:text-foreground"
+            title="Settings"
+          >
+            <Icon icon={Settings} className="h-5 w-5" />
+          </Link>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleLogout}
+            className="mt-2 flex h-11 w-full items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-muted-foreground transition-all hover:border-destructive/30 hover:bg-destructive/15 hover:text-destructive cursor-pointer"
+            title="Log out"
+            aria-label="Log out"
+          >
+            <Icon icon={LogOut} className="h-5 w-5" />
+          </Button>
+        </>
       )}
     </aside>
   );
