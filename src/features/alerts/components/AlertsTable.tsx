@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { Link } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 import { AlertCircle, Loader2 } from "lucide-react";
@@ -43,6 +44,12 @@ export function AlertsTable({ limit }: AlertsTableProps) {
     return isPreview ? rows.slice(0, pageSize) : rows;
   }, [query.data, isPreview, pageSize]);
 
+  const virtualizer = useWindowVirtualizer({
+    count: query.isLoading ? 0 : alerts.length,
+    estimateSize: () => 72,
+    overscan: 5,
+  });
+
   return (
     <div className={isPreview ? "w-full" : "mt-4 w-full"}>
       {!isPreview && <AlertFiltersForm onApply={setFilters} />}
@@ -81,20 +88,33 @@ export function AlertsTable({ limit }: AlertsTableProps) {
               <TableRow key={index} className="border-white/5"><TableCell colSpan={7}><Skeleton className="h-10 w-full bg-white/10" /></TableCell></TableRow>
             )) : alerts.length === 0 ? (
               <TableRow><TableCell colSpan={7} className="h-32 text-center text-muted-foreground">{query.isError ? "Alerts could not be loaded." : isPreview || !Object.values(filters).some(Boolean) ? "No alerts recorded yet." : "No alerts match the applied filters."}</TableCell></TableRow>
-            ) : alerts.map((alert) => (
-              <TableRow key={alert.id} onClick={() => setSelectedAlert(alert)} className="cursor-pointer border-white/5 hover:bg-white/10">
-                <TableCell><Badge variant="outline" className="gap-1 border-primary/30 bg-primary/10 text-primary"><AlertCircle aria-hidden="true" className="h-3 w-3" />{alert.kind === "identity_match" ? "Identity" : "Rule"}</Badge></TableCell>
-                <TableCell>
-                  <p className="font-medium">{alert.kind === "identity_match" ? alert.target_label || alert.target_id || "Unknown target" : alert.rule_kind?.replaceAll("_", " ") || "Rule"}</p>
-                  <p className="text-xs text-muted-foreground">{alert.kind === "identity_match" ? alert.watchlist_name || alert.watchlist_id || "—" : `${alert.object_class} · ${alert.rule_kind?.replaceAll("_", " ") || alert.rule_id || "Zone rule"}`}</p>
-                </TableCell>
-                <TableCell className="text-muted-foreground">{formatDateTime(alert.created_at)}</TableCell>
-                <TableCell className="hidden text-muted-foreground md:table-cell"><Link to={`/cameras?camera_id=${encodeURIComponent(alert.camera_id)}`} onClick={(event) => event.stopPropagation()} className="hover:text-primary hover:underline">{alert.camera_name || alert.camera_id}</Link></TableCell>
-                <TableCell className="hidden text-muted-foreground lg:table-cell">{alert.kind === "identity_match" ? <><p className="font-medium text-foreground">{alert.similarity_ratio == null ? "—" : `${(alert.similarity_ratio * 100).toFixed(1)}%`}</p><p className="text-xs">{alert.modality === "face" ? "Face" : alert.modality === "appearance" ? "Body Re-ID" : alert.modality || "—"}</p></> : "—"}</TableCell>
-                <TableCell><Badge variant="outline">{alert.review.disposition.replaceAll("_", " ")}</Badge><p className="mt-1 text-xs text-muted-foreground">{alert.review.is_acknowledged ? "Acknowledged" : "Not acknowledged"}</p></TableCell>
-                <TableCell><Button variant="ghost" size="sm" aria-label={`View alert ${alert.id}`} onClick={(event) => { event.stopPropagation(); setSelectedAlert(alert); }}>Details</Button></TableCell>
-              </TableRow>
-            ))}
+            ) : (
+              <>
+                {virtualizer.getVirtualItems()[0]?.index > 0 && (
+                  <TableRow aria-hidden="true" style={{ height: virtualizer.getVirtualItems()[0].start }} className="border-none hover:bg-transparent" />
+                )}
+                {virtualizer.getVirtualItems().map((virtualItem) => {
+                  const alert = alerts[virtualItem.index];
+                  return (
+                    <TableRow key={alert.id} onClick={() => setSelectedAlert(alert)} className="cursor-pointer border-white/5 hover:bg-white/10" ref={virtualizer.measureElement} data-index={virtualItem.index}>
+                      <TableCell><Badge variant="outline" className="gap-1 border-primary/30 bg-primary/10 text-primary"><AlertCircle aria-hidden="true" className="h-3 w-3" />{alert.kind === "identity_match" ? "Identity" : "Rule"}</Badge></TableCell>
+                      <TableCell>
+                        <p className="font-medium">{alert.kind === "identity_match" ? alert.target_label || alert.target_id || "Unknown target" : alert.rule_kind?.replaceAll("_", " ") || "Rule"}</p>
+                        <p className="text-xs text-muted-foreground">{alert.kind === "identity_match" ? alert.watchlist_name || alert.watchlist_id || "—" : `${alert.object_class} · ${alert.rule_kind?.replaceAll("_", " ") || alert.rule_id || "Zone rule"}`}</p>
+                      </TableCell>
+                      <TableCell className="text-muted-foreground">{formatDateTime(alert.created_at)}</TableCell>
+                      <TableCell className="hidden text-muted-foreground md:table-cell"><Link to={`/cameras?camera_id=${encodeURIComponent(alert.camera_id)}`} onClick={(event) => event.stopPropagation()} className="hover:text-primary hover:underline">{alert.camera_name || alert.camera_id}</Link></TableCell>
+                      <TableCell className="hidden text-muted-foreground lg:table-cell">{alert.kind === "identity_match" ? <><p className="font-medium text-foreground">{alert.similarity_ratio == null ? "—" : `${(alert.similarity_ratio * 100).toFixed(1)}%`}</p><p className="text-xs">{alert.modality === "face" ? "Face" : alert.modality === "appearance" ? "Body Re-ID" : alert.modality || "—"}</p></> : "—"}</TableCell>
+                      <TableCell><Badge variant="outline">{alert.review.disposition.replaceAll("_", " ")}</Badge><p className="mt-1 text-xs text-muted-foreground">{alert.review.is_acknowledged ? "Acknowledged" : "Not acknowledged"}</p></TableCell>
+                      <TableCell><Button variant="ghost" size="sm" aria-label={`View alert ${alert.id}`} onClick={(event) => { event.stopPropagation(); setSelectedAlert(alert); }}>Details</Button></TableCell>
+                    </TableRow>
+                  );
+                })}
+                {virtualizer.getVirtualItems().length > 0 && (
+                  <TableRow aria-hidden="true" style={{ height: virtualizer.getTotalSize() - virtualizer.getVirtualItems()[virtualizer.getVirtualItems().length - 1].end }} className="border-none hover:bg-transparent" />
+                )}
+              </>
+            )}
           </TableBody>
         </Table>
       </div>
