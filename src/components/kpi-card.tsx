@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { motion, useSpring, useTransform } from "framer-motion";
+import { useSpring, useTransform, motion } from "framer-motion";
 import { ArrowUpRight, type LucideIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
