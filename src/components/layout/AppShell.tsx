@@ -3,6 +3,7 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { Topbar } from "@/components/layout/Topbar";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { RealtimeSync } from "@/features/realtime/RealtimeSync";
+import { CommandPalette } from "@/components/CommandPalette";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const { pathname } = useLocation();
@@ -20,6 +21,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <div className="absolute right-[8%] top-[18%] h-56 w-56 rounded-full bg-accent/35 blur-[120px]" />
         <div className="absolute bottom-[10%] left-1/2 h-80 w-[520px] -translate-x-1/2 rounded-[999px] bg-primary/20 blur-[150px]" />
       </div>
+
+      {/* Command Palette (Ctrl+K) */}
+      <CommandPalette />
 
       {/* Desktop sidebar */}
       <Sidebar />
