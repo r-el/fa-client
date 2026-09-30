@@ -4,15 +4,10 @@ import {
   acknowledgeAlert, getAlert, getAlerts, getAlertSnapshot, getAlertSummary,
   resolveAlert, retryAlertRead,
 } from "@/features/alerts/api/alerts";
+import { alertKeys } from "@/lib/query-keys";
 import type { AlertFilters, AlertResolution, AlertSummaryFilters, SpecterAlert } from "@/features/alerts/api/alerts";
 
-export const alertKeys = {
-  all: ["alerts"] as const,
-  list: (filters: AlertFilters) => ["alerts", "list", filters] as const,
-  detail: (id: string) => ["alerts", "detail", id] as const,
-  summary: (filters: AlertSummaryFilters) => ["alerts", "summary", filters] as const,
-  snapshot: (id: string) => ["alerts", "snapshot", id] as const,
-};
+export { alertKeys };
 
 const readOptions = {
   retry: retryAlertRead,
