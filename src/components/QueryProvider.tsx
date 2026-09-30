@@ -1,8 +1,8 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useState, type ReactNode } from "react";
+import { useMemo, type ReactNode } from "react";
 
 export function QueryProvider({ children }: { children: ReactNode }) {
-  const [queryClient] = useState(
+  const queryClient = useMemo(
     () =>
       new QueryClient({
         defaultOptions: {
@@ -11,9 +11,11 @@ export function QueryProvider({ children }: { children: ReactNode }) {
             gcTime: 15 * 60 * 1000,
             retry: 1,
             refetchOnWindowFocus: false,
+            networkMode: 'offlineFirst',
           },
         },
-      })
+      }),
+    []
   );
 
   return (
