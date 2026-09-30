@@ -2,11 +2,11 @@ import { useId, useState } from "react";
 import type { FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { PhotoPicker } from "./PhotoPicker";
 import { WatchlistError } from "./WatchlistFeedback";
-import { parseMetadata, validatePhotos } from "@/features/watchlists/utils";
+import { MetadataField } from "./MetadataField";
+import { validateTargetForm } from "@/features/watchlists/validation";
 import type { Target, TargetSpecification, TargetType, TargetUpdate } from "@/features/watchlists/types";
 
 export interface TargetFormProps {
@@ -30,11 +30,13 @@ export function TargetForm({ initial, targetType, busy, onClose, onSave }: Targe
     if (busy) return;
     setError(null);
     try {
-      if (!label.trim()) throw new Error("A target label is required.");
-      const uploadError = validatePhotos(files);
-      if (uploadError) throw new Error(uploadError);
-      const values = { label: label.trim(), metadata: parseMetadata(metadata) };
-      await onSave({ ...values, is_enabled: enabled }, { ...values, image_file_names: files.map((file) => file.name) }, files);
+      const { update, specification } = validateTargetForm({
+        label,
+        metadata,
+        enabled,
+        files,
+      });
+      await onSave(update, specification, files);
     } catch (issue) {
       setError(issue);
     }
@@ -54,19 +56,16 @@ export function TargetForm({ initial, targetType, busy, onClose, onSave }: Targe
         <form onSubmit={submit} className="space-y-4">
           <fieldset disabled={busy} className="space-y-4">
             <div className="space-y-2">
-              <label htmlFor={`${id}-label`} className="text-sm">Label</label>
+              <label htmlFor={`${id}-label`} className="text-sm font-medium">Label</label>
               <Input id={`${id}-label`} required value={label} onChange={(event) => setLabel(event.target.value)} />
             </div>
-            <div className="space-y-2">
-              <label htmlFor={`${id}-metadata`} className="text-sm">Metadata (JSON object)</label>
-              <Textarea
-                id={`${id}-metadata`}
-                className="min-h-24 font-mono text-sm"
-                value={metadata}
-                onChange={(event) => setMetadata(event.target.value)}
-              />
-              <p className="text-xs text-muted-foreground">Optional JSON data.</p>
-            </div>
+            <MetadataField
+              id={`${id}-metadata`}
+              description="Optional JSON data."
+              disabled={busy}
+              value={metadata}
+              onChange={setMetadata}
+            />
             {initial && (
               <label className="flex items-center gap-2 text-sm">
                 <input type="checkbox" checked={enabled} onChange={(event) => setEnabled(event.target.checked)} />
