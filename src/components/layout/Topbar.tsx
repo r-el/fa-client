@@ -1,6 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, User, RefreshCw, Shield, LogOut, Volume2, VolumeX } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -26,6 +25,7 @@ export function Topbar() {
   const title = createTitle(pathname);
   const isSoundEnabled = useUiStore((state) => state.isSoundEnabled);
   const toggleSound = useUiStore((state) => state.toggleSound);
+  const openCommandPalette = useUiStore((state) => state.openCommandPalette);
 
   const handleLogout = () => {
     logout();
@@ -65,15 +65,33 @@ export function Topbar() {
       </div>
 
       <div className="flex w-full flex-col gap-3 md:w-auto md:flex-row md:items-center">
-        <div className="group hidden w-full items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-muted-foreground transition-colors focus-within:border-primary/60 md:flex md:min-w-[240px] lg:min-w-[280px]">
-          <Icon icon={Search} className="h-4 w-4 text-muted-foreground/70 transition-colors group-focus-within:text-primary" />
-          <Input
-            type="search"
-            placeholder="Search alerts, cameras..."
-            className="h-auto border-none bg-transparent p-0 text-sm text-foreground placeholder:text-muted-foreground/60 focus-visible:ring-0 focus-visible:ring-offset-0"
-          />
-        </div>
+        <button
+          type="button"
+          onClick={openCommandPalette}
+          className="group hidden w-full items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-muted-foreground transition-all hover:border-white/20 hover:bg-white/10 md:flex md:min-w-[240px] lg:min-w-[280px] cursor-pointer text-left"
+          aria-label="Open command palette"
+        >
+          <div className="flex items-center gap-2">
+            <Icon icon={Search} className="h-4 w-4 text-muted-foreground/70 transition-colors group-hover:text-primary" />
+            <span className="text-sm text-muted-foreground/70">Quick search...</span>
+          </div>
+          <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border border-white/10 bg-white/5 px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+            <span className="text-xs">⌘</span>K
+          </kbd>
+        </button>
         <div className="flex items-center justify-end gap-3">
+          <div className="glow-ring rounded-2xl border border-white/10 bg-white/5 p-2 md:hidden">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={openCommandPalette}
+              className="h-8 w-8 rounded-lg hover:bg-white/10 transition-all"
+              title="Search"
+              aria-label="Open search command palette"
+            >
+              <Icon icon={Search} className="h-4 w-4" />
+            </Button>
+          </div>
           <div className="glow-ring rounded-2xl border border-white/10 bg-white/5 p-2">
             <Button
               variant="ghost"
