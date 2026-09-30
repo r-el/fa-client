@@ -8,14 +8,12 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { QuickCategories } from "./QuickCategories";
 import {
   MAX_CAMERA_NAME_LENGTH,
-  MAX_CAMERA_WATCHLISTS,
   MAX_CREDENTIAL_PASSWORD_LENGTH,
   MAX_CREDENTIAL_USERNAME_LENGTH,
-  MAX_DETECTION_CLASSES,
-  MAX_DETECTION_CLASS_LENGTH,
   MAX_LOCATION_LENGTH,
   MAX_SOURCE_URL_LENGTH,
 } from "@/features/cameras/constants";
+import { cameraFormSchema } from "@/features/cameras/schemas";
 
 export function CameraEditor({ cameraId, onClose }: { cameraId?: string; onClose: () => void }) {
   const details = useCameraDetails(cameraId);
@@ -62,37 +60,29 @@ function CameraForm({ camera, onClose, onSaving }: {
     if (isPending) return;
     setValidationError("");
     const detectionClasses = [...new Set(classes.split(",").map((value) => value.trim()).filter(Boolean))];
-    if (!name.trim()) return setValidationError("Camera name is required.");
-    if (watchlistIds.length > MAX_CAMERA_WATCHLISTS) {
-      return setValidationError(`Select at most ${MAX_CAMERA_WATCHLISTS} watchlists.`);
+
+    const validation = cameraFormSchema.safeParse({
+      name,
+      source_url: sourceUrl,
+      location,
+      watchlist_ids: watchlistIds,
+      detection_classes: detectionClasses,
+      credentials: credentialMode === "replace" ? { username, password } : undefined,
+    });
+
+    if (!validation.success) {
+      return setValidationError(validation.error.issues[0]?.message ?? "Invalid camera data.");
     }
-    if (
-      detectionClasses.length > MAX_DETECTION_CLASSES ||
-      detectionClasses.some((value) => value.length > MAX_DETECTION_CLASS_LENGTH)
-    ) {
-      return setValidationError(
-        `Use at most ${MAX_DETECTION_CLASSES} detection classes, each no longer than ${MAX_DETECTION_CLASS_LENGTH} characters.`
-      );
-    }
-    try {
-      const parsed = new URL(sourceUrl.trim());
-      if (!/^(rtsps?|https?):$/.test(parsed.protocol) || !parsed.hostname || /\s/.test(sourceUrl.trim())) {
-        throw new Error("Invalid source");
-      }
-      // Keep passwords out of displayed URLs and require deliberate credential replacement.
-      if (parsed.username || parsed.password) {
-        return setValidationError("Remove credentials from the URL and use the username/password fields below.");
-      }
-    } catch {
-      return setValidationError("Enter a valid RTSP, RTSPS, HTTP or HTTPS source URL.");
-    }
+
     const body: CameraInput = {
-      name: name.trim(), source_url: sourceUrl.trim(), location: location.trim(),
-      watchlist_ids: watchlistIds, detection_classes: detectionClasses,
+      name: validation.data.name,
+      source_url: validation.data.source_url,
+      location: validation.data.location,
+      watchlist_ids: validation.data.watchlist_ids,
+      detection_classes: validation.data.detection_classes,
     };
-    if (credentialMode === "replace") {
-      if (!username || !password) return setValidationError("Both username and password are required.");
-      body.credentials = { username, password };
+    if (credentialMode === "replace" && validation.data.credentials) {
+      body.credentials = validation.data.credentials;
     }
     onSaving(true);
     try {
