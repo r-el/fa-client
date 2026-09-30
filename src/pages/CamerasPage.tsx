@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Plus, RefreshCw, Video } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useCameras } from "@/features/cameras/hooks/use-cameras";
@@ -14,6 +14,10 @@ export default function CamerasPage() {
   const cameras = useCameras();
   const [editor, setEditor] = useState<{ id?: string } | null>(null);
   const canCreate = user?.role === "admin" || user?.role === "operator";
+
+  const handleEdit = useCallback((id: string) => {
+    setEditor({ id });
+  }, []);
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
@@ -44,7 +48,7 @@ export default function CamerasPage() {
             description={canCreate ? "Add a camera to start monitoring." : "Ask an administrator to assign cameras to your account."}
           />
         ) : cameras.data?.map((camera) => (
-          <CameraCard key={camera.id} camera={camera} role={user?.role} onEdit={() => setEditor({ id: camera.id })} />
+          <CameraCard key={camera.id} camera={camera} role={user?.role} onEdit={handleEdit} />
         ))}
       </div>
       {editor && canCreate && <CameraEditor cameraId={editor.id} onClose={() => setEditor(null)} />}

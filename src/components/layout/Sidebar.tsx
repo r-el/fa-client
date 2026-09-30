@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
-import { Home, Bell, Video, X, Shield, Menu, Users, Settings } from "lucide-react";
+import { m } from "framer-motion";
+import { X, Shield, Menu, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Icon } from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
@@ -9,13 +9,8 @@ import { useAlertSummary } from "@/features/alerts/hooks/use-alerts";
 import { useGetStats } from "@/features/dashboard/hooks/use-dashboard";
 import { useUiStore } from "@/stores/ui-store";
 
-const navItems = [
-  { href: "/", label: "Overview", icon: Home },
-  { href: "/alerts", label: "Alerts", icon: Bell },
-  { href: "/cameras", label: "Cameras", icon: Video },
-  { href: "/watchlists", label: "Watchlists", icon: Shield },
-  { href: "/users", label: "Users", icon: Users },
-];
+
+import { APP_ROUTES, prefetchRoute } from "@/app/navigation";
 
 const variants = {
   hidden: { opacity: 0, x: -16 },
@@ -94,13 +89,14 @@ export function Sidebar() {
       </div>
 
       <nav className="flex flex-1 flex-col gap-2">
-        {navItems.filter((item) => {
-          if (item.href === "/watchlists" || item.href === "/users") {
-            return user?.role === "admin" || user?.role === "operator";
+        {APP_ROUTES.filter((item) => {
+          if (!item.sidebar) return false;
+          if (item.roles && user?.role) {
+            return item.roles.includes(user.role);
           }
           return true;
         }).map((item, i) => (
-          <motion.div
+          <m.div
             key={item.href}
             initial="hidden"
             animate="visible"
@@ -108,67 +104,69 @@ export function Sidebar() {
             transition={{ delay: i * 0.05, duration: 0.35, ease: "easeOut" }}
           >
             <Link
-              to={item.href}
-              className={cn(
-                "group relative flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium text-muted-foreground transition-all hover:bg-white/10 hover:text-foreground",
-                pathname === item.href &&
-                  "bg-gradient-to-r from-primary/30 to-primary/10 text-foreground shadow-[0_18px_38px_rgba(88,101,242,0.28)]",
-                isCollapsed && "justify-center px-3"
-              )}
-              title={isCollapsed ? item.label : undefined}
-            >
-              <span
+                to={item.href}
+                onMouseEnter={() => prefetchRoute(item.href)}
                 className={cn(
-                  "flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5 transition-all",
-                  pathname === item.href && "bg-primary/50 text-primary-foreground"
+                  "group relative flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium text-muted-foreground transition-all hover:bg-white/10 hover:text-foreground",
+                  pathname === item.href &&
+                    "bg-gradient-to-r from-primary/30 to-primary/10 text-foreground shadow-[0_18px_38px_rgba(88,101,242,0.28)]",
+                  isCollapsed && "justify-center px-3"
                 )}
+                title={isCollapsed ? item.label : undefined}
               >
-                <Icon icon={item.icon} className="h-5 w-5" />
-              </span>
-              {!isCollapsed && (
-                <>
-                  <span className="text-base">{item.label}</span>
-                  {item.label === "Alerts" && unreadAlertsCount > 0 && (
-                    <span className="ml-auto flex h-6 min-w-6 px-1.5 shrink-0 items-center justify-center rounded-full bg-destructive/80 text-[11px] font-semibold text-destructive-foreground">
-                      {unreadAlertsCount > 99 ? "99+" : unreadAlertsCount}
-                    </span>
+                <span
+                  className={cn(
+                    "flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5 transition-all",
+                    pathname === item.href && "bg-primary/50 text-primary-foreground"
                   )}
-                </>
-              )}
-              {isCollapsed && item.label === "Alerts" && unreadAlertsCount > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-4 min-w-4 px-1 items-center justify-center rounded-full bg-destructive/80 text-[9px] font-semibold text-destructive-foreground">
-                  {unreadAlertsCount > 99 ? "99+" : unreadAlertsCount}
+                >
+                  <Icon icon={item.icon} className="h-5 w-5" />
                 </span>
-              )}
-            </Link>
-          </motion.div>
+                {!isCollapsed && (
+                  <>
+                    <span className="text-base">{item.label}</span>
+                    {item.label === "Alerts" && unreadAlertsCount > 0 && (
+                      <span className="ml-auto flex h-6 min-w-6 px-1.5 shrink-0 items-center justify-center rounded-full bg-destructive/80 text-[11px] font-semibold text-destructive-foreground">
+                        {unreadAlertsCount > 99 ? "99+" : unreadAlertsCount}
+                      </span>
+                    )}
+                  </>
+                )}
+                {isCollapsed && item.label === "Alerts" && unreadAlertsCount > 0 && (
+                  <span className="absolute -top-1 -right-1 flex h-4 min-w-4 px-1 items-center justify-center rounded-full bg-destructive/80 text-[9px] font-semibold text-destructive-foreground">
+                    {unreadAlertsCount > 99 ? "99+" : unreadAlertsCount}
+                  </span>
+                )}
+              </Link>
+          </m.div>
         ))}
       </nav>
 
       {!isCollapsed && (
         <>
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
             className="mt-10 rounded-2xl border border-white/10 bg-gradient-to-br from-white/8 to-white/3 p-4 text-sm text-muted-foreground"
           >
-            <p className="mb-2 flex items-center justify-between text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground/80">
-              System Health
-              <span
-                className={cn(
-                  "flex h-2.5 w-2.5 items-center justify-center rounded-full",
-                  healthIndicatorColor
-                )}
-              />
-            </p>
-            <p className="text-sm text-muted-foreground">
-              {healthStatusText}
-            </p>
-          </motion.div>
+              <p className="mb-2 flex items-center justify-between text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground/80">
+                System Health
+                <span
+                  className={cn(
+                    "flex h-2.5 w-2.5 items-center justify-center rounded-full",
+                    healthIndicatorColor
+                  )}
+                />
+              </p>
+              <p className="text-sm text-muted-foreground">
+                {healthStatusText}
+              </p>
+            </m.div>
 
           <Link
             to="/settings"
+            onMouseEnter={() => prefetchRoute("/settings")}
             className="mt-6 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-muted-foreground transition-all hover:bg-white/10 hover:text-foreground"
           >
             <Icon icon={Settings} className="h-5 w-5" />
@@ -180,6 +178,7 @@ export function Sidebar() {
       {isCollapsed && (
         <Link
           to="/settings"
+          onMouseEnter={() => prefetchRoute("/settings")}
           className="mt-6 flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-muted-foreground transition-all hover:bg-white/10 hover:text-foreground"
           title="Settings"
         >

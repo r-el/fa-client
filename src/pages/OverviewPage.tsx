@@ -1,10 +1,12 @@
 import { Activity, ShieldAlert, Video } from "lucide-react";
+import { Suspense, lazy } from "react";
 import { KpiCard } from "@/components/kpi-card";
-import { AlertsChart } from "@/components/alerts-chart";
 import { AlertsTable } from "@/features/alerts/components/AlertsTable";
 import { useGetStats } from "@/features/dashboard/hooks/use-dashboard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
+
+const AlertsChart = lazy(() => import("@/components/alerts-chart").then(mod => ({ default: mod.AlertsChart })));
 
 export default function OverviewPage() {
   const { data: stats, isLoading, isError, refetch, isFetching } = useGetStats();
@@ -83,7 +85,9 @@ export default function OverviewPage() {
             <span className="rounded-full bg-white/5 px-3 py-1 text-xs font-medium text-muted-foreground">Last 7 days</span>
           </div>
           <div className="rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
-            <AlertsChart />
+            <Suspense fallback={<Skeleton className="h-[350px] w-full rounded-2xl bg-white/5" />}>
+              <AlertsChart />
+            </Suspense>
           </div>
         </section>
 

@@ -44,22 +44,46 @@ export default defineConfig(({ mode }) => {
     build: {
       assetsDir: 'assets',
       copyPublicDir: true,
-      
+
       // SEO and Performance Optimizations
-      sourcemap: true,
-      
+      sourcemap: mode === 'development',
+
       // Minimize bundle size
-      minify: 'esbuild', // Use esbuild instead of terser for better compatibility
-      
+      minify: 'esbuild',
+
       // Optimize chunk splitting for better caching
       rollupOptions: {
         output: {
-          manualChunks: {
+          manualChunks: (id) => {
             // Vendor chunk for React and related libraries
-            vendor: ['react', 'react-dom', 'react-router-dom'],
-            
-            // Services chunk for API calls
-            services: ['./src/services/api.tsx', './src/services/authService.tsx']
+            if (id.includes('node_modules')) {
+              // React core
+              if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) {
+                return 'vendor-react';
+              }
+              // UI libraries
+              if (id.includes('@radix-ui') || id.includes('lucide-react')) {
+                return 'vendor-ui';
+              }
+              // Charts
+              if (id.includes('recharts')) {
+                return 'vendor-charts';
+              }
+              // Animation
+              if (id.includes('framer-motion')) {
+                return 'vendor-motion';
+              }
+              // Realtime
+              if (id.includes('socket.io')) {
+                return 'vendor-realtime';
+              }
+              // Data fetching
+              if (id.includes('@tanstack/react-query')) {
+                return 'vendor-query';
+              }
+              // Other vendors
+              return 'vendor';
+            }
           }
         }
       }

@@ -1,18 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
-import { Home, Bell, Video, Settings, Shield, Users } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
 import { Icon } from "@/components/ui/icon";
 import { useAlertSummary } from "@/features/alerts/hooks/use-alerts";
 
-const navItems = [
-  { href: "/", label: "Overview", icon: Home },
-  { href: "/alerts", label: "Alerts", icon: Bell },
-  { href: "/cameras", label: "Cameras", icon: Video },
-  { href: "/watchlists", label: "Watchlists", icon: Shield },
-  { href: "/users", label: "Users", icon: Users },
-  { href: "/settings", label: "Settings", icon: Settings },
-];
+import { APP_ROUTES } from "@/app/navigation";
 
 /**
  * Mobile bottom navigation bar (Instagram-style).
@@ -26,9 +18,10 @@ export function MobileNav() {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around border-t border-white/10 bg-background/80 backdrop-blur-xl px-2 py-2 md:hidden">
-      {navItems.filter((item) => {
-        if (item.href === "/watchlists" || item.href === "/users") {
-          return user?.role === "admin" || user?.role === "operator";
+      {APP_ROUTES.filter((item) => {
+        if (!item.bottomNav) return false;
+        if (item.roles && user?.role) {
+          return item.roles.includes(user.role);
         }
         return true;
       }).map((item) => (
