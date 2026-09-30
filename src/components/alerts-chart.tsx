@@ -2,7 +2,7 @@ import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YA
 import { useTheme } from "@/components/ThemeProvider";
 import { useGetStatsOverTime } from "@/features/dashboard/hooks/use-dashboard";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 
 interface CustomTooltipProps {
   active?: boolean;
@@ -10,7 +10,7 @@ interface CustomTooltipProps {
   label?: string;
 }
 
-const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
+const CustomTooltip = memo(({ active, payload, label }: CustomTooltipProps) => {
   if (active && payload && payload.length && label) {
     const date = new Date(label);
     const formattedDate = isNaN(date.getTime())
@@ -41,7 +41,7 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
     );
   }
   return null;
-};
+});
 
 export function AlertsChart() {
   const { theme } = useTheme();

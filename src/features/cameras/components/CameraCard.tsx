@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Play, Settings, Square, Trash2, Video } from "lucide-react";
 import { useCameraMutations } from "@/features/cameras/hooks/use-cameras";
@@ -18,10 +18,10 @@ const statusStyles: Record<string, string> = {
   failed: "border-rose-500/30 bg-rose-500/10 text-rose-400",
 };
 
-export function CameraCard({ camera, role, onEdit }: {
+function CameraCardInner({ camera, role, onEdit }: {
   camera: ListedCamera;
   role?: string;
-  onEdit: () => void;
+  onEdit: (id: string) => void;
 }) {
   const { control, remove } = useCameraMutations();
   const [confirmation, setConfirmation] = useState<"stop" | "delete" | null>(null);
@@ -105,7 +105,7 @@ export function CameraCard({ camera, role, onEdit }: {
           <Button size="sm" variant="outline" disabled={isBusy || status === "stopped"} onClick={() => { control.reset(); setConfirmation("stop"); }}>
             <Square className="mr-1 h-4 w-4" />Stop
           </Button>
-          <Button size="sm" variant="outline" disabled={isBusy} onClick={onEdit}><Settings className="mr-1 h-4 w-4" />Edit</Button>
+          <Button size="sm" variant="outline" disabled={isBusy} onClick={() => onEdit(camera.id)}><Settings className="mr-1 h-4 w-4" />Edit</Button>
           {role === "admin" && <Button size="sm" variant="destructive" disabled={isBusy} onClick={() => { remove.reset(); setConfirmation("delete"); }}>
             <Trash2 className="mr-1 h-4 w-4" />Delete
           </Button>}
@@ -133,3 +133,5 @@ export function CameraCard({ camera, role, onEdit }: {
     </Card>
   );
 }
+
+export const CameraCard = memo(CameraCardInner);
