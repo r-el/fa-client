@@ -1,7 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { cameraError, camerasService } from "@/features/cameras/api/cameras";
+import { cameraKeys, dashboardKeys } from "@/lib/query-keys";
 import type { CameraAction, CameraDetails, CameraInput, CameraUpdate } from "@/features/cameras/api/cameras";
+
+export { cameraKeys };
 
 const fetchCameras = async (signal: AbortSignal): Promise<CameraDetails[]> => {
   return camerasService.list(signal);
@@ -9,7 +12,7 @@ const fetchCameras = async (signal: AbortSignal): Promise<CameraDetails[]> => {
 
 export function useCameras() {
   return useQuery({
-    queryKey: ["cameras"],
+    queryKey: cameraKeys.all,
     queryFn: ({ signal }) => fetchCameras(signal),
     staleTime: 10_000,
     refetchInterval: 15_000,
@@ -19,7 +22,7 @@ export function useCameras() {
 
 export function useCameraDetails(id?: string) {
   return useQuery({
-    queryKey: ["cameras", "detail", id],
+    queryKey: cameraKeys.detail(id),
     queryFn: ({ signal }) => camerasService.get(id!, signal),
     enabled: Boolean(id),
     staleTime: 0,
@@ -29,10 +32,10 @@ export function useCameraDetails(id?: string) {
 export function useCameraMutations() {
   const client = useQueryClient();
   const invalidate = async () => {
-    await client.cancelQueries({ queryKey: ["cameras"] });
+    await client.cancelQueries({ queryKey: cameraKeys.all });
     await Promise.all([
-      client.invalidateQueries({ queryKey: ["cameras"] }),
-      client.invalidateQueries({ queryKey: ["dashboard"] }),
+      client.invalidateQueries({ queryKey: cameraKeys.all }),
+      client.invalidateQueries({ queryKey: dashboardKeys.all }),
     ]);
   };
   const onError = (error: unknown) => toast.error(cameraError(error));

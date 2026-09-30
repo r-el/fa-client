@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import api from "@/services/api";
 import { getAlertSummary } from "@/features/alerts/api/alerts";
+import { dashboardKeys } from "@/lib/query-keys";
 
 export type DashboardStats = {
   activeCameras: number;
@@ -17,7 +18,7 @@ const fetchDashboardStats = async (): Promise<DashboardStats> => {
 
 export const useGetStats = () => {
   return useQuery({
-    queryKey: ["dashboard", "stats"],
+    queryKey: dashboardKeys.stats(),
     queryFn: fetchDashboardStats,
     staleTime: 2 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
@@ -26,7 +27,7 @@ export const useGetStats = () => {
 
 export const useGetStatsOverTime = (days = 7) => {
   return useQuery({
-    queryKey: ["alerts", "chart", days],
+    queryKey: dashboardKeys.chart(days),
     queryFn: async ({ signal }) => {
       const since = new Date();
       since.setUTCHours(0, 0, 0, 0);

@@ -34,7 +34,10 @@ describe("showAlertToast", () => {
   it("shows a warning toast for a regular watchlist identity match", () => {
     showAlertToast(buildAlert());
     expect(toast.warning).toHaveBeenCalledOnce();
-    const [title, options] = toast.warning.mock.calls[0];
+    const [title, options] = vi.mocked(toast.warning).mock.calls[0] as unknown as [
+      string,
+      { description: string; action: { label: string } },
+    ];
     expect(title).toBe("Identity Match — Front Door");
     expect(options.description).toContain("Target Ariel");
     expect(options.description).toContain("85%");
@@ -58,13 +61,16 @@ describe("showAlertToast", () => {
       alertKind: "rule", ruleKind: "line_crossing",
       targetLabel: null, similarity: null,
     }));
-    const [title] = toast.warning.mock.calls[0];
+    const [title] = vi.mocked(toast.warning).mock.calls[0] as [string];
     expect(title).toBe("Line Crossing — Front Door");
   });
 
   it("handles missing camera name and target label gracefully", () => {
     showAlertToast(buildAlert({ cameraName: null, targetLabel: null, similarity: null }));
-    const [title, options] = toast.warning.mock.calls[0];
+    const [title, options] = vi.mocked(toast.warning).mock.calls[0] as unknown as [
+      string,
+      { description: string },
+    ];
     expect(title).toBe("Identity Match — Camera");
     expect(options.description).toContain("Unknown");
   });

@@ -5,10 +5,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { EmptyState } from "@/components/ui/empty-state";
 import { useWatchlists, useWatchlistMutations, useWatchlistTargets } from "@/features/watchlists/hooks/use-watchlists";
 import { ConfirmWatchlistDelete, EnrollmentBadge, WatchlistError } from "@/features/watchlists/components/WatchlistFeedback";
 import { TargetForm, WatchlistForm } from "@/features/watchlists/components/WatchlistForms";
 import { EnrollmentBatchProgress, TargetDetails } from "@/features/watchlists/components/TargetDetails";
+import { formatRatioAsPercent } from "@/features/watchlists/constants";
 import { hasPendingEnrollment } from "@/features/watchlists/utils";
 import type { Target, Watchlist } from "@/features/watchlists/types";
 
@@ -43,7 +45,13 @@ function TargetsPanel({ watchlist }: { watchlist: Watchlist }) {
     {targets.isError && <WatchlistError error={targets.error} retry={() => { void targets.refetch(); }} />}
     {targets.isPending && <div role="status" aria-label="Loading targets" className="grid gap-4 sm:grid-cols-2"><Skeleton className="h-48 rounded-2xl" /><Skeleton className="h-48 rounded-2xl" /></div>}
     {targets.data?.some(hasPendingEnrollment) && <p role="status" className="text-xs text-muted-foreground">Enrollment in progress — updating automatically.</p>}
-    {targets.data?.length === 0 && <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-white/10 bg-white/5 p-10 text-center text-muted-foreground"><Users className="h-8 w-8" /><p>No targets yet. Add a target and reference photos to get started.</p></div>}
+    {targets.data?.length === 0 && (
+      <EmptyState
+        icon={Users}
+        title="No targets yet."
+        description="Add a target and reference photos to get started."
+      />
+    )}
     <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
       {targets.data?.map((target) => <Card key={target.id} className="min-w-0 rounded-2xl border-white/10 bg-white/5 backdrop-blur-xl">
         <CardContent className="space-y-4 p-5">
@@ -92,7 +100,13 @@ function WatchlistsWorkspace() {
     </div>
     {watchlists.isError && <WatchlistError error={watchlists.error} retry={() => { void watchlists.refetch(); }} />}
     {watchlists.isPending && <div role="status" aria-label="Loading watchlists"><Skeleton className="h-64 rounded-2xl" /></div>}
-    {watchlists.data?.length === 0 && <div className="flex flex-col items-center gap-4 rounded-2xl border border-dashed border-white/10 bg-white/5 p-12 text-center text-muted-foreground"><ListChecks className="h-10 w-10" /><p>No watchlists yet. Create one to organize your targets.</p></div>}
+    {watchlists.data?.length === 0 && (
+      <EmptyState
+        icon={ListChecks}
+        title="No watchlists yet."
+        description="Create one to organize your targets."
+      />
+    )}
     {Boolean(watchlists.data?.length) && <div className="grid items-start gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
       <aside className="space-y-3" aria-label="Watchlists">
         {watchlists.data?.map((watchlist) => <Card key={watchlist.id} className={`rounded-2xl border bg-white/5 ${selected?.id === watchlist.id ? "border-primary/50" : "border-white/10"}`}>
@@ -100,7 +114,9 @@ function WatchlistsWorkspace() {
             <button type="button" onClick={() => setSelectedId(watchlist.id)} aria-pressed={selected?.id === watchlist.id} className="w-full rounded-lg text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
               <span className="block break-words font-medium">{watchlist.name}</span><span className="mt-1 block text-xs capitalize text-muted-foreground">{watchlist.kind} · {watchlist.target_type}</span>
             </button>
-            <p className="mt-3 text-xs text-muted-foreground">Face: {watchlist.face_match_threshold_ratio} · Appearance: {watchlist.appearance_match_threshold_ratio}</p>
+            <p className="mt-3 text-xs text-muted-foreground">
+              Face: {formatRatioAsPercent(watchlist.face_match_threshold_ratio)} · Appearance: {formatRatioAsPercent(watchlist.appearance_match_threshold_ratio)}
+            </p>
             <div className="mt-3 flex gap-2"><Button variant="ghost" size="sm" onClick={() => setEditor({ watchlist })} aria-label={`Edit watchlist ${watchlist.name}`}><Pencil />Edit</Button><Button variant="ghost" size="sm" className="text-rose-400" onClick={() => { mutations.deleteWatchlist.reset(); setDeleting(watchlist); }} aria-label={`Delete watchlist ${watchlist.name}`}><Trash2 />Delete</Button></div>
           </CardContent>
         </Card>)}

@@ -25,7 +25,7 @@ export const getCameraById = async (
 
 export const getCameraStatus = async (
   id: string
-): Promise<{ success: boolean; data?: any; error?: string }> => {
+): Promise<{ success: boolean; data?: unknown; error?: string }> => {
   const response = await api.get(`/cameras/${id}/status`);
   return response.data;
 };
@@ -41,7 +41,7 @@ export const createCamera = async (cameraData: {
 export const assignCameraToUser = async (
   cameraId: string,
   userId: string
-): Promise<{ success: boolean; data?: any; error?: string }> => {
+): Promise<{ success: boolean; data?: unknown; error?: string }> => {
   const response = await api.post(`/cameras/${cameraId}/assign`, { user_id: userId });
   return response.data;
 };
@@ -56,7 +56,7 @@ export const removeCameraAssignment = async (
 
 export const getCameraAssignments = async (
   cameraId: string
-): Promise<{ success: boolean; data?: any[]; error?: string }> => {
+): Promise<{ success: boolean; data?: unknown[]; error?: string }> => {
   const response = await api.get(`/cameras/${cameraId}/assignments`);
   return response.data;
 };

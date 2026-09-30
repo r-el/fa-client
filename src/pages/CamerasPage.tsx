@@ -6,6 +6,7 @@ import { CameraCard } from "@/features/cameras/components/CameraCard";
 import { CameraEditor } from "@/features/cameras/components/CameraEditor";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
 import { cameraError } from "@/features/cameras/api/cameras";
 
 export default function CamerasPage() {
@@ -36,11 +37,12 @@ export default function CamerasPage() {
         {cameras.isLoading ? Array.from({ length: 6 }, (_, index) => (
           <Skeleton key={index} className="h-64 w-full rounded-2xl bg-white/5" />
         )) : cameras.data?.length === 0 ? (
-          <div className="col-span-full flex min-h-64 flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-white/10 bg-white/5 p-6 text-center text-muted-foreground">
-            <Video className="h-8 w-8 opacity-50" aria-hidden="true" />
-            <p>No cameras are available.</p>
-            <p className="text-sm">{canCreate ? "Add a camera to start monitoring." : "Ask an administrator to assign cameras to your account."}</p>
-          </div>
+          <EmptyState
+            className="col-span-full"
+            icon={Video}
+            title="No cameras are available."
+            description={canCreate ? "Add a camera to start monitoring." : "Ask an administrator to assign cameras to your account."}
+          />
         ) : cameras.data?.map((camera) => (
           <CameraCard key={camera.id} camera={camera} role={user?.role} onEdit={() => setEditor({ id: camera.id })} />
         ))}

@@ -1,15 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { watchlistsService } from "@/features/watchlists/api/watchlists";
 import { hasPendingEnrollment } from "@/features/watchlists/utils";
+import { watchlistKeys } from "@/lib/query-keys";
 import type { TargetSpecification, TargetUpdate, WatchlistInput, WatchlistUpdate } from "@/features/watchlists/types";
 
-const POLL_INTERVAL_MS = 2500;
+export { watchlistKeys };
 
-export const watchlistKeys = {
-  all: ["watchlists"] as const,
-  targets: (watchlistId: string) => ["targets", watchlistId] as const,
-  batch: (batchId: string) => ["enrollment-batches", batchId] as const,
-};
+const POLL_INTERVAL_MS = 2500;
 
 export function useWatchlists() {
   return useQuery({ queryKey: watchlistKeys.all, queryFn: ({ signal }) => watchlistsService.list(signal) });

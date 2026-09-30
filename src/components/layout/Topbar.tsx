@@ -2,11 +2,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, User, RefreshCw, Shield, LogOut } from "lucide-react";
+import { Search, User, RefreshCw, Shield, LogOut, Volume2, VolumeX } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Icon } from "@/components/ui/icon";
 import { useAuth } from "@/context/AuthContext";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useUiStore } from "@/stores/ui-store";
 
 const createTitle = (path: string) => {
   if (path === "/" || path.length <= 1) return "Mission Overview";
@@ -23,6 +24,8 @@ export function Topbar() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const title = createTitle(pathname);
+  const isSoundEnabled = useUiStore((state) => state.isSoundEnabled);
+  const toggleSound = useUiStore((state) => state.toggleSound);
 
   const handleLogout = () => {
     logout();
@@ -83,6 +86,18 @@ export function Topbar() {
           </div>
           <div className="glow-ring rounded-2xl border border-white/10 bg-white/5 p-2">
             <ThemeToggle />
+          </div>
+          <div className="glow-ring rounded-2xl border border-white/10 bg-white/5 p-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleSound}
+              className="h-8 w-8 rounded-lg hover:bg-white/10 transition-all"
+              title={isSoundEnabled ? "Mute alert audio" : "Unmute alert audio"}
+              aria-label={isSoundEnabled ? "Mute alert audio" : "Unmute alert audio"}
+            >
+              <Icon icon={isSoundEnabled ? Volume2 : VolumeX} className="h-4 w-4" />
+            </Button>
           </div>
           <Popover>
             <PopoverTrigger asChild>
