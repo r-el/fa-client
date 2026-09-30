@@ -1,4 +1,5 @@
 import { Settings } from "lucide-react";
+import { EmptyState } from "@/components/ui/empty-state";
 
 export default function SettingsPage() {
   return (
@@ -10,11 +11,11 @@ export default function SettingsPage() {
         </p>
       </div>
 
-      <div className="flex min-h-64 flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-white/10 bg-white/5 p-6 text-center text-muted-foreground">
-        <Settings className="h-8 w-8 opacity-50" aria-hidden="true" />
-        <p>No settings are currently available.</p>
-        <p className="text-sm">Future configurations will be added here.</p>
-      </div>
+      <EmptyState
+        icon={Settings}
+        title="No settings are currently available."
+        description="Future configurations will be added here."
+      />
     </div>
   );
 }
