@@ -6,6 +6,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { QuickCategories } from "./QuickCategories";
+import {
+  MAX_CAMERA_NAME_LENGTH,
+  MAX_CAMERA_WATCHLISTS,
+  MAX_CREDENTIAL_PASSWORD_LENGTH,
+  MAX_CREDENTIAL_USERNAME_LENGTH,
+  MAX_DETECTION_CLASSES,
+  MAX_DETECTION_CLASS_LENGTH,
+  MAX_LOCATION_LENGTH,
+  MAX_SOURCE_URL_LENGTH,
+} from "@/features/cameras/constants";
 
 export function CameraEditor({ cameraId, onClose }: { cameraId?: string; onClose: () => void }) {
   const details = useCameraDetails(cameraId);
@@ -53,9 +63,16 @@ function CameraForm({ camera, onClose, onSaving }: {
     setValidationError("");
     const detectionClasses = [...new Set(classes.split(",").map((value) => value.trim()).filter(Boolean))];
     if (!name.trim()) return setValidationError("Camera name is required.");
-    if (watchlistIds.length > 50) return setValidationError("Select at most 50 watchlists.");
-    if (detectionClasses.length > 80 || detectionClasses.some((value) => value.length > 50)) {
-      return setValidationError("Use at most 80 detection classes, each no longer than 50 characters.");
+    if (watchlistIds.length > MAX_CAMERA_WATCHLISTS) {
+      return setValidationError(`Select at most ${MAX_CAMERA_WATCHLISTS} watchlists.`);
+    }
+    if (
+      detectionClasses.length > MAX_DETECTION_CLASSES ||
+      detectionClasses.some((value) => value.length > MAX_DETECTION_CLASS_LENGTH)
+    ) {
+      return setValidationError(
+        `Use at most ${MAX_DETECTION_CLASSES} detection classes, each no longer than ${MAX_DETECTION_CLASS_LENGTH} characters.`
+      );
     }
     try {
       const parsed = new URL(sourceUrl.trim());
@@ -98,13 +115,13 @@ function CameraForm({ camera, onClose, onSaving }: {
     <form onSubmit={(event) => void submit(event)} className="space-y-4">
       <fieldset disabled={isPending} className="space-y-4">
         <label className="block space-y-1 text-sm">Name
-          <Input required maxLength={100} value={name} onChange={(event) => setName(event.target.value)} />
+          <Input required maxLength={MAX_CAMERA_NAME_LENGTH} value={name} onChange={(event) => setName(event.target.value)} />
         </label>
         <label className="block space-y-1 text-sm">Source URL
-          <Input required maxLength={500} placeholder="rtsp://camera-host:554/stream" autoComplete="off" value={sourceUrl} onChange={(event) => setSourceUrl(event.target.value)} />
+          <Input required maxLength={MAX_SOURCE_URL_LENGTH} placeholder="rtsp://camera-host:554/stream" autoComplete="off" value={sourceUrl} onChange={(event) => setSourceUrl(event.target.value)} />
         </label>
         <label className="block space-y-1 text-sm">Location
-          <Input maxLength={200} value={location} onChange={(event) => setLocation(event.target.value)} />
+          <Input maxLength={MAX_LOCATION_LENGTH} value={location} onChange={(event) => setLocation(event.target.value)} />
         </label>
         <label className="block space-y-1 text-sm">Credentials
           <select className="w-full rounded-md border bg-background p-2" value={credentialMode}
@@ -117,10 +134,10 @@ function CameraForm({ camera, onClose, onSaving }: {
         {camera && <p className="text-xs text-muted-foreground">{camera.has_password ? "A password is stored; it is never returned by the server." : "No password is stored."}</p>}
         {credentialMode === "replace" && <div className="grid gap-3 sm:grid-cols-2">
           <label className="space-y-1 text-sm">Username
-            <Input required maxLength={100} autoComplete="off" value={username} onChange={(event) => setUsername(event.target.value)} />
+            <Input required maxLength={MAX_CREDENTIAL_USERNAME_LENGTH} autoComplete="off" value={username} onChange={(event) => setUsername(event.target.value)} />
           </label>
           <label className="space-y-1 text-sm">Password
-            <Input required type="password" maxLength={200} autoComplete="new-password" value={password} onChange={(event) => setPassword(event.target.value)} />
+            <Input required type="password" maxLength={MAX_CREDENTIAL_PASSWORD_LENGTH} autoComplete="new-password" value={password} onChange={(event) => setPassword(event.target.value)} />
           </label>
         </div>}
         <CameraWatchlistSelector watchlistIds={watchlistIds} onChange={setWatchlistIds} disabled={isPending} />

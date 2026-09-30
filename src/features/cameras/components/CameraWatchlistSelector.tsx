@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useWatchlists } from "@/features/watchlists/hooks/use-watchlists";
 import { cameraError } from "@/features/cameras/api/cameras";
+import { MAX_CAMERA_WATCHLISTS } from "@/features/cameras/constants";
 
 interface CameraWatchlistSelectorProps {
   watchlistIds: string[];
@@ -17,7 +18,7 @@ export function CameraWatchlistSelector({
 
   return (
     <fieldset className="space-y-2" disabled={disabled}>
-      <legend className="text-sm font-medium">Watchlists ({watchlistIds.length}/50)</legend>
+      <legend className="text-sm font-medium">Watchlists ({watchlistIds.length}/{MAX_CAMERA_WATCHLISTS})</legend>
       <p className="text-xs text-muted-foreground">
         Select the watchlists this camera should identify against. None means no watchlist matching.
       </p>
@@ -45,7 +46,7 @@ export function CameraWatchlistSelector({
             <input
               type="checkbox"
               checked={watchlistIds.includes(watchlist.id)}
-              disabled={!watchlistIds.includes(watchlist.id) && watchlistIds.length >= 50}
+              disabled={!watchlistIds.includes(watchlist.id) && watchlistIds.length >= MAX_CAMERA_WATCHLISTS}
               onChange={(event) =>
                 onChange((current) =>
                   event.target.checked
