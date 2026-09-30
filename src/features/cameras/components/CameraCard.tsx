@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
 
 type ListedCamera = CameraDetails;
 const REQUEST_CONFIRMATION_MS = 30_000;
@@ -74,7 +75,27 @@ function CameraCardInner({ camera, role, onEdit }: {
       <CardHeader>
         <div className="flex items-center justify-between gap-2">
           <Video className="h-6 w-6 text-primary" aria-hidden="true" />
-          <Badge variant="outline" className={statusStyles[status] ?? statusStyles.stopped}>{status || "unknown"}</Badge>
+          <Badge variant="outline" className={cn("gap-1.5", statusStyles[status] ?? statusStyles.stopped)}>
+            {status === "running" && (
+              <span className="relative flex h-2 w-2" aria-hidden="true">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+              </span>
+            )}
+            {(status === "starting" || status === "reconnecting") && (
+              <span className="relative flex h-2 w-2" aria-hidden="true">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-amber-500" />
+              </span>
+            )}
+            {status === "failed" && (
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-rose-500" aria-hidden="true" />
+            )}
+            {status === "stopped" && (
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-muted-foreground/60" aria-hidden="true" />
+            )}
+            {status || "unknown"}
+          </Badge>
         </div>
         <CardTitle className="break-words pt-2 text-xl">{camera.name}</CardTitle>
         <p className="text-sm text-muted-foreground">{camera.location || "No location specified"}</p>

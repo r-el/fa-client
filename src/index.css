@@ -37,10 +37,18 @@
     --shadow: 229 70% 4%;
   }
 
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
   body {
-    font-feature-settings: "ss02" on, "ss03" on;
+    font-feature-settings: "ss02" on, "ss03" on, "cv01" on, "cv02" on;
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 }
 
@@ -55,7 +63,12 @@ body {
 }
 
 .glass-panel {
-  @apply rounded-[28px] border border-white/10 bg-white/5 shadow-[0_25px_55px_rgba(15,23,42,0.35)] backdrop-blur-xl;
+  @apply rounded-[28px] border border-white/10 bg-white/5 shadow-[0_25px_55px_rgba(15,23,42,0.35)] backdrop-blur-xl transition-all duration-300;
+}
+
+.glass-panel:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 30px 60px rgba(15, 23, 42, 0.45), 0 0 25px rgba(139, 92, 246, 0.08);
 }
 
 .glow-ring {

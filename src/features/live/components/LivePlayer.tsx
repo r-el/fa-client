@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ImageIcon, RefreshCw, Video } from "lucide-react";
+import { ImageIcon, RefreshCw } from "lucide-react";
 import { Badge } from "../../../components/ui/badge";
 import { Button } from "../../../components/ui/button";
 import { useLiveVideo } from "./use-live-video";
@@ -19,8 +19,22 @@ export function LivePlayer({ cameraId, cameraName }: { cameraId: string; cameraN
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <Badge variant="outline" className={isSnapshot ? "border-amber-400/30 text-amber-400" : "border-primary/30 text-primary"}>
-          {isSnapshot ? <ImageIcon className="mr-2 h-3 w-3" /> : <Video className="mr-2 h-3 w-3" />}
+        <Badge
+          variant="outline"
+          className={
+            isSnapshot
+              ? "gap-1.5 border-amber-400/30 bg-amber-400/10 text-amber-400"
+              : "gap-1.5 border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
+          }
+        >
+          {isSnapshot ? (
+            <ImageIcon className="h-3 w-3" />
+          ) : (
+            <span className="relative flex h-2 w-2" aria-hidden="true">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+            </span>
+          )}
           {isSnapshot ? "JPEG snapshots — not live video" : "Live stream"}
         </Badge>
         <div className="flex flex-wrap gap-2">

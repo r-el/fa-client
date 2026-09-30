@@ -77,7 +77,22 @@ export function RealtimeSync() {
   }, [isAuthenticated, user?.id, queryClient]);
 
   if (!isAuthenticated) return null;
-  return <p role="status" className={`text-xs ${connected ? "text-emerald-400" : "text-amber-400"}`}>
-    {connected ? "Live updates connected" : "Live updates disconnected — camera polling and manual refresh remain available."}
-  </p>;
+
+  return (
+    <div className="flex items-center gap-2 text-xs">
+      <span className="relative flex h-2 w-2" aria-hidden="true">
+        {connected ? (
+          <>
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+          </>
+        ) : (
+          <span className="relative inline-flex h-2 w-2 rounded-full bg-amber-400" />
+        )}
+      </span>
+      <p role="status" className={connected ? "text-emerald-400/90 font-medium" : "text-amber-400/90 font-medium"}>
+        {connected ? "Live updates connected" : "Live updates disconnected — camera polling and manual refresh remain available."}
+      </p>
+    </div>
+  );
 }
