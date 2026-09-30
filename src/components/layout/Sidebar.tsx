@@ -7,6 +7,8 @@ import { cn } from "@/lib/utils";
 import { Icon } from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
+import { useAlertSummary } from "@/features/alerts/hooks/use-alerts";
+import { useGetStats } from "@/features/dashboard/hooks/use-dashboard";
 
 const navItems = [
   { href: "/", label: "Overview", icon: Home },
@@ -25,6 +27,33 @@ export function Sidebar() {
   const { user } = useAuth();
   const { pathname } = useLocation();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const { data: alertSummary } = useAlertSummary();
+  const { data: stats, isLoading: isStatsLoading, isError: isStatsError } = useGetStats();
+
+  const unreadAlertsCount = alertSummary?.unacknowledged_count ?? 0;
+  const isHealthy = stats?.systemStatus === "online" || stats?.systemStatus === "operational";
+  const isOffline = stats?.systemStatus === "offline";
+  const hasNoCameras = stats?.totalCameras === 0;
+
+  const healthIndicatorColor = isStatsLoading
+    ? "bg-muted-foreground/40 shadow-none"
+    : isStatsError || isOffline
+    ? "bg-rose-400 shadow-[0_0_12px_rgba(248,113,113,0.65)]"
+    : isHealthy
+    ? "bg-emerald-400 shadow-[0_0_12px_rgba(74,222,128,0.65)]"
+    : "bg-amber-400 shadow-[0_0_12px_rgba(251,191,36,0.65)]";
+
+  const healthStatusText = isStatsLoading
+    ? "Checking system status…"
+    : isStatsError
+    ? "Status unavailable."
+    : isOffline
+    ? "System is offline."
+    : hasNoCameras
+    ? "No cameras configured."
+    : isHealthy
+    ? "All sensors are operating within nominal parameters."
+    : `System status: ${stats?.systemStatus}.`;
 
   return (
     <aside
@@ -98,16 +127,16 @@ export function Sidebar() {
               {!isCollapsed && (
                 <>
                   <span className="text-base">{item.label}</span>
-                  {item.label === "Alerts" && (
-                    <span className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-destructive/80 text-[11px] font-semibold text-destructive-foreground">
-                      3
+                  {item.label === "Alerts" && unreadAlertsCount > 0 && (
+                    <span className="ml-auto flex h-6 min-w-6 px-1.5 shrink-0 items-center justify-center rounded-full bg-destructive/80 text-[11px] font-semibold text-destructive-foreground">
+                      {unreadAlertsCount > 99 ? "99+" : unreadAlertsCount}
                     </span>
                   )}
                 </>
               )}
-              {isCollapsed && item.label === "Alerts" && (
-                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive/80 text-[9px] font-semibold text-destructive-foreground">
-                  3
+              {isCollapsed && item.label === "Alerts" && unreadAlertsCount > 0 && (
+                <span className="absolute -top-1 -right-1 flex h-4 min-w-4 px-1 items-center justify-center rounded-full bg-destructive/80 text-[9px] font-semibold text-destructive-foreground">
+                  {unreadAlertsCount > 99 ? "99+" : unreadAlertsCount}
                 </span>
               )}
             </Link>
@@ -125,10 +154,15 @@ export function Sidebar() {
           >
             <p className="mb-2 flex items-center justify-between text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground/80">
               System Health
-              <span className="flex h-2.5 w-2.5 items-center justify-center rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(74,222,128,0.65)]" />
+              <span
+                className={cn(
+                  "flex h-2.5 w-2.5 items-center justify-center rounded-full",
+                  healthIndicatorColor
+                )}
+              />
             </p>
             <p className="text-sm text-muted-foreground">
-              All sensors are operating within nominal parameters.
+              {healthStatusText}
             </p>
           </motion.div>
 

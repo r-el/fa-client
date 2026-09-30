@@ -4,7 +4,13 @@ import { useGetStatsOverTime } from "@/features/dashboard/hooks/use-dashboard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useMemo } from "react";
 
-const CustomTooltip = ({ active, payload, label }: any) => {
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: Array<{ value: number }>;
+  label?: string;
+}
+
+const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
   if (active && payload && payload.length && label) {
     const date = new Date(label);
     const formattedDate = isNaN(date.getTime())
@@ -39,7 +45,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 export function AlertsChart() {
   const { theme } = useTheme();
-  const { data: chartData, isLoading } = useGetStatsOverTime(7);
+  const { data: chartData, isLoading, isError } = useGetStatsOverTime(7);
 
   const formatDate = (dateString: string) => {
     if (!dateString) return "";
@@ -62,10 +68,22 @@ export function AlertsChart() {
     return <Skeleton className="h-[350px] w-full rounded-2xl bg-white/5" />;
   }
 
-  if (!chartData || chartData.length === 0) {
+  if (isError) {
     return (
-      <div className="flex h-[350px] items-center justify-center rounded-2xl border border-white/5 bg-white/5">
-        <p className="text-sm text-muted-foreground">No data available for this period.</p>
+      <div className="flex h-[350px] flex-col items-center justify-center gap-2 rounded-2xl border border-white/5 bg-white/5 p-6 text-center">
+        <p className="text-sm font-medium text-destructive">Failed to load alert activity</p>
+        <p className="text-xs text-muted-foreground">Historical alert data is currently unavailable.</p>
+      </div>
+    );
+  }
+
+  const hasAlerts = Boolean(chartData && chartData.length > 0 && chartData.some((d) => d.count > 0));
+
+  if (!chartData || chartData.length === 0 || !hasAlerts) {
+    return (
+      <div className="flex h-[350px] flex-col items-center justify-center gap-2 rounded-2xl border border-white/5 bg-white/5 p-6 text-center">
+        <p className="text-sm font-medium text-foreground">No alerts recorded</p>
+        <p className="text-xs text-muted-foreground">Alert activity will appear here once events are detected by cameras.</p>
       </div>
     );
   }

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { io } from "socket.io-client";
 import { useAuth } from "@/context/AuthContext";
-import type { CameraDetails, CameraStatus } from "@/features/cameras/api/cameras";
+import type { CameraDetails } from "@/features/cameras/api/cameras";
 
 import { showAlertToast, type Notification } from "./notificationToast";
 
