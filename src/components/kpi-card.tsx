@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useSpring, useTransform, motion } from "framer-motion";
+import { useSpring, useTransform, m } from "framer-motion";
 import { ArrowUpRight, type LucideIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
@@ -60,9 +60,9 @@ export function KpiCard({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <motion.div className="text-4xl font-bold tracking-tighter text-foreground" suppressHydrationWarning>
+        <m.div className="text-4xl font-bold tracking-tighter text-foreground" suppressHydrationWarning>
           {animatedValue}
-        </motion.div>
+        </m.div>
         <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
           {trend && (
             <span
