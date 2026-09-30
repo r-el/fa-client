@@ -1,12 +1,17 @@
 export interface ICamera {
   id: string;
   name: string;
-  connection_string: string;
-  created_by: string;
+  source_url?: string;
+  connection_string?: string;
+  created_by?: string | null;
   specter_camera_id?: string | null;
   organization_id?: string | null;
-  created_at: string;
-  updated_at: string;
+  location?: string | null;
+  is_enabled?: boolean;
+  desired_state?: "running" | "stopped";
+  live_status?: string | null;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface CameraFilters {
