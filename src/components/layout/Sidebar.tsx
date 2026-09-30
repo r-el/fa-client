@@ -1,14 +1,13 @@
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Home, Bell, Video, X, Shield, Menu, Users, Settings } from "lucide-react";
-import { useState } from "react";
-
 import { cn } from "@/lib/utils";
 import { Icon } from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
 import { useAlertSummary } from "@/features/alerts/hooks/use-alerts";
 import { useGetStats } from "@/features/dashboard/hooks/use-dashboard";
+import { useUiStore } from "@/stores/ui-store";
 
 const navItems = [
   { href: "/", label: "Overview", icon: Home },
@@ -26,7 +25,8 @@ const variants = {
 export function Sidebar() {
   const { user } = useAuth();
   const { pathname } = useLocation();
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const isCollapsed = useUiStore((state) => state.isSidebarCollapsed);
+  const toggleSidebar = useUiStore((state) => state.toggleSidebar);
   const { data: alertSummary } = useAlertSummary();
   const { data: stats, isLoading: isStatsLoading, isError: isStatsError } = useGetStats();
 
@@ -85,8 +85,9 @@ export function Sidebar() {
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => setIsCollapsed(!isCollapsed)}
+          onClick={toggleSidebar}
           className={cn("h-8 w-8 shrink-0", !isCollapsed && "ml-auto")}
+          aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
           <Icon icon={isCollapsed ? Menu : X} className="h-4 w-4" />
         </Button>

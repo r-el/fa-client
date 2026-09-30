@@ -1,4 +1,5 @@
 import { toast } from "sonner";
+import { useUiStore } from "@/stores/ui-store";
 
 // -----------------------------------------------------------------------
 // Types — match the server's AlertNotification shape (notifications/types.ts)
@@ -73,7 +74,35 @@ const LEVEL_MAP: Record<NotificationLevel, ToastLevel> = {
   info: "info",
 };
 
+function playNotificationTone(level: NotificationLevel): void {
+  if (typeof window === "undefined") return;
+  const AudioContextClass =
+    window.AudioContext ||
+    (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+  if (!AudioContextClass) return;
+
+  try {
+    const ctx = new AudioContextClass();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(level === "critical" ? 880 : 587.33, ctx.currentTime);
+    gain.gain.setValueAtTime(0.08, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.25);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.25);
+  } catch {
+    // Autoplay or audio context permission error — safely ignore
+  }
+}
+
 export function showAlertToast(event: AlertNotification): void {
+  if (useUiStore.getState().isSoundEnabled) {
+    playNotificationTone(event.level);
+  }
+
   const level = LEVEL_MAP[event.level];
   toast[level](alertTitle(event), {
     description: alertDescription(event),
