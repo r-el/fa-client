@@ -50,6 +50,8 @@ export function AlertsTable({ limit }: AlertsTableProps) {
         <p role="status" className="text-sm text-muted-foreground">
           {query.isLoading
             ? "Loading alerts…"
+            : query.isError && alerts.length === 0
+            ? "Failed to load alerts"
             : alerts.length === 0
             ? isPreview ? "No recent alerts" : "No alerts found"
             : `${alerts.length} alerts loaded${isPreview ? " · newest first" : ""}`}

@@ -1,6 +1,6 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Home, Bell, Video, X, Shield, Menu, Users, Settings, LogOut } from "lucide-react";
+import { Home, Bell, Video, X, Shield, Menu, Users, Settings } from "lucide-react";
 import { useState } from "react";
 
 import { cn } from "@/lib/utils";
@@ -24,21 +24,36 @@ const variants = {
 };
 
 export function Sidebar() {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
+  const { user } = useAuth();
   const { pathname } = useLocation();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const { data: alertSummary } = useAlertSummary();
-  const { data: stats } = useGetStats();
+  const { data: stats, isLoading: isStatsLoading, isError: isStatsError } = useGetStats();
 
   const unreadAlertsCount = alertSummary?.unacknowledged_count ?? 0;
+  const isHealthy = stats?.systemStatus === "online" || stats?.systemStatus === "operational";
   const isOffline = stats?.systemStatus === "offline";
-  const hasNoCameras = (stats?.totalCameras ?? 0) === 0;
+  const hasNoCameras = stats?.totalCameras === 0;
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
+  const healthIndicatorColor = isStatsLoading
+    ? "bg-muted-foreground/40 shadow-none"
+    : isStatsError || isOffline
+    ? "bg-rose-400 shadow-[0_0_12px_rgba(248,113,113,0.65)]"
+    : isHealthy
+    ? "bg-emerald-400 shadow-[0_0_12px_rgba(74,222,128,0.65)]"
+    : "bg-amber-400 shadow-[0_0_12px_rgba(251,191,36,0.65)]";
+
+  const healthStatusText = isStatsLoading
+    ? "Checking system status…"
+    : isStatsError
+    ? "Status unavailable."
+    : isOffline
+    ? "System is offline."
+    : hasNoCameras
+    ? "No cameras configured."
+    : isHealthy
+    ? "All sensors are operating within nominal parameters."
+    : `System status: ${stats?.systemStatus}.`;
 
   return (
     <aside
@@ -142,18 +157,12 @@ export function Sidebar() {
               <span
                 className={cn(
                   "flex h-2.5 w-2.5 items-center justify-center rounded-full",
-                  isOffline
-                    ? "bg-rose-400 shadow-[0_0_12px_rgba(248,113,113,0.65)]"
-                    : "bg-emerald-400 shadow-[0_0_12px_rgba(74,222,128,0.65)]"
+                  healthIndicatorColor
                 )}
               />
             </p>
             <p className="text-sm text-muted-foreground">
-              {isOffline
-                ? "System is offline."
-                : hasNoCameras
-                ? "No cameras configured."
-                : "All sensors are operating within nominal parameters."}
+              {healthStatusText}
             </p>
           </motion.div>
 
@@ -164,38 +173,17 @@ export function Sidebar() {
             <Icon icon={Settings} className="h-5 w-5" />
             <span>Settings</span>
           </Link>
-
-          <Button
-            variant="ghost"
-            onClick={handleLogout}
-            className="mt-2 flex w-full items-center justify-start gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-muted-foreground transition-all hover:border-destructive/30 hover:bg-destructive/15 hover:text-destructive h-auto cursor-pointer"
-          >
-            <Icon icon={LogOut} className="h-5 w-5" />
-            <span>Log out</span>
-          </Button>
         </>
       )}
 
       {isCollapsed && (
-        <>
-          <Link
-            to="/settings"
-            className="mt-6 flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-muted-foreground transition-all hover:bg-white/10 hover:text-foreground"
-            title="Settings"
-          >
-            <Icon icon={Settings} className="h-5 w-5" />
-          </Link>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleLogout}
-            className="mt-2 flex h-11 w-full items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-muted-foreground transition-all hover:border-destructive/30 hover:bg-destructive/15 hover:text-destructive cursor-pointer"
-            title="Log out"
-            aria-label="Log out"
-          >
-            <Icon icon={LogOut} className="h-5 w-5" />
-          </Button>
-        </>
+        <Link
+          to="/settings"
+          className="mt-6 flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-muted-foreground transition-all hover:bg-white/10 hover:text-foreground"
+          title="Settings"
+        >
+          <Icon icon={Settings} className="h-5 w-5" />
+        </Link>
       )}
     </aside>
   );

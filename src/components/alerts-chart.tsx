@@ -45,7 +45,7 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
 
 export function AlertsChart() {
   const { theme } = useTheme();
-  const { data: chartData, isLoading } = useGetStatsOverTime(7);
+  const { data: chartData, isLoading, isError } = useGetStatsOverTime(7);
 
   const formatDate = (dateString: string) => {
     if (!dateString) return "";
@@ -66,6 +66,15 @@ export function AlertsChart() {
 
   if (isLoading) {
     return <Skeleton className="h-[350px] w-full rounded-2xl bg-white/5" />;
+  }
+
+  if (isError) {
+    return (
+      <div className="flex h-[350px] flex-col items-center justify-center gap-2 rounded-2xl border border-white/5 bg-white/5 p-6 text-center">
+        <p className="text-sm font-medium text-destructive">Failed to load alert activity</p>
+        <p className="text-xs text-muted-foreground">Historical alert data is currently unavailable.</p>
+      </div>
+    );
   }
 
   const hasAlerts = Boolean(chartData && chartData.length > 0 && chartData.some((d) => d.count > 0));
