@@ -21,7 +21,7 @@ export function LivePlayer({ cameraId, cameraName }: { cameraId: string; cameraN
       <div className="flex flex-wrap items-center justify-between gap-3">
         <Badge variant="outline" className={isSnapshot ? "border-amber-400/30 text-amber-400" : "border-primary/30 text-primary"}>
           {isSnapshot ? <ImageIcon className="mr-2 h-3 w-3" /> : <Video className="mr-2 h-3 w-3" />}
-          {isSnapshot ? "JPEG snapshots — not live video" : "MSE video"}
+          {isSnapshot ? "JPEG snapshots — not live video" : "Live stream"}
         </Badge>
         <div className="flex flex-wrap gap-2">
           <Button variant="outline" size="sm" onClick={retryVideo}>
@@ -62,7 +62,7 @@ export function LivePlayer({ cameraId, cameraName }: { cameraId: string; cameraN
         {isSnapshot && (
           <>
             <p className={snapshot.state.phase === "error" ? "text-amber-400" : ""}>{snapshot.state.message}</p>
-            <p>Snapshots refresh about every 2 seconds after each response, without audio. HLS is not exposed by this application server.</p>
+            <p>Snapshots refresh approximately every 2 seconds without audio.</p>
             {snapshot.state.receivedAt && (
               <p>
                 {snapshot.state.phase === "error" ? "Stale image — last received" : "Last received"}: {new Date(snapshot.state.receivedAt).toLocaleTimeString()}

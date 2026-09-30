@@ -100,7 +100,9 @@ function WatchlistsWorkspace() {
             <button type="button" onClick={() => setSelectedId(watchlist.id)} aria-pressed={selected?.id === watchlist.id} className="w-full rounded-lg text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
               <span className="block break-words font-medium">{watchlist.name}</span><span className="mt-1 block text-xs capitalize text-muted-foreground">{watchlist.kind} · {watchlist.target_type}</span>
             </button>
-            <p className="mt-3 text-xs text-muted-foreground">Face: {watchlist.face_match_threshold_ratio} · Appearance: {watchlist.appearance_match_threshold_ratio}</p>
+            <p className="mt-3 text-xs text-muted-foreground">
+              Face: {Math.round(watchlist.face_match_threshold_ratio * 100)}% · Appearance: {Math.round(watchlist.appearance_match_threshold_ratio * 100)}%
+            </p>
             <div className="mt-3 flex gap-2"><Button variant="ghost" size="sm" onClick={() => setEditor({ watchlist })} aria-label={`Edit watchlist ${watchlist.name}`}><Pencil />Edit</Button><Button variant="ghost" size="sm" className="text-rose-400" onClick={() => { mutations.deleteWatchlist.reset(); setDeleting(watchlist); }} aria-label={`Delete watchlist ${watchlist.name}`}><Trash2 />Delete</Button></div>
           </CardContent>
         </Card>)}

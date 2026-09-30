@@ -80,8 +80,14 @@ export function CameraCard({ camera, role, onEdit }: {
         <p className="text-sm text-muted-foreground">{camera.location || "No location specified"}</p>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="text-xs text-muted-foreground">Camera ID <span className="break-all font-mono">{camera.id}</span></div>
-        {camera.desired_state && <p className="text-xs text-muted-foreground">Requested state: {camera.desired_state} (not a live status)</p>}
+        <div className="flex items-center justify-between text-xs text-muted-foreground/80">
+          <span className="font-mono text-[11px] select-all" title={`Camera ID: ${camera.id}`}>
+            ID: {camera.id.slice(0, 8)}…
+          </span>
+          {camera.desired_state && status !== camera.desired_state && (
+            <span className="text-[11px] text-muted-foreground">Target: {camera.desired_state}</span>
+          )}
+        </div>
         {request && !isConfirmed && <p role="status" className="text-sm text-amber-400">
           {isAwaitingStatus
             ? `${request.action === "start" ? "Start" : "Stop"} accepted — waiting for reported status…`

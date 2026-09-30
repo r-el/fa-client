@@ -38,15 +38,15 @@ function ReferencePhoto({ target, image, busy, onDelete }: {
           <img src={url} alt={`Reference photo for ${target.label}`} className="h-40 w-full rounded-lg object-contain bg-black/30" />
         </a>}
         <div className="space-y-1 text-xs" aria-live="polite">
-          {image.embeddings.length === 0 && <p className="text-muted-foreground">No enrollment modalities for this target type.</p>}
+          {image.embeddings.length === 0 && <p className="text-muted-foreground">No enrollment profiles for this target type.</p>}
           {image.embeddings.map((embedding) => <p key={embedding.modality} className="break-words">
-            <span className="capitalize">{embedding.modality}: {embedding.status}</span>
+            <span className="capitalize font-medium">{embedding.modality === "face" ? "Face profile" : embedding.modality === "appearance" ? "Body re-id" : embedding.modality}: <span className="font-normal">{embedding.status}</span></span>
             {embedding.rejection_reason && <span className="text-rose-400"> — {embedding.rejection_reason.replaceAll("_", " ")}</span>}
             {embedding.quality_score_ratio !== null && <span className="text-muted-foreground"> · quality {Math.round(embedding.quality_score_ratio * 100)}%</span>}
           </p>)}
         </div>
         <div className="flex flex-wrap gap-2">
-          {url && <Button asChild variant="outline" size="sm"><a href={url} download={`${image.id}.${extension}`}><Download />Download</a></Button>}
+          {url && <Button asChild variant="outline" size="sm"><a href={url} download={`${target.label.trim().replace(/[\s/\\?%*:|"<>]+/g, "_")}_photo_${image.id.slice(0, 8)}.${extension}`}><Download />Download</a></Button>}
           <Button variant="ghost" size="sm" className="text-rose-400" disabled={busy} onClick={onDelete} aria-label={`Delete reference photo ${image.id}`}><Trash2 />Remove</Button>
         </div>
       </CardContent>

@@ -2,6 +2,7 @@ import { ArrowLeft, ShieldCheck, Video } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
+import { CopyButton } from "../../components/ui/copy-button";
 import { Skeleton } from "../../components/ui/skeleton";
 import { LivePlayer } from "./components/LivePlayer";
 import { useLiveCamera } from "./components/use-live-camera";
@@ -33,8 +34,13 @@ function CameraLiveView({ cameraId }: { cameraId: string }) {
       ) : (
         <Card className="rounded-2xl border-white/10 bg-white/5 backdrop-blur-xl">
           <CardHeader>
-            <CardTitle>{camera.name}</CardTitle>
-            <p className="break-all font-mono text-xs text-muted-foreground">Camera ID: {camera.id}</p>
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <CardTitle>{camera.name}</CardTitle>
+              <div className="flex items-center gap-1 font-mono text-xs text-muted-foreground/70">
+                <span className="select-all" title={camera.id}>ID: {camera.id.slice(0, 8)}…</span>
+                <CopyButton value={camera.id} label="Camera ID" className="h-4 w-4 p-0.5" />
+              </div>
+            </div>
           </CardHeader>
           <CardContent><LivePlayer key={camera.id} cameraId={camera.id} cameraName={camera.name} /></CardContent>
         </Card>
