@@ -84,7 +84,7 @@ export default function OverviewPage() {
             <h2 className="text-xl font-semibold tracking-tight text-foreground">Alert Volume</h2>
             <span className="rounded-full bg-white/5 px-3 py-1 text-xs font-medium text-muted-foreground">Last 7 days</span>
           </div>
-          <div className="rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl transition-all duration-300 hover:border-white/20 hover:shadow-[0_12px_32px_rgba(0,0,0,0.3),0_0_24px_rgba(139,92,246,0.06)]">
             <Suspense fallback={<Skeleton className="h-[350px] w-full rounded-2xl bg-white/5" />}>
               <AlertsChart />
             </Suspense>
@@ -96,7 +96,7 @@ export default function OverviewPage() {
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold tracking-tight text-foreground">Recent Matches</h2>
           </div>
-          <div className="rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-xl">
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-xl transition-all duration-300 hover:border-white/20 hover:shadow-[0_12px_32px_rgba(0,0,0,0.3),0_0_24px_rgba(139,92,246,0.06)]">
             <AlertsTable limit={5} />
           </div>
         </section>
