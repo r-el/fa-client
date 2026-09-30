@@ -1,11 +1,12 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, User, RefreshCw, Shield } from "lucide-react";
+import { Search, User, RefreshCw, Shield, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Icon } from "@/components/ui/icon";
 import { useAuth } from "@/context/AuthContext";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 const createTitle = (path: string) => {
   if (path === "/" || path.length <= 1) return "Mission Overview";
@@ -19,8 +20,14 @@ const createTitle = (path: string) => {
 
 export function Topbar() {
   const { pathname } = useLocation();
-  const { user } = useAuth();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
   const title = createTitle(pathname);
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
     <header className="glass-panel mx-4 mt-4 flex flex-col gap-4 border border-white/10 px-4 py-4 md:mx-8 md:mt-6 md:flex-row md:items-center md:justify-between md:px-6 md:py-5 lg:mx-12">
@@ -77,20 +84,42 @@ export function Topbar() {
           <div className="glow-ring rounded-2xl border border-white/10 bg-white/5 p-2">
             <ThemeToggle />
           </div>
-          <Button
-            variant="ghost"
-            className={cn(
-              "glow-ring hidden items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-left text-sm text-muted-foreground transition-all hover:bg-white/10 hover:text-foreground md:flex"
-            )}
-          >
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary/50 to-accent/60 text-background">
-              <Icon icon={User} className="h-5 w-5" />
-            </span>
-            <span className="flex flex-col">
-              <span className="text-sm font-semibold text-foreground">{user?.username || "Operator"}</span>
-              <span className="text-xs text-muted-foreground">{user?.role || "User"}</span>
-            </span>
-          </Button>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="ghost"
+                className={cn(
+                  "glow-ring flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-1.5 md:px-4 md:py-2 text-left text-sm text-muted-foreground transition-all hover:bg-white/10 hover:text-foreground cursor-pointer"
+                )}
+                aria-label="User menu"
+              >
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary/50 to-accent/60 text-background">
+                  <Icon icon={User} className="h-5 w-5" />
+                </span>
+                <span className="hidden flex-col md:flex">
+                  <span className="text-sm font-semibold text-foreground">{user?.username || "Operator"}</span>
+                  <span className="text-xs text-muted-foreground">{user?.role || "User"}</span>
+                </span>
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent align="end" className="w-56 p-3 glass-panel border border-white/10 bg-background/95 backdrop-blur-xl">
+              <div className="flex flex-col gap-1 pb-3 mb-2 border-b border-white/10">
+                <p className="text-sm font-semibold text-foreground">{user?.name || user?.username || "Operator"}</p>
+                {user?.email && <p className="text-xs text-muted-foreground truncate">{user.email}</p>}
+                <span className="inline-block mt-1 text-[11px] font-medium uppercase tracking-wider text-primary px-2 py-0.5 rounded-full bg-primary/10 w-fit">
+                  {user?.role || "User"}
+                </span>
+              </div>
+              <Button
+                variant="ghost"
+                onClick={handleLogout}
+                className="w-full justify-start gap-2 text-destructive hover:bg-destructive/15 hover:text-destructive cursor-pointer rounded-xl h-9 px-3 text-sm font-medium"
+              >
+                <Icon icon={LogOut} className="h-4 w-4" />
+                <span>Log out</span>
+              </Button>
+            </PopoverContent>
+          </Popover>
         </div>
       </div>
     </header>
