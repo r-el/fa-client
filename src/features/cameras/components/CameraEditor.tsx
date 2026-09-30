@@ -1,10 +1,11 @@
 import { useState, type FormEvent } from "react";
 import { useCameraDetails, useCameraMutations } from "@/features/cameras/hooks/use-cameras";
-import { useWatchlists } from "@/features/watchlists/hooks/use-watchlists";
+import { CameraWatchlistSelector } from "./CameraWatchlistSelector";
 import { cameraError, type CameraDetails, type CameraInput, type CameraUpdate } from "@/features/cameras/api/cameras";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { QuickCategories } from "./QuickCategories";
 
 export function CameraEditor({ cameraId, onClose }: { cameraId?: string; onClose: () => void }) {
   const details = useCameraDetails(cameraId);
@@ -42,7 +43,6 @@ function CameraForm({ camera, onClose, onSaving }: {
   const [username, setUsername] = useState(camera?.username ?? "");
   const [password, setPassword] = useState("");
   const [validationError, setValidationError] = useState("");
-  const watchlists = useWatchlists();
   const { create, update } = useCameraMutations();
   const isPending = create.isPending || update.isPending;
   const mutationError = create.error || update.error;
@@ -123,35 +123,14 @@ function CameraForm({ camera, onClose, onSaving }: {
             <Input required type="password" maxLength={200} autoComplete="new-password" value={password} onChange={(event) => setPassword(event.target.value)} />
           </label>
         </div>}
-        <fieldset className="space-y-2">
-          <legend className="text-sm font-medium">Watchlists ({watchlistIds.length}/50)</legend>
-          <p className="text-xs text-muted-foreground">Select the watchlists this camera should identify against. None means no watchlist matching.</p>
-          {watchlists.isPending && <p role="status" className="text-sm">Loading watchlists…</p>}
-          {watchlists.isError && <div role="alert" className="text-sm text-rose-400">
-            <p>Could not load watchlists: {cameraError(watchlists.error)} Existing selections are preserved.</p>
-            <Button type="button" variant="outline" onClick={() => void watchlists.refetch()}>Retry watchlists</Button>
-          </div>}
-          {watchlists.data?.length === 0 && <p className="text-sm text-muted-foreground">No watchlists available. Create one on the Watchlists page first.</p>}
-          <div className="max-h-40 space-y-2 overflow-y-auto">
-            {watchlists.data?.map((watchlist) => <label key={watchlist.id} className="flex items-center gap-2 text-sm">
-              <input type="checkbox" checked={watchlistIds.includes(watchlist.id)}
-                disabled={!watchlistIds.includes(watchlist.id) && watchlistIds.length >= 50}
-                onChange={(event) => setWatchlistIds((current) => event.target.checked
-                  ? [...current, watchlist.id] : current.filter((id) => id !== watchlist.id))} />
-              {watchlist.name} <span className="text-xs text-muted-foreground">({watchlist.target_type})</span>
-            </label>)}
-            {watchlistIds.filter((id) => !watchlists.data?.some((item) => item.id === id)).map((id) => (
-              <label key={id} className="flex items-center gap-2 break-all text-sm">
-                <input type="checkbox" checked onChange={() => setWatchlistIds((current) => current.filter((value) => value !== id))} />
-                Selected watchlist: {id} (not in available list)
-              </label>
-            ))}
-          </div>
-        </fieldset>
-        <label className="block space-y-1 text-sm">Detection classes (comma-separated)
-          <Input placeholder="person, car" value={classes} onChange={(event) => setClasses(event.target.value)} />
-          <span className="text-xs text-muted-foreground">COCO class names. Leave empty to detect all classes.</span>
-        </label>
+        <CameraWatchlistSelector watchlistIds={watchlistIds} onChange={setWatchlistIds} disabled={isPending} />
+        <div className="space-y-2">
+          <QuickCategories classes={classes} onChange={setClasses} disabled={isPending} />
+          <label className="block space-y-1 text-sm">Detection classes (comma-separated)
+            <Input placeholder="person, car" value={classes} onChange={(event) => setClasses(event.target.value)} />
+            <span className="text-xs text-muted-foreground">Select categories above or enter specific classes. Leave empty to detect all objects.</span>
+          </label>
+        </div>
       </fieldset>
       {Boolean(validationError || mutationError) && <p role="alert" className="text-sm text-rose-400">{validationError || cameraError(mutationError)}</p>}
       <div className="flex justify-end gap-2">
