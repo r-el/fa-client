@@ -3,7 +3,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { camerasService } from "@/features/cameras/api/cameras";
 import { camera, cameraInput, cameraQueryClient } from "@/test/camera-fixtures";
-import { CameraEditor } from "./CameraEditor";
+import { CameraEditor } from "../CameraEditor";
 
 vi.mock("@/features/cameras/api/cameras", async (original) => ({
   ...await original<typeof import("@/features/cameras/api/cameras")>(),

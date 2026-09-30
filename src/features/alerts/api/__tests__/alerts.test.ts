@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { AxiosError, AxiosHeaders, CanceledError } from "axios";
 import type { AxiosAdapter, InternalAxiosRequestConfig } from "axios";
 import api from "@/services/api";
-import { acknowledgeAlert, alertErrorMessage, getAlert, getAlerts, getAlertSnapshot, getAlertSummary, resolveAlert, retryAlertRead } from "./alerts";
+import { acknowledgeAlert, alertErrorMessage, getAlert, getAlerts, getAlertSnapshot, getAlertSummary, resolveAlert, retryAlertRead } from "../alerts";
 
 // Keep real Axios transforms and the production authentication interceptor; replace only transport.
 const originalAdapter = api.defaults.adapter;

@@ -5,7 +5,7 @@ import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import api from "@/services/api";
 import type { CameraDetails } from "@/features/cameras/api/cameras";
 import { camera, cameraQueryClient } from "@/test/camera-fixtures";
-import { CameraCard } from "./CameraCard";
+import { CameraCard } from "../CameraCard";
 
 vi.mock("@/services/api", () => ({ default: { post: vi.fn(), delete: vi.fn() } }));
 vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));

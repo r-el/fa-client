@@ -3,7 +3,7 @@ import { test } from "vitest";
 import {
   MAX_PENDING_BYTES, MAX_PENDING_SEGMENTS, SegmentQueue,
   buildLiveSocketUrl, parseMseDescription, supportedCodecs,
-} from "./live-protocol.ts";
+} from "../live-protocol.ts";
 
 test("relative/proxied API URLs retain their prefix and use the page's secure origin", () => {
   assert.equal(

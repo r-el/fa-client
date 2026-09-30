@@ -5,7 +5,7 @@ import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { toast } from "sonner";
 import { camerasService } from "@/features/cameras/api/cameras";
 import { camera, cameraInput, cameraQueryClient } from "@/test/camera-fixtures";
-import { useCameraDetails, useCameraMutations } from "./use-cameras";
+import { useCameraDetails, useCameraMutations } from "../use-cameras";
 
 vi.mock("@/features/cameras/api/cameras", async (original) => ({
   ...await original<typeof import("@/features/cameras/api/cameras")>(),

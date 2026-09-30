@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { AlertDetails } from "./AlertDetails";
+import { AlertDetails } from "../AlertDetails";
 import * as service from "@/features/alerts/api/alerts";
 
 const auth = vi.hoisted(() => ({ role: "viewer" }));

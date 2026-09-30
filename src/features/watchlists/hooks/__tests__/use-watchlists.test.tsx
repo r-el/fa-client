@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { watchlistsService } from "@/features/watchlists/api/watchlists";
 import type { EnrollmentStatus, ReferenceImage, Target } from "@/features/watchlists/types";
-import { useEnrollmentBatch, useWatchlistMutations, useWatchlists, useWatchlistTargets, watchlistKeys } from "./use-watchlists";
+import { useEnrollmentBatch, useWatchlistMutations, useWatchlists, useWatchlistTargets, watchlistKeys } from "../use-watchlists";
 
 vi.mock("@/features/watchlists/api/watchlists", () => ({ watchlistsService: {
   list: vi.fn(), targets: vi.fn(), enrollmentBatch: vi.fn(), create: vi.fn(), update: vi.fn(), remove: vi.fn(),

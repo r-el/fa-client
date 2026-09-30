@@ -1,11 +1,11 @@
 import { act, render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { RealtimeSync } from "./RealtimeSync";
+import { RealtimeSync } from "../RealtimeSync";
 
-import { showAlertToast } from "./notificationToast";
+import { showAlertToast } from "../notificationToast";
 
-vi.mock("./notificationToast", () => ({ showAlertToast: vi.fn() }));
+vi.mock("../notificationToast", () => ({ showAlertToast: vi.fn() }));
 
 const mocks = vi.hoisted(() => ({
   auth: { isAuthenticated: true, user: { id: "user_a" } },

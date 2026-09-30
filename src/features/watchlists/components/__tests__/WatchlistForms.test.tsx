@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { TargetForm, WatchlistForm } from "./WatchlistForms";
-import { PhotoPicker } from "./PhotoPicker";
+import { TargetForm, WatchlistForm } from "../WatchlistForms";
+import { PhotoPicker } from "../PhotoPicker";
 
 beforeEach(() => {
   vi.stubGlobal("URL", class extends URL {

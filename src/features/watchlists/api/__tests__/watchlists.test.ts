@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import api from "@/services/api";
-import { buildPhotoForm, normalizeCreatedTargets, watchlistsService } from "./watchlists";
+import { buildPhotoForm, normalizeCreatedTargets, watchlistsService } from "../watchlists";
 import { MAX_PHOTO_BYTES, parseMetadata, validatePhotos } from "@/features/watchlists/utils";
 import type { Target, TargetSpecification, WatchlistInput } from "@/features/watchlists/types";
 

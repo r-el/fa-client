@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { AxiosError } from "axios";
 import api from "@/services/api";
-import { cameraError, camerasService } from "./cameras";
+import { cameraError, camerasService } from "../cameras";
 import { camera, cameraInput } from "@/test/camera-fixtures";
 
 vi.mock("@/services/api", () => ({ default: { get: vi.fn(), post: vi.fn(), put: vi.fn(), delete: vi.fn() } }));

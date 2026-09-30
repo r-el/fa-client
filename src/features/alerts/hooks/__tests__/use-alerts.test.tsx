@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider, focusManager, onlineManager } from "@
 import { AxiosError, AxiosHeaders } from "axios";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import * as service from "@/features/alerts/api/alerts";
-import { alertKeys, useAlert, useAlertActions, useAlerts, useAlertSnapshot } from "./use-alerts";
+import { alertKeys, useAlert, useAlertActions, useAlerts, useAlertSnapshot } from "../use-alerts";
 
 vi.mock("@/features/alerts/api/alerts", async (original) => ({
   ...await original<typeof service>(), getAlerts: vi.fn(), getAlert: vi.fn(), getAlertSnapshot: vi.fn(),

@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { requestLiveSocketUrl } from "@/features/live/api/live";
-import { MAX_PENDING_SEGMENTS } from "./live-protocol";
-import { startMseSession } from "./mse-session";
+import { MAX_PENDING_SEGMENTS } from "../live-protocol";
+import { startMseSession } from "../mse-session";
 
 vi.mock("@/features/live/api/live", async (original) => ({
   ...await original<typeof import("@/features/live/api/live")>(), requestLiveSocketUrl: vi.fn(),

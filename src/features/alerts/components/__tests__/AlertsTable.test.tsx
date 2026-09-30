@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { AlertsTable } from "./AlertsTable";
+import { AlertsTable } from "../AlertsTable";
 import { useAlerts } from "@/features/alerts/hooks/use-alerts";
 import type { SpecterAlert } from "@/features/alerts/api/alerts";
 
